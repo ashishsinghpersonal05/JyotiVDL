@@ -1,0 +1,291 @@
+{
+  "contacts": [
+    {
+      "id": "1774109056300",
+      "name": "Kirti Singh",
+      "phone": "",
+      "balance": 232116,
+      "createdAt": "2026-03-21T16:04:16.300Z"
+    },
+    {
+      "id": "1774109163711",
+      "name": "Anuj",
+      "phone": "",
+      "balance": 350000,
+      "createdAt": "2026-03-21T16:06:03.711Z"
+    },
+    {
+      "id": "1774109261699",
+      "name": "Manish",
+      "phone": "",
+      "balance": 200000,
+      "createdAt": "2026-03-21T16:07:41.699Z"
+    },
+    {
+      "id": "1774109314676",
+      "name": "DK SINGH 3.9L",
+      "phone": "",
+      "balance": 390000,
+      "createdAt": "2026-03-21T16:08:34.676Z"
+    },
+    {
+      "id": "1774109387289",
+      "name": "Anand",
+      "phone": "",
+      "balance": 292850,
+      "createdAt": "2026-03-21T16:09:47.289Z"
+    },
+    {
+      "id": "1774109462344",
+      "name": "AMIT",
+      "phone": "Loan : 2.5 L ",
+      "balance": 297931,
+      "createdAt": "2026-03-21T16:11:02.344Z"
+    },
+    {
+      "id": "1774109628099",
+      "name": "DK SINGH 7 L",
+      "phone": "Balanced 10 EMI :  239240",
+      "balance": 239240,
+      "createdAt": "2026-03-21T16:13:48.099Z"
+    },
+    {
+      "id": "1774110392099",
+      "name": "DK SINGH 5L",
+      "phone": "",
+      "balance": 380000,
+      "createdAt": "2026-03-21T16:26:32.099Z"
+    },
+    {
+      "id": "1774110427703",
+      "name": "DK SINGH 4L",
+      "phone": "",
+      "balance": 305000,
+      "createdAt": "2026-03-21T16:27:07.703Z"
+    },
+    {
+      "id": "1774110608288",
+      "name": "Ashish Mausa",
+      "phone": "",
+      "balance": 503545,
+      "createdAt": "2026-03-21T16:30:08.288Z"
+    },
+    {
+      "id": "1774111180336",
+      "name": "DK SINGH 6L",
+      "phone": "6L Loan",
+      "balance": 413943,
+      "createdAt": "2026-03-21T16:39:40.336Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "1774109235483",
+      "contactId": "1774109163711",
+      "amount": 350000,
+      "type": "credit",
+      "note": "",
+      "date": "2026-03-21T16:07:15.483Z"
+    },
+    {
+      "id": "1774109269313",
+      "contactId": "1774109261699",
+      "amount": 200000,
+      "type": "credit",
+      "note": "",
+      "date": "2026-03-21T16:07:49.313Z"
+    },
+    {
+      "id": "1774109324284",
+      "contactId": "1774109314676",
+      "amount": 390000,
+      "type": "credit",
+      "note": "",
+      "date": "2026-03-21T16:08:44.284Z"
+    },
+    {
+      "id": "1774109425320",
+      "contactId": "1774109387289",
+      "amount": 300000,
+      "type": "credit",
+      "note": "EMI  : 7150 5 Year March26-31",
+      "date": "2026-03-21T16:10:25.320Z"
+    },
+    {
+      "id": "1774109439656",
+      "contactId": "1774109387289",
+      "amount": 7150,
+      "type": "payment",
+      "note": "",
+      "date": "2026-03-21T16:10:39.656Z"
+    },
+    {
+      "id": "1774109575324",
+      "contactId": "1774109462344",
+      "amount": 297931,
+      "type": "credit",
+      "note": "",
+      "date": "2026-03-21T16:12:55.324Z"
+    },
+    {
+      "id": "1774109637023",
+      "contactId": "1774109628099",
+      "amount": 239240,
+      "type": "credit",
+      "note": "",
+      "date": "2026-03-21T16:13:57.023Z"
+    },
+    {
+      "id": "1774110404594",
+      "contactId": "1774110392099",
+      "amount": 390000,
+      "type": "credit",
+      "note": "",
+      "date": "2026-03-21T16:26:44.594Z"
+    },
+    {
+      "id": "1774110442914",
+      "contactId": "1774110427703",
+      "amount": 315000,
+      "type": "credit",
+      "note": "",
+      "date": "2026-03-21T16:27:22.914Z"
+    },
+    {
+      "id": "1774110490322",
+      "contactId": "1774110392099",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-03-21T16:28:10.322Z"
+    },
+    {
+      "id": "1774110498095",
+      "contactId": "1774110427703",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-03-21T16:28:18.095Z"
+    },
+    {
+      "id": "1774110518234",
+      "contactId": "1774110392099",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-03-21T16:28:38.234Z"
+    },
+    {
+      "id": "1774110549262",
+      "contactId": "1774109163711",
+      "amount": 3500,
+      "type": "interest",
+      "note": "INT",
+      "date": "2026-03-21T16:29:09.262Z"
+    },
+    {
+      "id": "1774110561595",
+      "contactId": "1774109163711",
+      "amount": 3500,
+      "type": "payment",
+      "note": "",
+      "date": "2026-03-21T16:29:21.595Z"
+    },
+    {
+      "id": "1774110647097",
+      "contactId": "1774110608288",
+      "amount": 415000,
+      "type": "credit",
+      "note": "5 Years EMI : 9698 5 July 2025-2030",
+      "date": "2026-03-21T16:30:47.097Z"
+    },
+    {
+      "id": "1774110670172",
+      "contactId": "1774110608288",
+      "amount": 8300,
+      "type": "credit",
+      "note": "Processing Fees",
+      "date": "2026-03-21T16:31:10.172Z"
+    },
+    {
+      "id": "1774110682923",
+      "contactId": "1774110608288",
+      "amount": 167527,
+      "type": "interest",
+      "note": "",
+      "date": "2026-03-21T16:31:22.923Z"
+    },
+    {
+      "id": "1774110733596",
+      "contactId": "1774110608288",
+      "amount": 87282,
+      "type": "payment",
+      "note": "",
+      "date": "2026-03-21T16:32:13.596Z"
+    },
+    {
+      "id": "1774111016224",
+      "contactId": "1774109056300",
+      "amount": 115770,
+      "type": "credit",
+      "note": "Loan Balace of 3L",
+      "date": "2026-03-21T16:36:56.224Z"
+    },
+    {
+      "id": "1774111040748",
+      "contactId": "1774109056300",
+      "amount": 150000,
+      "type": "credit",
+      "note": "Loan For Chini",
+      "date": "2026-03-21T16:37:20.748Z"
+    },
+    {
+      "id": "1774111063839",
+      "contactId": "1774109056300",
+      "amount": 3322,
+      "type": "interest",
+      "note": "INT",
+      "date": "2026-03-21T16:37:43.839Z"
+    },
+    {
+      "id": "1774111102657",
+      "contactId": "1774109056300",
+      "amount": 36976,
+      "type": "payment",
+      "note": "Lumpsum Paymrnt Jan ",
+      "date": "2026-03-21T16:38:22.657Z"
+    },
+    {
+      "id": "1774111230127",
+      "contactId": "1774111180336",
+      "amount": 600000,
+      "type": "credit",
+      "note": "EMI : 14274 7 Aug 2023-2028",
+      "date": "2026-03-21T16:40:30.127Z"
+    },
+    {
+      "id": "1774111298636",
+      "contactId": "1774111180336",
+      "amount": 256437,
+      "type": "interest",
+      "note": "INT",
+      "date": "2026-03-21T16:41:38.636Z"
+    },
+    {
+      "id": "1774111920399",
+      "contactId": "1774111180336",
+      "amount": 442494,
+      "type": "payment",
+      "note": "14274* 31 Month Till March 2026",
+      "date": "2026-03-21T16:52:00.399Z"
+    },
+    {
+      "id": "1774112007771",
+      "contactId": "1774110427703",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-03-21T16:53:27.771Z"
+    }
+  ]
+}
