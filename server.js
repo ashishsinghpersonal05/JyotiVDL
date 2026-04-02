@@ -16,9 +16,12 @@ app.use(express.static('public'));
 const readData = () => {
     try {
         const data = fs.readFileSync(DATA_FILE, 'utf8');
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        if (!parsed.investments) parsed.investments = [];
+        if (!parsed.investment_transactions) parsed.investment_transactions = [];
+        return parsed;
     } catch (error) {
-        return { contacts: [], transactions: [] };
+        return { contacts: [], transactions: [], investments: [], investment_transactions: [] };
     }
 };
 
@@ -29,7 +32,7 @@ const writeData = (data) => {
 
 // Ensure data file exists with default schema
 if (!fs.existsSync(DATA_FILE)) {
-    writeData({ contacts: [], transactions: [] });
+    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [] });
 }
 
 // Routes
@@ -162,6 +165,202 @@ app.delete('/api/transactions/:transactionId', (req, res) => {
     data.transactions.splice(transactionIndex, 1);
     writeData(data);
     res.json({ success: true });
+});
+
+// ==========================================
+// INVESTMENTS ROUTES
+// ==========================================
+
+app.get('/api/investments', (req, res) => {
+    const data = readData();
+    res.json(data.investments);
+});
+
+app.post('/api/investments', (req, res) => {
+    const data = readData();
+    const { name, type } = req.body;
+    
+    if (!name || !type) return res.status(400).json({ error: 'Name and type are required' });
+
+    const newInvestment = {
+        id: Date.now().toString(),
+        name,
+        type, // 'EPF', 'Mutual Fund', 'FD', etc.
+        balance: 0,
+        createdAt: new Date().toISOString()
+    };
+    
+    data.investments.push(newInvestment);
+    writeData(data);
+    res.status(201).json(newInvestment);
+});
+
+app.delete('/api/investments/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    
+    const initialLen = data.investments.length;
+    data.investments = data.investments.filter(i => i.id !== id);
+    data.investment_transactions = data.investment_transactions.filter(t => t.investmentId !== id);
+    
+    if (data.investments.length === initialLen) {
+        return res.status(404).json({ error: 'Investment not found' });
+    }
+    
+    writeData(data);
+    res.json({ success: true });
+});
+
+app.get('/api/investment-transactions/:investmentId', (req, res) => {
+    const data = readData();
+    const { investmentId } = req.params;
+    const invTransactions = data.investment_transactions.filter(t => t.investmentId === investmentId);
+    invTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    res.json(invTransactions);
+});
+
+app.post('/api/investment-transactions', (req, res) => {
+    const data = readData();
+    const { investmentId, amount, type, note } = req.body;
+    
+    if (!investmentId || !amount || !type) {
+        return res.status(400).json({ error: 'investmentId, amount, and type are required' });
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+        return res.status(400).json({ error: 'Valid amount is required' });
+    }
+
+    const newTransaction = {
+        id: Date.now().toString(),
+        investmentId,
+        amount: numAmount,
+        type, // 'invest', 'return', 'withdraw'
+        note: note || '',
+        date: new Date().toISOString()
+    };
+
+    let found = false;
+    for (const inv of data.investments) {
+        if (inv.id === investmentId) {
+            found = true;
+            if (type === 'invest' || type === 'return') {
+                inv.balance += numAmount;
+            } else if (type === 'withdraw') {
+                inv.balance -= numAmount;
+            }
+            break;
+        }
+    }
+
+    if (!found) return res.status(404).json({ error: 'Investment not found' });
+
+    data.investment_transactions.push(newTransaction);
+    writeData(data);
+    res.status(201).json(newTransaction);
+});
+
+app.delete('/api/investment-transactions/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    
+    const index = data.investment_transactions.findIndex(t => t.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
+    
+    const trans = data.investment_transactions[index];
+    const inv = data.investments.find(i => i.id === trans.investmentId);
+    
+    if (inv) {
+        if (trans.type === 'invest' || trans.type === 'return') {
+            inv.balance -= trans.amount;
+        } else if (trans.type === 'withdraw') {
+            inv.balance += trans.amount;
+        }
+    }
+    
+    data.investment_transactions.splice(index, 1);
+    writeData(data);
+    res.json({ success: true });
+});
+
+// ==========================================
+// REPORTS ROUTES
+// ==========================================
+
+app.get('/api/reports/monthly', (req, res) => {
+    const data = readData();
+    
+    // Structure: { 'YYYY-MM': { debit: 0, credit: 0, loanGiven: 0, interestAdded: 0, amountReceived: 0, transactions: [] } }
+    const monthlyData = {};
+
+    const getContactName = (id) => { const c = data.contacts.find(x => x.id === id); return c ? c.name : 'Unknown'; };
+    const getInvName = (id) => { const i = data.investments.find(x => x.id === id); return i ? i.name : 'Unknown'; };
+
+    const processTransaction = (t, isInvestment) => {
+        const d = new Date(t.date);
+        if (isNaN(d.getTime())) return;
+
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const monthKey = `${year}-${month}`;
+
+        if (!monthlyData[monthKey]) {
+            monthlyData[monthKey] = { 
+                debit: 0, 
+                credit: 0, 
+                loanGiven: 0,
+                interestAdded: 0,
+                amountReceived: 0,
+                transactions: [], 
+                sortKey: monthKey 
+            };
+        }
+
+        monthlyData[monthKey].transactions.push({
+            id: t.id,
+            date: t.date,
+            amount: t.amount,
+            type: t.type,
+            note: t.note,
+            entityName: isInvestment ? getInvName(t.investmentId) : getContactName(t.contactId),
+            isInvestment
+        });
+
+        // Cash flow definition
+        if (!isInvestment) {
+            // Customer transaction
+            if (t.type === 'credit') { // gave loan out
+                monthlyData[monthKey].debit += t.amount;
+                monthlyData[monthKey].loanGiven += t.amount;
+            } else if (t.type === 'payment') { // received payment in
+                monthlyData[monthKey].credit += t.amount;
+                monthlyData[monthKey].amountReceived += t.amount;
+            } else if (t.type === 'interest') {
+                monthlyData[monthKey].interestAdded += t.amount;
+            }
+        } else {
+            // Investment transaction
+            if (t.type === 'invest') { // funds out
+                monthlyData[monthKey].debit += t.amount;
+            } else if (t.type === 'withdraw' || t.type === 'return') { // funds in
+                monthlyData[monthKey].credit += t.amount;
+            }
+        }
+    };
+
+    data.transactions.forEach(t => processTransaction(t, false));
+    data.investment_transactions.forEach(t => processTransaction(t, true));
+
+    // Sort transactions within each month by date descending
+    Object.values(monthlyData).forEach(m => {
+        m.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    });
+
+    // Convert to sorted array (newest first)
+    const sorted = Object.values(monthlyData).sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+
+    res.json(sorted);
 });
 
 // Start the server

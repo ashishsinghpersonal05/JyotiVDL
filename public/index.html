@@ -1,71 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loan Tracker</title>
+    <title>VDL Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body>
     <div class="app-container">
-        <!-- Sidebar: Contact List -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h1>Loan Tracker</h1>
-                <p class="subtitle">Maintain your customers' balances</p>
-                <button id="add-contact-btn" class="btn primary-btn">+ Add Customer</button>
-            </div>
-            
-            <div class="summary-card">
-                <h2>Total You'll Get</h2>
-                <div id="total-balance" class="balance-amount">₹0.00</div>
-            </div>
 
-            <div class="contacts-list" id="contacts-list">
-                <!-- Contacts will be injected here -->
-                <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading customers...</div>
+        <!-- Global Side Navigation -->
+        <nav class="global-side-nav">
+            <div class="nav-brand">
+                <div class="nav-logo">V</div>
+                <h2>JYOTI VDL</h2>
             </div>
-        </aside>
-
-        <!-- Main Content: Transactions -->
-        <main class="main-content">
-            <div id="empty-state" class="empty-state active">
-                <div class="empty-icon">🤝</div>
-                <h2>Select a Customer</h2>
-                <p>Choose a customer from the sidebar to view detailed transactions, give a loan, or record a payment.</p>
+            <div class="nav-links">
+                <button id="nav-home" class="nav-btn active">
+                    <i data-lucide="layout-dashboard" class="nav-icon"></i>
+                    <span class="nav-label">Dashboard</span>
+                </button>
+                <button id="nav-customers" class="nav-btn">
+                    <i data-lucide="users" class="nav-icon"></i>
+                    <span class="nav-label">Customers</span>
+                </button>
+                <button id="nav-investments" class="nav-btn">
+                    <i data-lucide="trending-up" class="nav-icon"></i>
+                    <span class="nav-label">Investments</span>
+                </button>
+                <button id="nav-report" class="nav-btn">
+                    <i data-lucide="bar-chart-2" class="nav-icon"></i>
+                    <span class="nav-label">Report</span>
+                </button>
             </div>
+            <div class="nav-footer">
+                <p>v1.2.0</p>
+            </div>
+        </nav>
 
-            <div id="contact-detail" class="contact-detail hidden">
-                <header class="detail-header">
-                    <div class="contact-info">
-                        <div class="avatar" id="detail-avatar">C</div>
-                        <div>
-                            <h2 id="detail-name">Customer Name</h2>
-                            <p id="detail-phone">Phone Number</p>
+        <!-- Main Workspace Area -->
+        <div class="workspace-area">
+
+            <!-- 1. HOME DASHBOARD WORKSPACE -->
+            <div id="home-workspace" class="workspace-view active">
+                <div class="dashboard-container">
+                    <header class="dashboard-header">
+                        <h1>Financial Snapshot</h1>
+                        <p class="subtitle">Overview of your combined portfolio</p>
+                    </header>
+
+                    <div class="dashboard-grid">
+                        <div class="kpi-card primary-kpi">
+                            <span class="kpi-label">Total Net Worth</span>
+                            <div id="dash-net-worth" class="kpi-amount">₹0.00</div>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-label">Total Investments</span>
+                            <div id="dash-investments" class="kpi-amount text-success">₹0.00</div>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-label" id="dash-lent-label">Customers Total</span>
+                            <div id="dash-lent" class="kpi-amount">₹0.00</div>
                         </div>
                     </div>
-                    <div class="contact-balance-card">
-                        <span>Net Balance</span>
-                        <div id="detail-balance" class="balance-amount">₹0.00</div>
-                        <button id="btn-delete-contact" class="btn" style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete Customer</button>
-                    </div>
-                </header>
 
-                <div class="action-buttons">
-                    <button id="btn-give-credit" class="btn action-btn danger-btn">Give Loan 📤</button>
-                    <button id="btn-add-interest" class="btn action-btn warning-btn">Add Interest 📈</button>
-                    <button id="btn-accept-payment" class="btn action-btn success-btn">Receive Payment 📥</button>
-                </div>
-
-                <div class="transactions-section">
-                    <h3>Recent Transactions</h3>
-                    <div class="transactions-list" id="transactions-list">
-                        <!-- Transactions injected here -->
+                    <div class="investment-breakdown-section" style="margin-top: 40px;">
+                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 20px;">Investment Breakdown</h2>
+                        <div class="dashboard-grid" id="dash-inv-breakdown"
+                            style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
+                            <!-- Dynamically injected via JS -->
+                        </div>
                     </div>
                 </div>
             </div>
-        </main>
+
+            <!-- 2. CUSTOMERS WORKSPACE -->
+            <div id="customers-workspace" class="workspace-view split-layout hidden">
+                <!-- Sidebar: Contact List -->
+                <aside class="sidebar inner-sidebar">
+                    <div class="sidebar-header">
+                        <h1>Customers</h1>
+                        <p class="subtitle">Maintain your loans & credits</p>
+                    </div>
+
+                    <div class="view-section" style="flex:1; overflow:hidden;">
+                        <button id="add-contact-btn" class="btn primary-btn"
+                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Customer</button>
+                        <div class="summary-card">
+                            <h2>Total You'll Get</h2>
+                            <div id="total-balance" class="balance-amount">₹0.00</div>
+                        </div>
+                        <div class="contacts-list" id="contacts-list">
+                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                                customers...</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content: Customer Detail -->
+                <main class="main-content">
+                    <div id="empty-state" class="empty-state active">
+                        <div class="empty-icon"><i data-lucide="handshake"
+                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                        <h2>Select a Customer</h2>
+                        <p>Choose a customer from the sidebar to view detailed transactions, give a loan, or record a
+                            payment.</p>
+                    </div>
+
+                    <div id="contact-detail" class="contact-detail hidden">
+                        <header class="detail-header">
+                            <div class="contact-info">
+                                <div class="avatar" id="detail-avatar">C</div>
+                                <div>
+                                    <h2 id="detail-name">Customer Name</h2>
+                                    <p id="detail-phone">Phone Number</p>
+                                </div>
+                            </div>
+                            <div class="contact-balance-card">
+                                <span>Net Balance</span>
+                                <div id="detail-balance" class="balance-amount">₹0.00</div>
+                                <button id="btn-delete-contact" class="btn"
+                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                    Customer</button>
+                            </div>
+                        </header>
+
+                        <div class="action-buttons">
+                            <button id="btn-give-credit" class="btn action-btn danger-btn"><i
+                                    data-lucide="arrow-up-right"></i> Give Loan</button>
+                            <button id="btn-add-interest" class="btn action-btn warning-btn"><i
+                                    data-lucide="trending-up"></i> Add Interest</button>
+                            <button id="btn-accept-payment" class="btn action-btn success-btn"><i
+                                    data-lucide="arrow-down-left"></i> Receive Payment</button>
+                        </div>
+
+                        <div class="transactions-section">
+                            <h3>Recent Transactions</h3>
+                            <div class="transactions-list" id="transactions-list"></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- 3. INVESTMENTS WORKSPACE -->
+            <div id="investments-workspace" class="workspace-view split-layout hidden">
+                <!-- Sidebar: Investment List -->
+                <aside class="sidebar inner-sidebar">
+                    <div class="sidebar-header">
+                        <h1>Investments</h1>
+                        <p class="subtitle">Track funds and assets</p>
+                    </div>
+
+                    <div class="view-section" style="flex:1; overflow:hidden;">
+                        <button id="add-inv-btn" class="btn primary-btn"
+                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Investment</button>
+                        <div class="summary-card">
+                            <h2>Total Portfolio</h2>
+                            <div id="total-inv-balance" class="balance-amount">₹0.00</div>
+                        </div>
+                        <div class="contacts-list" id="investments-list">
+                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                                investments...</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content: Investment Detail -->
+                <main class="main-content">
+                    <div id="inv-empty-state" class="empty-state active">
+                        <div class="empty-icon"><i data-lucide="pie-chart"
+                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                        <h2>Select an Investment</h2>
+                        <p>Choose an investment from the sidebar to view detailed history and manage funds.</p>
+                    </div>
+
+                    <div id="inv-detail" class="contact-detail hidden">
+                        <header class="detail-header">
+                            <div class="contact-info">
+                                <div class="avatar" style="background: linear-gradient(135deg, #10b981, #059669);"
+                                    id="inv-detail-avatar">I</div>
+                                <div>
+                                    <h2 id="inv-detail-name">Investment Name</h2>
+                                    <p id="inv-detail-type">Type</p>
+                                </div>
+                            </div>
+                            <div class="contact-balance-card">
+                                <span>Current Value</span>
+                                <div id="inv-detail-balance" class="balance-amount text-success">₹0.00</div>
+                                <button id="btn-delete-inv" class="btn"
+                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                    Investment</button>
+                            </div>
+                        </header>
+
+                        <div class="action-buttons">
+                            <button id="btn-inv-invest" class="btn action-btn success-btn"><i
+                                    data-lucide="arrow-down-to-dot"></i> Invest Funds</button>
+                            <button id="btn-inv-return" class="btn action-btn warning-btn"><i
+                                    data-lucide="trending-up"></i> Add Return</button>
+                            <button id="btn-inv-withdraw" class="btn action-btn danger-btn"><i
+                                    data-lucide="arrow-up-from-dot"></i> Withdraw</button>
+                        </div>
+
+                        <div class="transactions-section">
+                            <h3>Transaction History</h3>
+                            <div class="transactions-list" id="inv-transactions-list"></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            </div>
+
+            <!-- 4. REPORT WORKSPACE -->
+            <div id="report-workspace" class="workspace-view hidden">
+                <div class="dashboard-container">
+                    <header class="dashboard-header">
+                        <h1>Monthly Report</h1>
+                        <p class="subtitle">Overview of monthly debits and credits</p>
+                    </header>
+
+                    <div class="report-section" style="margin-top: 20px;">
+                        <div class="contacts-list" id="monthly-report-list">
+                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading report...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
     <!-- Modals -->
@@ -80,7 +247,7 @@
                     <input type="text" id="contact-name" required placeholder="E.g., John Doe">
                 </div>
                 <div class="form-group">
-                    <label for="contact-phone">Phone (Optional)</label>
+                    <label for="contact-phone">Description / Phone (Optional)</label>
                     <input type="text" id="contact-phone" placeholder="E.g., +91 9876543210">
                 </div>
                 <button type="submit" class="btn primary-btn submit-btn">Save Customer</button>
@@ -108,6 +275,58 @@
         </div>
     </div>
 
+    <!-- Add Investment Modal -->
+    <div id="modal-add-inv" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-inv-modal">&times;</button>
+            <h2>Add New Investment</h2>
+            <form id="form-add-inv">
+                <div class="form-group">
+                    <label for="inv-name">Name</label>
+                    <input type="text" id="inv-name" required placeholder="E.g., SBI Fixed Deposit">
+                </div>
+                <div class="form-group">
+                    <label for="inv-type">Type</label>
+                    <select id="inv-type" required
+                        style="width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; outline: none; margin-top: 4px;">
+                        <option value="EPF">EPF</option>
+                        <option value="Mutual Fund">Mutual Fund</option>
+                        <option value="FD">Fixed Deposit</option>
+                        <option value="RD">Recurring Deposit</option>
+                        <option value="NPS">NPS</option>
+                        <option value="Sukanya Samriddhi">Sukanya Samriddhi</option>
+                        <option value="Stocks">Stocks</option>
+                        <option value="Crypto">Crypto</option>
+                        <option value="Society">Society</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save Investment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Investment Transaction Modal -->
+    <div id="modal-add-inv-trans" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-inv-trans-modal">&times;</button>
+            <h2 id="inv-trans-modal-title">Add Transaction</h2>
+            <form id="form-add-inv-trans">
+                <input type="hidden" id="inv-trans-type">
+                <div class="form-group">
+                    <label for="inv-trans-amount">Amount (₹)</label>
+                    <input type="number" id="inv-trans-amount" required placeholder="0.00" min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="inv-trans-note">Note (Optional)</label>
+                    <input type="text" id="inv-trans-note" placeholder="What was this for?">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
+
 </html>
