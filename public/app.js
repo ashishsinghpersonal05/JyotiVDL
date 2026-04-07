@@ -67,6 +67,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Format Helpers
     const formatCurrency = (amount) => '₹' + Math.abs(amount).toFixed(2);
+    const formatCurrencyShort = (amount) => {
+        const absAmt = Math.abs(amount);
+        const sign = amount < 0 ? '-' : '';
+        if (absAmt >= 10000000) {
+            return sign + '₹' + (absAmt / 10000000).toFixed(2) + ' Cr';
+        } else if (absAmt >= 100000) {
+            return sign + '₹' + (absAmt / 100000).toFixed(2) + ' L';
+        } else if (absAmt >= 1000) {
+            return sign + '₹' + (absAmt / 1000).toFixed(2) + ' K';
+        } else {
+            return sign + '₹' + absAmt.toFixed(2);
+        }
+    };
     const formatDate = (dateString) => {
         const d = new Date(dateString);
         return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -133,11 +146,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalInv = state.investments.reduce((sum, i) => sum + i.balance, 0);
         const totalNetWorth = totalLent + totalInv;
 
-        document.getElementById('dash-net-worth').textContent = formatCurrency(totalNetWorth);
-        document.getElementById('dash-investments').textContent = formatCurrency(totalInv);
+        document.getElementById('dash-net-worth').textContent = formatCurrencyShort(totalNetWorth);
+        document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv);
 
         const elDashLent = document.getElementById('dash-lent');
-        elDashLent.textContent = formatCurrency(totalLent);
+        elDashLent.textContent = formatCurrencyShort(totalLent);
         elDashLent.className = `kpi-amount ${totalLent >= 0 ? 'text-success' : 'text-danger'}`;
 
         document.getElementById('dash-lent-label').textContent = totalLent >= 0 ? "You'll Get (Customers)" : "You Owe (Customers)";
@@ -166,11 +179,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if(type === 'Society') iconName = 'building';
                 
                 breakdownContainer.innerHTML += `
-                    <div class="kpi-card" style="padding: 24px;">
-                        <span class="kpi-label" style="display: flex; align-items: center; gap: 8px;">
-                            <i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i> ${type}
-                        </span>
-                        <div class="kpi-amount text-success" style="font-size: 1.75rem;">${formatCurrency(amount)}</div>
+                    <div class="kpi-card" style="padding: 24px; min-height: 120px; justify-content: center;">
+                        <div class="kpi-header">
+                            <span class="kpi-label">${type}</span>
+                            <div class="kpi-icon" style="width: 36px; height: 36px;"><i data-lucide="${iconName}" style="width: 18px; height: 18px;"></i></div>
+                        </div>
+                        <div class="kpi-amount text-success" style="font-size: 1.75rem; margin-top: 8px;">${formatCurrencyShort(amount)}</div>
+                        <div class="kpi-decor kpi-decor-2" style="width: 60px; height: 60px; bottom: -20px; left: -20px;"></div>
                     </div>
                 `;
             });

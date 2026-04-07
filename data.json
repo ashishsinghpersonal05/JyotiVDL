@@ -11,14 +11,14 @@
       "id": "1774109163711",
       "name": "Anuj",
       "phone": "",
-      "balance": 353500,
+      "balance": 350000,
       "createdAt": "2026-03-21T16:06:03.711Z"
     },
     {
       "id": "1774109261699",
       "name": "Manish",
       "phone": "",
-      "balance": 202500,
+      "balance": 200000,
       "createdAt": "2026-03-21T16:07:41.699Z"
     },
     {
@@ -469,6 +469,22 @@
       "type": "payment",
       "note": "March EMI",
       "date": "2026-04-02T12:50:43.173Z"
+    },
+    {
+      "id": "1775575288746",
+      "contactId": "1774109163711",
+      "amount": 3500,
+      "type": "payment",
+      "note": "INT MARCH",
+      "date": "2026-04-07T15:21:28.746Z"
+    },
+    {
+      "id": "1775579632396",
+      "contactId": "1774109261699",
+      "amount": 2500,
+      "type": "payment",
+      "note": "INT MARCH",
+      "date": "2026-04-07T16:33:52.396Z"
     }
   ],
   "investments": [
