@@ -28,6 +28,10 @@
                     <i data-lucide="users" class="nav-icon"></i>
                     <span class="nav-label">Customers</span>
                 </button>
+                <button id="nav-properties" class="nav-btn">
+                    <i data-lucide="home" class="nav-icon"></i>
+                    <span class="nav-label">Properties</span>
+                </button>
                 <button id="nav-investments" class="nav-btn">
                     <i data-lucide="trending-up" class="nav-icon"></i>
                     <span class="nav-label">Investments</span>
@@ -83,8 +87,8 @@
                         </div>
                     </div>
 
-                    <div class="investment-breakdown-section" style="margin-top: 40px;">
-                        <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 20px;">Investment Breakdown</h2>
+                    <div class="investment-breakdown-section" style="margin-top: 48px;">
+                        <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 24px; color: var(--text-primary); letter-spacing: -0.5px;">Investment Breakdown</h2>
                         <div class="dashboard-grid" id="dash-inv-breakdown"
                             style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
                             <!-- Dynamically injected via JS -->
@@ -231,6 +235,74 @@
 
             </div>
 
+            <!-- 3.5. PROPERTIES WORKSPACE -->
+            <div id="properties-workspace" class="workspace-view split-layout hidden">
+                <!-- Sidebar: Property List -->
+                <aside class="sidebar inner-sidebar">
+                    <div class="sidebar-header">
+                        <h1>Properties</h1>
+                        <p class="subtitle">Track real estate and physical assets</p>
+                    </div>
+
+                    <div class="view-section" style="flex:1; overflow:hidden;">
+                        <button id="add-prop-btn" class="btn primary-btn"
+                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Property</button>
+                        <div class="summary-card">
+                            <h2>Total Value</h2>
+                            <div id="total-prop-balance" class="balance-amount">₹0.00</div>
+                        </div>
+                        <div class="contacts-list" id="properties-list">
+                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                                properties...</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content: Property Detail -->
+                <main class="main-content">
+                    <div id="prop-empty-state" class="empty-state active">
+                        <div class="empty-icon"><i data-lucide="home"
+                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                        <h2>Select a Property</h2>
+                        <p>Choose a property from the sidebar to view detail and update valuation.</p>
+                    </div>
+
+                    <div id="prop-detail" class="contact-detail hidden">
+                        <header class="detail-header">
+                            <div class="contact-info">
+                                <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #7e22ce);"
+                                    id="prop-detail-avatar">P</div>
+                                <div>
+                                    <h2 id="prop-detail-name">Property Name</h2>
+                                    <p id="prop-detail-type">Type</p>
+                                </div>
+                            </div>
+                            <div class="contact-balance-card">
+                                <span>Current Value</span>
+                                <div id="prop-detail-balance" class="balance-amount text-success">₹0.00</div>
+                                <button id="btn-delete-prop" class="btn"
+                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                    Property</button>
+                            </div>
+                        </header>
+
+                        <div class="action-buttons">
+                            <button id="btn-prop-buy" class="btn action-btn success-btn"><i
+                                    data-lucide="plus-circle"></i> Initial Value / Buy</button>
+                            <button id="btn-prop-appreciation" class="btn action-btn warning-btn"><i
+                                    data-lucide="trending-up"></i> Appreciation</button>
+                            <button id="btn-prop-depreciation" class="btn action-btn danger-btn"><i
+                                    data-lucide="trending-down"></i> Depreciation</button>
+                        </div>
+
+                        <div class="transactions-section">
+                            <h3>Valuation History</h3>
+                            <div class="transactions-list" id="prop-transactions-list"></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
             <!-- 4. REPORT WORKSPACE -->
             <div id="report-workspace" class="workspace-view hidden">
                 <div class="dashboard-container">
@@ -335,6 +407,53 @@
                 <div class="form-group">
                     <label for="inv-trans-note">Note (Optional)</label>
                     <input type="text" id="inv-trans-note" placeholder="What was this for?">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Property Modal -->
+    <div id="modal-add-prop" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-prop-modal">&times;</button>
+            <h2>Add New Property</h2>
+            <form id="form-add-prop">
+                <div class="form-group">
+                    <label for="prop-name">Name</label>
+                    <input type="text" id="prop-name" required placeholder="E.g., Apartment in Mumbai">
+                </div>
+                <div class="form-group">
+                    <label for="prop-type">Type</label>
+                    <select id="prop-type" required
+                        style="width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; outline: none; margin-top: 4px;">
+                        <option value="Apartment">Apartment</option>
+                        <option value="House">House</option>
+                        <option value="Plot">Plot of Land</option>
+                        <option value="Commercial">Commercial Shop/Office</option>
+                        <option value="Agricultural">Agricultural Land</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save Property</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Property Transaction Modal -->
+    <div id="modal-add-prop-trans" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-prop-trans-modal">&times;</button>
+            <h2 id="prop-trans-modal-title">Update Property Value</h2>
+            <form id="form-add-prop-trans">
+                <input type="hidden" id="prop-trans-type">
+                <div class="form-group">
+                    <label for="prop-trans-amount">Amount (₹)</label>
+                    <input type="number" id="prop-trans-amount" required placeholder="0.00" min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="prop-trans-note">Note (Optional)</label>
+                    <input type="text" id="prop-trans-note" placeholder="What was this for?">
                 </div>
                 <button type="submit" class="btn primary-btn submit-btn">Save</button>
             </form>

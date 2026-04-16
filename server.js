@@ -19,9 +19,12 @@ const readData = () => {
         const parsed = JSON.parse(data);
         if (!parsed.investments) parsed.investments = [];
         if (!parsed.investment_transactions) parsed.investment_transactions = [];
+        if (!parsed.properties) parsed.properties = [];
+        if (!parsed.property_transactions) parsed.property_transactions = [];
         return parsed;
     } catch (error) {
-        return { contacts: [], transactions: [], investments: [], investment_transactions: [] };
+        console.error(error);
+        return { contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [] };
     }
 };
 
@@ -32,7 +35,7 @@ const writeData = (data) => {
 
 // Ensure data file exists with default schema
 if (!fs.existsSync(DATA_FILE)) {
-    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [] });
+    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [] });
 }
 
 // Routes
@@ -280,6 +283,123 @@ app.delete('/api/investment-transactions/:id', (req, res) => {
     }
     
     data.investment_transactions.splice(index, 1);
+    writeData(data);
+    res.json({ success: true });
+});
+
+// ==========================================
+// PROPERTIES ROUTES
+// ==========================================
+
+app.get('/api/properties', (req, res) => {
+    const data = readData();
+    res.json(data.properties);
+});
+
+app.post('/api/properties', (req, res) => {
+    const data = readData();
+    const { name, type } = req.body;
+    
+    if (!name || !type) return res.status(400).json({ error: 'Name and type are required' });
+
+    const newProperty = {
+        id: Date.now().toString(),
+        name,
+        type,
+        balance: 0,
+        createdAt: new Date().toISOString()
+    };
+    
+    data.properties.push(newProperty);
+    writeData(data);
+    res.status(201).json(newProperty);
+});
+
+app.delete('/api/properties/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    
+    const initialLen = data.properties.length;
+    data.properties = data.properties.filter(p => p.id !== id);
+    data.property_transactions = data.property_transactions.filter(t => t.propertyId !== id);
+    
+    if (data.properties.length === initialLen) {
+        return res.status(404).json({ error: 'Property not found' });
+    }
+    
+    writeData(data);
+    res.json({ success: true });
+});
+
+app.get('/api/property-transactions/:propertyId', (req, res) => {
+    const data = readData();
+    const { propertyId } = req.params;
+    const propTransactions = data.property_transactions.filter(t => t.propertyId === propertyId);
+    propTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    res.json(propTransactions);
+});
+
+app.post('/api/property-transactions', (req, res) => {
+    const data = readData();
+    const { propertyId, amount, type, note } = req.body;
+    
+    if (!propertyId || !amount || !type) {
+        return res.status(400).json({ error: 'propertyId, amount, and type are required' });
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+        return res.status(400).json({ error: 'Valid amount is required' });
+    }
+
+    const newTransaction = {
+        id: Date.now().toString(),
+        propertyId,
+        amount: numAmount,
+        type,
+        note: note || '',
+        date: new Date().toISOString()
+    };
+
+    let found = false;
+    for (const prop of data.properties) {
+        if (prop.id === propertyId) {
+            found = true;
+            if (type === 'buy' || type === 'appreciation') {
+                prop.balance += numAmount;
+            } else if (type === 'depreciation' || type === 'sell') {
+                prop.balance -= numAmount;
+            }
+            break;
+        }
+    }
+
+    if (!found) return res.status(404).json({ error: 'Property not found' });
+
+    data.property_transactions.push(newTransaction);
+    writeData(data);
+    res.status(201).json(newTransaction);
+});
+
+app.delete('/api/property-transactions/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    
+    const index = data.property_transactions.findIndex(t => t.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
+    
+    const trans = data.property_transactions[index];
+    const prop = data.properties.find(p => p.id === trans.propertyId);
+    
+    if (prop) {
+        if (trans.type === 'buy' || trans.type === 'appreciation') {
+            prop.balance -= trans.amount;
+        } else if (trans.type === 'depreciation' || trans.type === 'sell') {
+            prop.balance += trans.amount;
+        }
+    }
+    
+    data.property_transactions.splice(index, 1);
     writeData(data);
     res.json({ success: true });
 });

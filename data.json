@@ -32,7 +32,7 @@
       "id": "1774109387289",
       "name": "Anand",
       "phone": "",
-      "balance": 292850,
+      "balance": 285700,
       "createdAt": "2026-03-21T16:09:47.289Z"
     },
     {
@@ -67,7 +67,7 @@
       "id": "1774110608288",
       "name": "Ashish Mausa",
       "phone": "",
-      "balance": 503545,
+      "balance": 493847,
       "createdAt": "2026-03-21T16:30:08.288Z"
     },
     {
@@ -485,6 +485,22 @@
       "type": "payment",
       "note": "INT MARCH",
       "date": "2026-04-07T16:33:52.396Z"
+    },
+    {
+      "id": "1776326712775",
+      "contactId": "1774109387289",
+      "amount": 7150,
+      "type": "payment",
+      "note": "APRIL EMI 2nd",
+      "date": "2026-04-16T08:05:12.775Z"
+    },
+    {
+      "id": "1776326749756",
+      "contactId": "1774110608288",
+      "amount": 9698,
+      "type": "payment",
+      "note": "APRIL Month EMI",
+      "date": "2026-04-16T08:05:49.756Z"
     }
   ],
   "investments": [
@@ -803,6 +819,48 @@
       "type": "invest",
       "note": "",
       "date": "2026-03-22T09:24:13.021Z"
+    }
+  ],
+  "properties": [
+    {
+      "id": "1776327895208",
+      "name": "Godrej Park Retreat Phase 2",
+      "type": "Apartment",
+      "balance": 12500000,
+      "createdAt": "2026-04-16T08:24:55.208Z"
+    },
+    {
+      "id": "1776327941324",
+      "name": "Prestige  Marie Gold Phase 2",
+      "type": "Plot",
+      "balance": 6000000,
+      "createdAt": "2026-04-16T08:25:41.324Z"
+    }
+  ],
+  "property_transactions": [
+    {
+      "id": "1776327999582",
+      "propertyId": "1776327895208",
+      "amount": 9500000,
+      "type": "buy",
+      "note": "",
+      "date": "2026-04-16T08:26:39.582Z"
+    },
+    {
+      "id": "1776328014540",
+      "propertyId": "1776327895208",
+      "amount": 3000000,
+      "type": "appreciation",
+      "note": "",
+      "date": "2026-04-16T08:26:54.540Z"
+    },
+    {
+      "id": "1776328047044",
+      "propertyId": "1776327941324",
+      "amount": 6000000,
+      "type": "buy",
+      "note": "",
+      "date": "2026-04-16T08:27:27.044Z"
     }
   ]
 }

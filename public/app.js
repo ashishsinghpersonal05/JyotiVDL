@@ -5,17 +5,21 @@ document.addEventListener('DOMContentLoaded', () => {
         contacts: [],
         currentContactId: null,
         investments: [],
-        currentInvId: null
+        currentInvId: null,
+        properties: [],
+        currentPropId: null
     };
 
     // DOM Elements - Tabs & Views
     const navHome = document.getElementById('nav-home');
     const navCustomers = document.getElementById('nav-customers');
     const navInvestments = document.getElementById('nav-investments');
+    const navProperties = document.getElementById('nav-properties');
     const navReport = document.getElementById('nav-report');
     const workspaceHome = document.getElementById('home-workspace');
     const workspaceCustomers = document.getElementById('customers-workspace');
     const workspaceInvestments = document.getElementById('investments-workspace');
+    const workspaceProperties = document.getElementById('properties-workspace');
     const workspaceReport = document.getElementById('report-workspace');
 
     // DOM Elements - Customers
@@ -44,6 +48,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnInvWithdraw = document.getElementById('btn-inv-withdraw');
     const btnDeleteInv = document.getElementById('btn-delete-inv');
 
+    // DOM Elements - Properties
+    const propList = document.getElementById('properties-list');
+    const totalPropBalance = document.getElementById('total-prop-balance');
+    const propEmptyState = document.getElementById('prop-empty-state');
+    const propDetail = document.getElementById('prop-detail');
+    const modalAddProp = document.getElementById('modal-add-prop');
+    const modalAddPropTrans = document.getElementById('modal-add-prop-trans');
+    const btnAddProp = document.getElementById('add-prop-btn');
+    const btnPropBuy = document.getElementById('btn-prop-buy');
+    const btnPropAppreciation = document.getElementById('btn-prop-appreciation');
+    const btnPropDepreciation = document.getElementById('btn-prop-depreciation');
+    const btnDeleteProp = document.getElementById('btn-delete-prop');
+
     // Modals Setup helper
     const setupModal = (modal, btnOpen, closeId) => {
         const btnClose = document.getElementById(closeId);
@@ -58,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal(modalAddTransaction, null, 'close-trans-modal');
     setupModal(modalAddInv, btnAddInv, 'close-inv-modal');
     setupModal(modalAddInvTrans, null, 'close-inv-trans-modal');
+    setupModal(modalAddProp, btnAddProp, 'close-prop-modal');
+    setupModal(modalAddPropTrans, null, 'close-prop-trans-modal');
 
     const renderIcons = () => {
         if (window.lucide) {
@@ -93,12 +112,14 @@ document.addEventListener('DOMContentLoaded', () => {
         navHome.classList.remove('active');
         navCustomers.classList.remove('active');
         navInvestments.classList.remove('active');
+        navProperties.classList.remove('active');
         navReport.classList.remove('active');
 
         // Hide Workspaces
         workspaceHome.classList.add('hidden');
         workspaceCustomers.classList.add('hidden');
         workspaceInvestments.classList.add('hidden');
+        workspaceProperties.classList.add('hidden');
         workspaceReport.classList.add('hidden');
 
         if (mode === 'home') {
@@ -113,6 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
             navInvestments.classList.add('active');
             workspaceInvestments.classList.remove('hidden');
             loadInvestments();
+        } else if (mode === 'properties') {
+            navProperties.classList.add('active');
+            workspaceProperties.classList.remove('hidden');
+            loadProperties();
         } else if (mode === 'report') {
             navReport.classList.add('active');
             workspaceReport.classList.remove('hidden');
@@ -124,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navHome.addEventListener('click', () => switchTab('home'));
     navCustomers.addEventListener('click', () => switchTab('customers'));
     navInvestments.addEventListener('click', () => switchTab('investments'));
+    navProperties.addEventListener('click', () => switchTab('properties'));
     navReport.addEventListener('click', () => switchTab('report'));
 
     // Dashboard Logic
@@ -141,10 +167,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.investments = await res.json();
             } catch (e) { }
         }
+        if (state.properties.length === 0) {
+            try {
+                const res = await fetch('/api/properties');
+                state.properties = await res.json();
+            } catch (e) { }
+        }
 
         const totalLent = state.contacts.reduce((sum, c) => sum + c.balance, 0);
         const totalInv = state.investments.reduce((sum, i) => sum + i.balance, 0);
-        const totalNetWorth = totalLent + totalInv;
+        const totalProp = state.properties.reduce((sum, p) => sum + p.balance, 0);
+        const totalNetWorth = totalLent + totalInv + totalProp;
 
         document.getElementById('dash-net-worth').textContent = formatCurrencyShort(totalNetWorth);
         document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv);
@@ -155,11 +188,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('dash-lent-label').textContent = totalLent >= 0 ? "You'll Get (Customers)" : "You Owe (Customers)";
 
-        // Investment Breakdown
         const breakdown = {};
         state.investments.forEach(inv => {
             if (!breakdown[inv.type]) breakdown[inv.type] = 0;
             breakdown[inv.type] += inv.balance;
+        });
+        state.properties.forEach(prop => {
+            if (!breakdown[prop.type]) breakdown[prop.type] = 0;
+            breakdown[prop.type] += prop.balance;
         });
 
         const breakdownContainer = document.getElementById('dash-inv-breakdown');
@@ -176,7 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(type === 'EPF' || type === 'NPS' || type === 'FD' || type === 'RD') iconName = 'piggy-bank';
                 else if(type === 'Mutual Fund' || type === 'Stocks') iconName = 'trending-up';
                 else if(type === 'Sukanya Samriddhi') iconName = 'heart';
-                else if(type === 'Society') iconName = 'building';
+                else if(type === 'Society' || type === 'Commercial') iconName = 'building';
+                else if(type === 'Apartment' || type === 'House') iconName = 'home';
+                else if(type === 'Agricultural' || type === 'Plot') iconName = 'map';
                 
                 breakdownContainer.innerHTML += `
                     <div class="kpi-card" style="padding: 24px; min-height: 120px; justify-content: center;">
@@ -590,6 +628,197 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 await loadInvestments();
                 if (state.currentInvId) selectInvestment(state.currentInvId);
+            }
+        }
+    });
+
+    // ==========================================
+    // PROPERTIES LOGIC
+    // ==========================================
+
+    const loadProperties = async () => {
+        try {
+            const res = await fetch('/api/properties');
+            state.properties = await res.json();
+            renderProperties();
+            updateTotalPropBalance();
+        } catch (error) {
+            propList.innerHTML = '<div class="loading">Error loading</div>';
+        }
+    };
+
+    const renderProperties = () => {
+        propList.innerHTML = '';
+        if (state.properties.length === 0) {
+            propList.innerHTML = '<div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">No properties yet</div>';
+            return;
+        }
+
+        state.properties.forEach(prop => {
+            const item = document.createElement('div');
+            item.className = `contact-item ${state.currentPropId === prop.id ? 'active' : ''}`;
+            item.onclick = () => selectProperty(prop.id);
+
+            const initial = prop.name.charAt(0).toUpperCase();
+            const balClass = prop.balance >= 0 ? 'text-success' : 'text-danger';
+
+            item.innerHTML = `
+                <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #7e22ce);">${initial}</div>
+                <div class="contact-details-list">
+                    <div class="contact-name">${prop.name}</div>
+                    <div class="contact-time">${prop.type}</div>
+                </div>
+                <div class="contact-bal ${balClass}">${formatCurrency(prop.balance)}</div>
+            `;
+            propList.appendChild(item);
+        });
+        renderIcons();
+    };
+
+    const updateTotalPropBalance = () => {
+        let total = state.properties.reduce((sum, p) => sum + p.balance, 0);
+        totalPropBalance.textContent = formatCurrency(total);
+        totalPropBalance.className = `balance-amount ${total >= 0 ? 'text-success' : 'text-neutral'}`;
+    };
+
+    const selectProperty = async (id) => {
+        state.currentPropId = id;
+        renderProperties();
+
+        const prop = state.properties.find(p => p.id === id);
+        if (!prop) return;
+
+        document.getElementById('prop-detail-avatar').textContent = prop.name.charAt(0).toUpperCase();
+        document.getElementById('prop-detail-name').textContent = prop.name;
+        document.getElementById('prop-detail-type').textContent = prop.type;
+
+        const detailBal = document.getElementById('prop-detail-balance');
+        detailBal.textContent = formatCurrency(prop.balance);
+        detailBal.className = `balance-amount ${prop.balance >= 0 ? 'text-success' : 'text-danger'}`;
+
+        propEmptyState.classList.remove('active');
+        propEmptyState.classList.add('hidden');
+        propDetail.classList.remove('hidden');
+
+        await loadPropTransactions(id);
+    };
+
+    const loadPropTransactions = async (id) => {
+        const transList = document.getElementById('prop-transactions-list');
+        transList.innerHTML = '<div class="loading" style="text-align:center;color:var(--text-secondary);padding:20px;">Loading...</div>';
+
+        try {
+            const res = await fetch(`/api/property-transactions/${id}`);
+            const transactions = await res.json();
+
+            transList.innerHTML = '';
+            if (transactions.length === 0) {
+                transList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">No valuation history yet. Add the initial value!</div>';
+                return;
+            }
+
+            transactions.forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'transaction-card';
+
+                if (t.type === 'depreciation' || t.type === 'sell') item.classList.add('credit');
+                else if (t.type === 'buy') item.classList.add('payment');
+                else item.classList.add('interest');
+
+                let noteDefault = 'Transaction';
+                if (t.type === 'buy') noteDefault = 'Initial Value / Buy';
+                if (t.type === 'appreciation') noteDefault = 'Appreciation';
+                if (t.type === 'depreciation') noteDefault = 'Depreciation';
+                if (t.type === 'sell') noteDefault = 'Sold';
+
+                const sign = (t.type === 'depreciation' || t.type === 'sell') ? '-' : '+';
+                const balClass = (t.type === 'depreciation' || t.type === 'sell') ? 'credit' : (t.type === 'buy' ? 'payment' : 'interest');
+
+                item.innerHTML = `
+                    <div class="trans-info">
+                        <div class="trans-note">${t.note || noteDefault}</div>
+                        <div class="trans-date">${formatDate(t.date)}</div>
+                    </div>
+                    <div class="trans-amount-wrapper">
+                        <div class="trans-amount ${balClass}">${sign}${formatCurrency(t.amount)}</div>
+                        <button class="delete-prop-trans-btn delete-trans-btn" data-id="${t.id}" title="Delete Transaction"><i data-lucide="trash-2" style="width:18px;height:18px;"></i></button>
+                    </div>
+                `;
+                transList.appendChild(item);
+            });
+            renderIcons();
+        } catch (error) {
+            console.error('Fail to load transactions', error);
+        }
+    };
+
+    document.getElementById('form-add-prop').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('prop-name').value;
+        const type = document.getElementById('prop-type').value;
+        const res = await fetch('/api/properties', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, type }) });
+        if (res.ok) {
+            document.getElementById('form-add-prop').reset();
+            modalAddProp.classList.add('hidden');
+            loadProperties();
+        }
+    });
+
+    btnPropBuy.addEventListener('click', () => {
+        document.getElementById('prop-trans-modal-title').textContent = 'Initial Value / Buy Property';
+        document.getElementById('prop-trans-type').value = 'buy';
+        modalAddPropTrans.classList.remove('hidden');
+    });
+
+    btnPropAppreciation.addEventListener('click', () => {
+        document.getElementById('prop-trans-modal-title').textContent = 'Record Appreciation';
+        document.getElementById('prop-trans-type').value = 'appreciation';
+        modalAddPropTrans.classList.remove('hidden');
+    });
+
+    btnPropDepreciation.addEventListener('click', () => {
+        document.getElementById('prop-trans-modal-title').textContent = 'Record Depreciation';
+        document.getElementById('prop-trans-type').value = 'depreciation';
+        modalAddPropTrans.classList.remove('hidden');
+    });
+
+    document.getElementById('form-add-prop-trans').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = document.getElementById('prop-trans-amount').value;
+        const note = document.getElementById('prop-trans-note').value;
+        const type = document.getElementById('prop-trans-type').value;
+
+        const res = await fetch('/api/property-transactions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ propertyId: state.currentPropId, amount, type, note }) });
+        if (res.ok) {
+            document.getElementById('form-add-prop-trans').reset();
+            modalAddPropTrans.classList.add('hidden');
+            await loadProperties();
+            selectProperty(state.currentPropId);
+        }
+    });
+
+    btnDeleteProp.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to delete this property?')) {
+            const res = await fetch(`/api/properties/${state.currentPropId}`, { method: 'DELETE' });
+            if (res.ok) {
+                state.currentPropId = null;
+                propDetail.classList.add('hidden');
+                propEmptyState.classList.remove('hidden');
+                propEmptyState.classList.add('active');
+                loadProperties();
+            }
+        }
+    });
+
+    document.getElementById('prop-transactions-list').addEventListener('click', async (e) => {
+        const btn = e.target.closest('.delete-prop-trans-btn');
+        if (!btn) return;
+        const transId = btn.dataset.id;
+        if (confirm('Delete this transaction?')) {
+            const res = await fetch(`/api/property-transactions/${transId}`, { method: 'DELETE' });
+            if (res.ok) {
+                await loadProperties();
+                if (state.currentPropId) selectProperty(state.currentPropId);
             }
         }
     });
