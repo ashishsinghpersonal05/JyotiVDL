@@ -1,13 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     // State
     let state = {
-        mode: 'customers', // 'customers' or 'investments'
+        mode: 'customers',
         contacts: [],
         currentContactId: null,
         investments: [],
         currentInvId: null,
         properties: [],
-        currentPropId: null
+        currentPropId: null,
+        loans: [],
+        currentLoanId: null
     };
 
     // DOM Elements - Tabs & Views
@@ -15,11 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const navCustomers = document.getElementById('nav-customers');
     const navInvestments = document.getElementById('nav-investments');
     const navProperties = document.getElementById('nav-properties');
+    const navLoans = document.getElementById('nav-loans');
     const navReport = document.getElementById('nav-report');
     const workspaceHome = document.getElementById('home-workspace');
     const workspaceCustomers = document.getElementById('customers-workspace');
     const workspaceInvestments = document.getElementById('investments-workspace');
     const workspaceProperties = document.getElementById('properties-workspace');
+    const workspaceLoans = document.getElementById('loans-workspace');
     const workspaceReport = document.getElementById('report-workspace');
 
     // DOM Elements - Customers
@@ -61,6 +65,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnPropDepreciation = document.getElementById('btn-prop-depreciation');
     const btnDeleteProp = document.getElementById('btn-delete-prop');
 
+    // DOM Elements - Loans
+    const loanList = document.getElementById('loans-list');
+    const totalLoanBalance = document.getElementById('total-loan-balance');
+    const loanEmptyState = document.getElementById('loan-empty-state');
+    const loanDetail = document.getElementById('loan-detail');
+    const modalAddLoan = document.getElementById('modal-add-loan');
+    const modalAddLoanTrans = document.getElementById('modal-add-loan-trans');
+    const btnAddLoan = document.getElementById('add-loan-btn');
+    const btnLoanRepay = document.getElementById('btn-loan-repay');
+    const btnLoanBorrow = document.getElementById('btn-loan-borrow');
+    const btnLoanInterest = document.getElementById('btn-loan-interest');
+    const btnDeleteLoan = document.getElementById('btn-delete-loan');
+
     // Modals Setup helper
     const setupModal = (modal, btnOpen, closeId) => {
         const btnClose = document.getElementById(closeId);
@@ -77,6 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal(modalAddInvTrans, null, 'close-inv-trans-modal');
     setupModal(modalAddProp, btnAddProp, 'close-prop-modal');
     setupModal(modalAddPropTrans, null, 'close-prop-trans-modal');
+    setupModal(modalAddLoan, btnAddLoan, 'close-loan-modal');
+    setupModal(modalAddLoanTrans, null, 'close-loan-trans-modal');
 
     const renderIcons = () => {
         if (window.lucide) {
@@ -113,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navCustomers.classList.remove('active');
         navInvestments.classList.remove('active');
         navProperties.classList.remove('active');
+        navLoans.classList.remove('active');
         navReport.classList.remove('active');
 
         // Hide Workspaces
@@ -120,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         workspaceCustomers.classList.add('hidden');
         workspaceInvestments.classList.add('hidden');
         workspaceProperties.classList.add('hidden');
+        workspaceLoans.classList.add('hidden');
         workspaceReport.classList.add('hidden');
 
         if (mode === 'home') {
@@ -138,6 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
             navProperties.classList.add('active');
             workspaceProperties.classList.remove('hidden');
             loadProperties();
+        } else if (mode === 'loans') {
+            navLoans.classList.add('active');
+            workspaceLoans.classList.remove('hidden');
+            loadLoans();
         } else if (mode === 'report') {
             navReport.classList.add('active');
             workspaceReport.classList.remove('hidden');
@@ -150,34 +175,22 @@ document.addEventListener('DOMContentLoaded', () => {
     navCustomers.addEventListener('click', () => switchTab('customers'));
     navInvestments.addEventListener('click', () => switchTab('investments'));
     navProperties.addEventListener('click', () => switchTab('properties'));
+    navLoans.addEventListener('click', () => switchTab('loans'));
     navReport.addEventListener('click', () => switchTab('report'));
 
     // Dashboard Logic
     const renderDashboard = async () => {
-        // Ensure data is loaded to calculate KPIs
-        if (state.contacts.length === 0) {
-            try {
-                const res = await fetch('/api/contacts');
-                state.contacts = await res.json();
-            } catch (e) { }
-        }
-        if (state.investments.length === 0) {
-            try {
-                const res = await fetch('/api/investments');
-                state.investments = await res.json();
-            } catch (e) { }
-        }
-        if (state.properties.length === 0) {
-            try {
-                const res = await fetch('/api/properties');
-                state.properties = await res.json();
-            } catch (e) { }
-        }
+        // Always refresh all data for accurate KPIs
+        try { const res = await fetch('/api/contacts'); state.contacts = await res.json(); } catch (e) { }
+        try { const res = await fetch('/api/investments'); state.investments = await res.json(); } catch (e) { }
+        try { const res = await fetch('/api/properties'); state.properties = await res.json(); } catch (e) { }
+        try { const res = await fetch('/api/loans'); state.loans = await res.json(); } catch (e) { }
 
         const totalLent = state.contacts.reduce((sum, c) => sum + c.balance, 0);
         const totalInv = state.investments.reduce((sum, i) => sum + i.balance, 0);
         const totalProp = state.properties.reduce((sum, p) => sum + p.balance, 0);
-        const totalNetWorth = totalLent + totalInv + totalProp;
+        const totalLoansOwed = state.loans.reduce((sum, l) => sum + l.balance, 0);
+        const totalNetWorth = totalLent + totalInv + totalProp - totalLoansOwed;
 
         document.getElementById('dash-net-worth').textContent = formatCurrencyShort(totalNetWorth);
         document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv);
@@ -187,6 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
         elDashLent.className = `kpi-amount ${totalLent >= 0 ? 'text-success' : 'text-danger'}`;
 
         document.getElementById('dash-lent-label').textContent = totalLent >= 0 ? "You'll Get (Customers)" : "You Owe (Customers)";
+
+        document.getElementById('dash-loans').textContent = formatCurrencyShort(totalLoansOwed);
 
         const breakdown = {};
         state.investments.forEach(inv => {
@@ -819,6 +834,198 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 await loadProperties();
                 if (state.currentPropId) selectProperty(state.currentPropId);
+            }
+        }
+    });
+
+    // ==========================================
+    // LOANS LOGIC
+    // ==========================================
+
+    const loadLoans = async () => {
+        try {
+            const res = await fetch('/api/loans');
+            state.loans = await res.json();
+            renderLoans();
+            updateTotalLoanBalance();
+        } catch (error) {
+            loanList.innerHTML = '<div class="loading">Error loading</div>';
+        }
+    };
+
+    const renderLoans = () => {
+        loanList.innerHTML = '';
+        if (state.loans.length === 0) {
+            loanList.innerHTML = '<div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">No loans yet</div>';
+            return;
+        }
+
+        state.loans.forEach(loan => {
+            const item = document.createElement('div');
+            item.className = `contact-item ${state.currentLoanId === loan.id ? 'active' : ''}`;
+            item.onclick = () => selectLoan(loan.id);
+
+            const initial = loan.name.charAt(0).toUpperCase();
+            const balClass = loan.balance > 0 ? 'text-danger' : 'text-success';
+            const balLabel = loan.balance > 0 ? 'Outstanding' : 'Cleared';
+
+            item.innerHTML = `
+                <div class="avatar" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">${initial}</div>
+                <div class="contact-details-list">
+                    <div class="contact-name">${loan.name}</div>
+                    <div class="contact-time">${loan.type}</div>
+                </div>
+                <div class="contact-bal ${balClass}">${formatCurrency(loan.balance)} ${balLabel}</div>
+            `;
+            loanList.appendChild(item);
+        });
+        renderIcons();
+    };
+
+    const updateTotalLoanBalance = () => {
+        let total = state.loans.reduce((sum, l) => sum + l.balance, 0);
+        totalLoanBalance.textContent = formatCurrency(total);
+        totalLoanBalance.className = `balance-amount ${total > 0 ? 'text-danger' : 'text-success'}`;
+    };
+
+    const selectLoan = async (id) => {
+        state.currentLoanId = id;
+        renderLoans();
+
+        const loan = state.loans.find(l => l.id === id);
+        if (!loan) return;
+
+        document.getElementById('loan-detail-avatar').textContent = loan.name.charAt(0).toUpperCase();
+        document.getElementById('loan-detail-name').textContent = loan.name;
+        document.getElementById('loan-detail-type').textContent = loan.type;
+
+        const detailBal = document.getElementById('loan-detail-balance');
+        detailBal.textContent = formatCurrency(loan.balance);
+        detailBal.className = `balance-amount ${loan.balance > 0 ? 'text-danger' : 'text-success'}`;
+
+        loanEmptyState.classList.remove('active');
+        loanEmptyState.classList.add('hidden');
+        loanDetail.classList.remove('hidden');
+
+        await loadLoanTransactions(id);
+    };
+
+    const loadLoanTransactions = async (id) => {
+        const transList = document.getElementById('loan-transactions-list');
+        transList.innerHTML = '<div class="loading" style="text-align:center;color:var(--text-secondary);padding:20px;">Loading...</div>';
+
+        try {
+            const res = await fetch(`/api/loan-transactions/${id}`);
+            const transactions = await res.json();
+
+            transList.innerHTML = '';
+            if (transactions.length === 0) {
+                transList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">No transactions yet. Add a borrow entry to start.</div>';
+                return;
+            }
+
+            transactions.forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'transaction-card';
+
+                // repay = green (reduces debt), borrow/interest = red (increases debt)
+                if (t.type === 'repay') item.classList.add('payment');
+                else if (t.type === 'borrow') item.classList.add('credit');
+                else item.classList.add('interest');
+
+                let noteDefault = 'Transaction';
+                if (t.type === 'borrow') noteDefault = 'Borrowed';
+                if (t.type === 'repay') noteDefault = 'EMI / Repayment';
+                if (t.type === 'interest') noteDefault = 'Interest Added';
+
+                const sign = t.type === 'repay' ? '-' : '+';
+                const amtClass = t.type === 'repay' ? 'payment' : (t.type === 'borrow' ? 'credit' : 'interest');
+
+                item.innerHTML = `
+                    <div class="trans-info">
+                        <div class="trans-note">${t.note || noteDefault}</div>
+                        <div class="trans-date">${formatDate(t.date)}</div>
+                    </div>
+                    <div class="trans-amount-wrapper">
+                        <div class="trans-amount ${amtClass}">${sign}${formatCurrency(t.amount)}</div>
+                        <button class="delete-loan-trans-btn delete-trans-btn" data-id="${t.id}" title="Delete Transaction"><i data-lucide="trash-2" style="width:18px;height:18px;"></i></button>
+                    </div>
+                `;
+                transList.appendChild(item);
+            });
+            renderIcons();
+        } catch (error) {
+            console.error('Failed to load loan transactions', error);
+        }
+    };
+
+    document.getElementById('form-add-loan').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('loan-name').value;
+        const type = document.getElementById('loan-type').value;
+        const res = await fetch('/api/loans', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, type }) });
+        if (res.ok) {
+            document.getElementById('form-add-loan').reset();
+            modalAddLoan.classList.add('hidden');
+            loadLoans();
+        }
+    });
+
+    btnLoanRepay.addEventListener('click', () => {
+        document.getElementById('loan-trans-modal-title').textContent = 'Pay EMI / Repayment';
+        document.getElementById('loan-trans-type').value = 'repay';
+        modalAddLoanTrans.classList.remove('hidden');
+    });
+
+    btnLoanBorrow.addEventListener('click', () => {
+        document.getElementById('loan-trans-modal-title').textContent = 'Borrow More';
+        document.getElementById('loan-trans-type').value = 'borrow';
+        modalAddLoanTrans.classList.remove('hidden');
+    });
+
+    btnLoanInterest.addEventListener('click', () => {
+        document.getElementById('loan-trans-modal-title').textContent = 'Add Interest';
+        document.getElementById('loan-trans-type').value = 'interest';
+        modalAddLoanTrans.classList.remove('hidden');
+    });
+
+    document.getElementById('form-add-loan-trans').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = document.getElementById('loan-trans-amount').value;
+        const note = document.getElementById('loan-trans-note').value;
+        const type = document.getElementById('loan-trans-type').value;
+
+        const res = await fetch('/api/loan-transactions', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ loanId: state.currentLoanId, amount, type, note }) });
+        if (res.ok) {
+            document.getElementById('form-add-loan-trans').reset();
+            modalAddLoanTrans.classList.add('hidden');
+            await loadLoans();
+            selectLoan(state.currentLoanId);
+        }
+    });
+
+    btnDeleteLoan.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to delete this loan?')) {
+            const res = await fetch(`/api/loans/${state.currentLoanId}`, { method: 'DELETE' });
+            if (res.ok) {
+                state.currentLoanId = null;
+                loanDetail.classList.add('hidden');
+                loanEmptyState.classList.remove('hidden');
+                loanEmptyState.classList.add('active');
+                loadLoans();
+            }
+        }
+    });
+
+    document.getElementById('loan-transactions-list').addEventListener('click', async (e) => {
+        const btn = e.target.closest('.delete-loan-trans-btn');
+        if (!btn) return;
+        const transId = btn.dataset.id;
+        if (confirm('Delete this transaction?')) {
+            const res = await fetch(`/api/loan-transactions/${transId}`, { method: 'DELETE' });
+            if (res.ok) {
+                await loadLoans();
+                if (state.currentLoanId) selectLoan(state.currentLoanId);
             }
         }
     });

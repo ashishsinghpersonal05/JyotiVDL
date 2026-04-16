@@ -543,14 +543,14 @@
       "id": "1774114465329",
       "name": "Ashish Stocks",
       "type": "Stocks",
-      "balance": 50000,
+      "balance": 0,
       "createdAt": "2026-03-21T17:34:25.329Z"
     },
     {
       "id": "1774114488328",
       "name": "Jyoti Stocks",
       "type": "Stocks",
-      "balance": 275000,
+      "balance": 300000,
       "createdAt": "2026-03-21T17:34:48.328Z"
     },
     {
@@ -819,6 +819,22 @@
       "type": "invest",
       "note": "",
       "date": "2026-03-22T09:24:13.021Z"
+    },
+    {
+      "id": "1776329593376",
+      "investmentId": "1774114465329",
+      "amount": 50000,
+      "type": "withdraw",
+      "note": "",
+      "date": "2026-04-16T08:53:13.376Z"
+    },
+    {
+      "id": "1776329611599",
+      "investmentId": "1774114488328",
+      "amount": 25000,
+      "type": "invest",
+      "note": "",
+      "date": "2026-04-16T08:53:31.599Z"
     }
   ],
   "properties": [
@@ -833,8 +849,15 @@
       "id": "1776327941324",
       "name": "Prestige  Marie Gold Phase 2",
       "type": "Plot",
-      "balance": 6000000,
+      "balance": 1260000,
       "createdAt": "2026-04-16T08:25:41.324Z"
+    },
+    {
+      "id": "1776329753426",
+      "name": "DELHI Property ",
+      "type": "Apartment",
+      "balance": 1350000,
+      "createdAt": "2026-04-16T08:55:53.426Z"
     }
   ],
   "property_transactions": [
@@ -855,12 +878,149 @@
       "date": "2026-04-16T08:26:54.540Z"
     },
     {
-      "id": "1776328047044",
-      "propertyId": "1776327941324",
-      "amount": 6000000,
+      "id": "1776329766617",
+      "propertyId": "1776329753426",
+      "amount": 1350000,
       "type": "buy",
       "note": "",
-      "date": "2026-04-16T08:27:27.044Z"
+      "date": "2026-04-16T08:56:06.617Z"
+    },
+    {
+      "id": "1776329866546",
+      "propertyId": "1776327941324",
+      "amount": 1260000,
+      "type": "buy",
+      "note": "1st Installment and 2nd Installment",
+      "date": "2026-04-16T08:57:46.546Z"
+    }
+  ],
+  "loans": [
+    {
+      "id": "1776328684651",
+      "name": "HDFC HOME LOAN",
+      "type": "Home Loan",
+      "balance": 1911110,
+      "createdAt": "2026-04-16T08:38:04.651Z"
+    },
+    {
+      "id": "1776328777707",
+      "name": "Credit Card Loan",
+      "type": "Credit Card",
+      "balance": 829250,
+      "createdAt": "2026-04-16T08:39:37.707Z"
+    },
+    {
+      "id": "1776329106522",
+      "name": "JYOTI Credit Card",
+      "type": "Credit Card",
+      "balance": 950000,
+      "createdAt": "2026-04-16T08:45:06.522Z"
+    }
+  ],
+  "loan_transactions": [
+    {
+      "id": "1776328734520",
+      "loanId": "1776328684651",
+      "amount": 1911110,
+      "type": "borrow",
+      "note": "",
+      "date": "2026-04-16T08:38:54.520Z"
+    },
+    {
+      "id": "1776328798646",
+      "loanId": "1776328777707",
+      "amount": 200000,
+      "type": "borrow",
+      "note": "MOM Credit Card KOTAK",
+      "date": "2026-04-16T08:39:58.646Z"
+    },
+    {
+      "id": "1776328858076",
+      "loanId": "1776328777707",
+      "amount": 60000,
+      "type": "borrow",
+      "note": "IDFC First Bank",
+      "date": "2026-04-16T08:40:58.076Z"
+    },
+    {
+      "id": "1776328918798",
+      "loanId": "1776328777707",
+      "amount": 68000,
+      "type": "borrow",
+      "note": "Jupitor Card",
+      "date": "2026-04-16T08:41:58.798Z"
+    },
+    {
+      "id": "1776328962741",
+      "loanId": "1776328777707",
+      "amount": 101250,
+      "type": "borrow",
+      "note": "ICICI AMAZON",
+      "date": "2026-04-16T08:42:42.741Z"
+    },
+    {
+      "id": "1776329043041",
+      "loanId": "1776328777707",
+      "amount": 200000,
+      "type": "borrow",
+      "note": "KOTAK ",
+      "date": "2026-04-16T08:44:03.042Z"
+    },
+    {
+      "id": "1776329119018",
+      "loanId": "1776328777707",
+      "amount": 100000,
+      "type": "borrow",
+      "note": "PAPA ICICI",
+      "date": "2026-04-16T08:45:19.018Z"
+    },
+    {
+      "id": "1776329128842",
+      "loanId": "1776328777707",
+      "amount": 100000,
+      "type": "borrow",
+      "note": "DEEPAK ICICI",
+      "date": "2026-04-16T08:45:28.842Z"
+    },
+    {
+      "id": "1776329195456",
+      "loanId": "1776329106522",
+      "amount": 400000,
+      "type": "borrow",
+      "note": "ICICI AMZAON",
+      "date": "2026-04-16T08:46:35.456Z"
+    },
+    {
+      "id": "1776329207965",
+      "loanId": "1776329106522",
+      "amount": 250000,
+      "type": "borrow",
+      "note": "ONE CARD",
+      "date": "2026-04-16T08:46:47.965Z"
+    },
+    {
+      "id": "1776329244222",
+      "loanId": "1776329106522",
+      "amount": 150000,
+      "type": "borrow",
+      "note": "KOTAK ",
+      "date": "2026-04-16T08:47:24.222Z"
+    },
+    {
+      "id": "1776329279353",
+      "loanId": "1776329106522",
+      "amount": 50000,
+      "type": "borrow",
+      "note": "IDFC First Bank",
+      "date": "2026-04-16T08:47:59.353Z"
+    },
+    {
+      "id": "1776329341082",
+      "loanId": "1776329106522",
+      "amount": 100000,
+      "type": "borrow",
+      "note": "HDFC MILENIA",
+      "date": "2026-04-16T08:49:01.082Z"
     }
   ]
 }

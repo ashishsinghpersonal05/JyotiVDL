@@ -21,10 +21,12 @@ const readData = () => {
         if (!parsed.investment_transactions) parsed.investment_transactions = [];
         if (!parsed.properties) parsed.properties = [];
         if (!parsed.property_transactions) parsed.property_transactions = [];
+        if (!parsed.loans) parsed.loans = [];
+        if (!parsed.loan_transactions) parsed.loan_transactions = [];
         return parsed;
     } catch (error) {
         console.error(error);
-        return { contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [] };
+        return { contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [] };
     }
 };
 
@@ -35,7 +37,7 @@ const writeData = (data) => {
 
 // Ensure data file exists with default schema
 if (!fs.existsSync(DATA_FILE)) {
-    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [] });
+    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [] });
 }
 
 // Routes
@@ -400,6 +402,123 @@ app.delete('/api/property-transactions/:id', (req, res) => {
     }
     
     data.property_transactions.splice(index, 1);
+    writeData(data);
+    res.json({ success: true });
+});
+
+// ==========================================
+// LOANS ROUTES
+// ==========================================
+
+app.get('/api/loans', (req, res) => {
+    const data = readData();
+    res.json(data.loans);
+});
+
+app.post('/api/loans', (req, res) => {
+    const data = readData();
+    const { name, type } = req.body;
+    
+    if (!name || !type) return res.status(400).json({ error: 'Name and type are required' });
+
+    const newLoan = {
+        id: Date.now().toString(),
+        name,
+        type, // 'Home Loan', 'Car Loan', 'Personal Loan', etc.
+        balance: 0,
+        createdAt: new Date().toISOString()
+    };
+    
+    data.loans.push(newLoan);
+    writeData(data);
+    res.status(201).json(newLoan);
+});
+
+app.delete('/api/loans/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    
+    const initialLen = data.loans.length;
+    data.loans = data.loans.filter(l => l.id !== id);
+    data.loan_transactions = data.loan_transactions.filter(t => t.loanId !== id);
+    
+    if (data.loans.length === initialLen) {
+        return res.status(404).json({ error: 'Loan not found' });
+    }
+    
+    writeData(data);
+    res.json({ success: true });
+});
+
+app.get('/api/loan-transactions/:loanId', (req, res) => {
+    const data = readData();
+    const { loanId } = req.params;
+    const loanTransactions = data.loan_transactions.filter(t => t.loanId === loanId);
+    loanTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    res.json(loanTransactions);
+});
+
+app.post('/api/loan-transactions', (req, res) => {
+    const data = readData();
+    const { loanId, amount, type, note } = req.body;
+    
+    if (!loanId || !amount || !type) {
+        return res.status(400).json({ error: 'loanId, amount, and type are required' });
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+        return res.status(400).json({ error: 'Valid amount is required' });
+    }
+
+    const newTransaction = {
+        id: Date.now().toString(),
+        loanId,
+        amount: numAmount,
+        type, // 'borrow', 'repay', 'interest'
+        note: note || '',
+        date: new Date().toISOString()
+    };
+
+    let found = false;
+    for (const loan of data.loans) {
+        if (loan.id === loanId) {
+            found = true;
+            if (type === 'borrow' || type === 'interest') {
+                loan.balance += numAmount; // Balance represents total debt owed
+            } else if (type === 'repay') {
+                loan.balance -= numAmount;
+            }
+            break;
+        }
+    }
+
+    if (!found) return res.status(404).json({ error: 'Loan not found' });
+
+    data.loan_transactions.push(newTransaction);
+    writeData(data);
+    res.status(201).json(newTransaction);
+});
+
+app.delete('/api/loan-transactions/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    
+    const index = data.loan_transactions.findIndex(t => t.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
+    
+    const trans = data.loan_transactions[index];
+    const loan = data.loans.find(l => l.id === trans.loanId);
+    
+    if (loan) {
+        if (trans.type === 'borrow' || trans.type === 'interest') {
+            loan.balance -= trans.amount;
+        } else if (trans.type === 'repay') {
+            loan.balance += trans.amount;
+        }
+    }
+    
+    data.loan_transactions.splice(index, 1);
     writeData(data);
     res.json({ success: true });
 });
