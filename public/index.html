@@ -44,6 +44,10 @@
                     <i data-lucide="calendar-check" class="nav-icon"></i>
                     <span class="nav-label">RD</span>
                 </button>
+                <button id="nav-fd" class="nav-btn">
+                    <i data-lucide="calendar-clock" class="nav-icon"></i>
+                    <span class="nav-label">FD</span>
+                </button>
                 <button id="nav-report" class="nav-btn">
                     <i data-lucide="bar-chart-2" class="nav-icon"></i>
                     <span class="nav-label">Report</span>
@@ -68,10 +72,19 @@
                     <div class="dashboard-grid">
                         <div class="kpi-card primary-kpi">
                             <div class="kpi-header">
-                                <span class="kpi-label">Total Net Worth</span>
+                                <span class="kpi-label">Net Worth (w/o Prop)</span>
                                 <div class="kpi-icon"><i data-lucide="wallet"></i></div>
                             </div>
-                            <div id="dash-net-worth" class="kpi-amount">₹0.00</div>
+                            <div id="dash-net-worth-excl" class="kpi-amount">₹0.00</div>
+                            <div class="kpi-decor kpi-decor-1"></div>
+                            <div class="kpi-decor kpi-decor-2"></div>
+                        </div>
+                        <div class="kpi-card primary-kpi" style="background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Net Worth (w/ Prop)</span>
+                                <div class="kpi-icon"><i data-lucide="building"></i></div>
+                            </div>
+                            <div id="dash-net-worth-incl" class="kpi-amount">₹0.00</div>
                             <div class="kpi-decor kpi-decor-1"></div>
                             <div class="kpi-decor kpi-decor-2"></div>
                         </div>
@@ -473,6 +486,75 @@
                 </main>
             </div>
 
+            <!-- 6. FD WORKSPACE -->
+            <div id="fd-workspace" class="workspace-view split-layout hidden">
+                <!-- Sidebar: FD List -->
+                <aside class="sidebar inner-sidebar">
+                    <div class="sidebar-header">
+                        <h1>Fixed Deposits</h1>
+                        <p class="subtitle">Track your FD investments &amp; maturity</p>
+                    </div>
+
+                    <div class="view-section" style="flex:1; overflow:hidden;">
+                        <button id="add-fd-btn" class="btn primary-btn"
+                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add FD</button>
+                        <div class="summary-card">
+                            <h2>Total Deposited</h2>
+                            <div id="total-fd-balance" class="balance-amount">₹0.00</div>
+                        </div>
+                        <div class="contacts-list" id="fd-list">
+                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                                FDs...</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content: FD Detail -->
+                <main class="main-content">
+                    <div id="fd-empty-state" class="empty-state active">
+                        <div class="empty-icon"><i data-lucide="calendar-clock"
+                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                        <h2>Select an FD</h2>
+                        <p>Choose a Fixed Deposit from the sidebar to view its status, add interest, or record maturity.</p>
+                    </div>
+
+                    <div id="fd-detail" class="contact-detail hidden">
+                        <header class="detail-header">
+                            <div class="contact-info">
+                                <div class="avatar" style="background: linear-gradient(135deg, #10b981, #059669);"
+                                    id="fd-detail-avatar">F</div>
+                                <div>
+                                    <h2 id="fd-detail-name">FD Name</h2>
+                                    <p id="fd-detail-meta">Bank &bull; Rate &bull; Tenure</p>
+                                </div>
+                            </div>
+                            <div class="contact-balance-card">
+                                <span>Total Value</span>
+                                <div id="fd-detail-balance" class="balance-amount text-success">₹0.00</div>
+                                <div id="fd-detail-maturity" style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
+                                <button id="btn-delete-fd" class="btn"
+                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                    FD</button>
+                            </div>
+                        </header>
+
+                        <div class="action-buttons">
+                            <button id="btn-fd-deposit" class="btn action-btn success-btn"><i
+                                    data-lucide="plus-circle"></i> Add Principal / Interest</button>
+                            <button id="btn-fd-maturity" class="btn action-btn warning-btn"><i
+                                    data-lucide="award"></i> Record Maturity</button>
+                            <button id="btn-fd-premature" class="btn action-btn danger-btn"><i
+                                    data-lucide="alert-triangle"></i> Premature Withdrawal</button>
+                        </div>
+
+                        <div class="transactions-section">
+                            <h3>Transaction History</h3>
+                            <div class="transactions-list" id="fd-transactions-list"></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
         </div>
     </div>
 
@@ -711,6 +793,62 @@
                 <div class="form-group">
                     <label for="rd-trans-note">Note (Optional)</label>
                     <input type="text" id="rd-trans-note" placeholder="What was this for?">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add FD Modal -->
+    <div id="modal-add-fd" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-fd-modal">&times;</button>
+            <h2>Add New Fixed Deposit</h2>
+            <form id="form-add-fd">
+                <div class="form-group">
+                    <label for="fd-name">FD Name</label>
+                    <input type="text" id="fd-name" required placeholder="E.g., SBI 1-Year FD">
+                </div>
+                <div class="form-group">
+                    <label for="fd-bank">Bank / Institution (Optional)</label>
+                    <input type="text" id="fd-bank" placeholder="E.g., State Bank of India">
+                </div>
+                <div class="form-group">
+                    <label for="fd-principal-amount">Principal Amount (₹)</label>
+                    <input type="number" id="fd-principal-amount" required placeholder="E.g., 50000" min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="fd-interest-rate">Interest Rate (% p.a.) (Optional)</label>
+                    <input type="number" id="fd-interest-rate" placeholder="E.g., 7.5" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="fd-tenure">Tenure (Months) (Optional)</label>
+                    <input type="number" id="fd-tenure" placeholder="E.g., 12" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="fd-maturity-date">Maturity Date (Optional)</label>
+                    <input type="date" id="fd-maturity-date"
+                        style="width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; outline: none; margin-top: 4px;">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save FD</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add FD Transaction Modal -->
+    <div id="modal-add-fd-trans" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-fd-trans-modal">&times;</button>
+            <h2 id="fd-trans-modal-title">Add FD Transaction</h2>
+            <form id="form-add-fd-trans">
+                <input type="hidden" id="fd-trans-type">
+                <div class="form-group">
+                    <label for="fd-trans-amount">Amount (₹)</label>
+                    <input type="number" id="fd-trans-amount" required placeholder="0.00" min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="fd-trans-note">Note (Optional)</label>
+                    <input type="text" id="fd-trans-note" placeholder="What was this for?">
                 </div>
                 <button type="submit" class="btn primary-btn submit-btn">Save</button>
             </form>

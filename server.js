@@ -20,15 +20,14 @@ const readData = () => {
         if (!parsed.investments) parsed.investments = [];
         if (!parsed.investment_transactions) parsed.investment_transactions = [];
         if (!parsed.properties) parsed.properties = [];
-        if (!parsed.property_transactions) parsed.property_transactions = [];
-        if (!parsed.loans) parsed.loans = [];
-        if (!parsed.loan_transactions) parsed.loan_transactions = [];
         if (!parsed.rds) parsed.rds = [];
         if (!parsed.rd_transactions) parsed.rd_transactions = [];
+        if (!parsed.fds) parsed.fds = [];
+        if (!parsed.fd_transactions) parsed.fd_transactions = [];
         return parsed;
     } catch (error) {
         console.error(error);
-        return { contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [], rds: [], rd_transactions: [] };
+        return { contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [], rds: [], rd_transactions: [], fds: [], fd_transactions: [] };
     }
 };
 
@@ -39,7 +38,7 @@ const writeData = (data) => {
 
 // Ensure data file exists with default schema
 if (!fs.existsSync(DATA_FILE)) {
-    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [], rds: [], rd_transactions: [] });
+    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [], rds: [], rd_transactions: [], fds: [], fd_transactions: [] });
 }
 
 // Routes
@@ -718,6 +717,127 @@ app.delete('/api/rd-transactions/:id', (req, res) => {
     }
 
     data.rd_transactions.splice(index, 1);
+    writeData(data);
+    res.json({ success: true });
+});
+
+// ==========================================
+// FD (FIXED DEPOSIT) ROUTES
+// ==========================================
+
+app.get('/api/fds', (req, res) => {
+    const data = readData();
+    res.json(data.fds);
+});
+
+app.post('/api/fds', (req, res) => {
+    const data = readData();
+    const { name, principalAmount, interestRate, tenureMonths, bank, maturityDate } = req.body;
+
+    if (!name || !principalAmount) return res.status(400).json({ error: 'Name and principal amount are required' });
+
+    const newFd = {
+        id: Date.now().toString(),
+        name,
+        bank: bank || '',
+        principalAmount: parseFloat(principalAmount),
+        interestRate: parseFloat(interestRate) || 0,
+        tenureMonths: parseInt(tenureMonths) || 0,
+        maturityDate: maturityDate || '',
+        balance: 0, // Current total value (Principal + Interest)
+        createdAt: new Date().toISOString()
+    };
+
+    data.fds.push(newFd);
+    writeData(data);
+    res.status(201).json(newFd);
+});
+
+app.delete('/api/fds/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+
+    const initialLen = data.fds.length;
+    data.fds = data.fds.filter(f => f.id !== id);
+    data.fd_transactions = data.fd_transactions.filter(t => t.fdId !== id);
+
+    if (data.fds.length === initialLen) {
+        return res.status(404).json({ error: 'FD not found' });
+    }
+
+    writeData(data);
+    res.json({ success: true });
+});
+
+app.get('/api/fd-transactions/:fdId', (req, res) => {
+    const data = readData();
+    const { fdId } = req.params;
+    const fdTransactions = data.fd_transactions.filter(t => t.fdId === fdId);
+    fdTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    res.json(fdTransactions);
+});
+
+app.post('/api/fd-transactions', (req, res) => {
+    const data = readData();
+    const { fdId, amount, type, note } = req.body;
+
+    if (!fdId || !amount || !type) {
+        return res.status(400).json({ error: 'fdId, amount, and type are required' });
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+        return res.status(400).json({ error: 'Valid amount is required' });
+    }
+
+    const newTransaction = {
+        id: Date.now().toString(),
+        fdId,
+        amount: numAmount,
+        type, // 'deposit', 'interest', 'maturity', 'premature_withdrawal'
+        note: note || '',
+        date: new Date().toISOString()
+    };
+
+    let found = false;
+    for (const fd of data.fds) {
+        if (fd.id === fdId) {
+            found = true;
+            if (type === 'deposit' || type === 'interest') {
+                fd.balance += numAmount; // Adds to total value
+            } else if (type === 'maturity' || type === 'premature_withdrawal') {
+                // Technically it moves out of FD, but depending on how the user tracks we might keep balance as is, or zero it.
+                // Usually an FD's balance reduces to 0 when withdrawn completely.
+                // It is reasonable to not decrement balance and treat maturity as an event, similar to RD. Or we can zero if needed.
+                // For now we'll match RD behavior: maturity is just an event log. Or actually if it's completely withdrawn, maybe decrement?
+                // Let's decrement for maturity and premature_withdrawal so balance becomes 0 if fully withdrawn.
+            }
+            break;
+        }
+    }
+
+    if (!found) return res.status(404).json({ error: 'FD not found' });
+
+    data.fd_transactions.push(newTransaction);
+    writeData(data);
+    res.status(201).json(newTransaction);
+});
+
+app.delete('/api/fd-transactions/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+
+    const index = data.fd_transactions.findIndex(t => t.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
+
+    const trans = data.fd_transactions[index];
+    const fd = data.fds.find(f => f.id === trans.fdId);
+
+    if (fd && (trans.type === 'deposit' || trans.type === 'interest')) {
+        fd.balance -= trans.amount;
+    }
+
+    data.fd_transactions.splice(index, 1);
     writeData(data);
     res.json({ success: true });
 });

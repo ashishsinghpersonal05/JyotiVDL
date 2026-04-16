@@ -11,7 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
         loans: [],
         currentLoanId: null,
         rds: [],
-        currentRdId: null
+        currentRdId: null,
+        fds: [],
+        currentFdId: null
     };
 
     // DOM Elements - Tabs & Views
@@ -21,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navProperties = document.getElementById('nav-properties');
     const navLoans = document.getElementById('nav-loans');
     const navRd = document.getElementById('nav-rd');
+    const navFd = document.getElementById('nav-fd');
     const navReport = document.getElementById('nav-report');
     const workspaceHome = document.getElementById('home-workspace');
     const workspaceCustomers = document.getElementById('customers-workspace');
@@ -28,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const workspaceProperties = document.getElementById('properties-workspace');
     const workspaceLoans = document.getElementById('loans-workspace');
     const workspaceRd = document.getElementById('rd-workspace');
+    const workspaceFd = document.getElementById('fd-workspace');
     const workspaceReport = document.getElementById('report-workspace');
 
     // DOM Elements - Customers
@@ -95,6 +99,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnRdPremature = document.getElementById('btn-rd-premature');
     const btnDeleteRd = document.getElementById('btn-delete-rd');
 
+    // DOM Elements - FD
+    const fdList = document.getElementById('fd-list');
+    const totalFdBalance = document.getElementById('total-fd-balance');
+    const fdEmptyState = document.getElementById('fd-empty-state');
+    const fdDetail = document.getElementById('fd-detail');
+    const modalAddFd = document.getElementById('modal-add-fd');
+    const modalAddFdTrans = document.getElementById('modal-add-fd-trans');
+    const btnAddFd = document.getElementById('add-fd-btn');
+    const btnFdDeposit = document.getElementById('btn-fd-deposit');
+    const btnFdMaturity = document.getElementById('btn-fd-maturity');
+    const btnFdPremature = document.getElementById('btn-fd-premature');
+    const btnDeleteFd = document.getElementById('btn-delete-fd');
+
     // Modals Setup helper
     const setupModal = (modal, btnOpen, closeId) => {
         const btnClose = document.getElementById(closeId);
@@ -115,6 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal(modalAddLoanTrans, null, 'close-loan-trans-modal');
     setupModal(modalAddRd, btnAddRd, 'close-rd-modal');
     setupModal(modalAddRdTrans, null, 'close-rd-trans-modal');
+    setupModal(modalAddFd, btnAddFd, 'close-fd-modal');
+    setupModal(modalAddFdTrans, null, 'close-fd-trans-modal');
 
     const renderIcons = () => {
         if (window.lucide) {
@@ -153,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navProperties.classList.remove('active');
         navLoans.classList.remove('active');
         navRd.classList.remove('active');
+        navFd.classList.remove('active');
         navReport.classList.remove('active');
 
         // Hide Workspaces
@@ -162,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         workspaceProperties.classList.add('hidden');
         workspaceLoans.classList.add('hidden');
         workspaceRd.classList.add('hidden');
+        workspaceFd.classList.add('hidden');
         workspaceReport.classList.add('hidden');
 
         if (mode === 'home') {
@@ -188,6 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
             navRd.classList.add('active');
             workspaceRd.classList.remove('hidden');
             loadRds();
+        } else if (mode === 'fd') {
+            navFd.classList.add('active');
+            workspaceFd.classList.remove('hidden');
+            loadFds();
         } else if (mode === 'report') {
             navReport.classList.add('active');
             workspaceReport.classList.remove('hidden');
@@ -202,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navProperties.addEventListener('click', () => switchTab('properties'));
     navLoans.addEventListener('click', () => switchTab('loans'));
     navRd.addEventListener('click', () => switchTab('rd'));
+    navFd.addEventListener('click', () => switchTab('fd'));
     navReport.addEventListener('click', () => switchTab('report'));
 
     // Dashboard Logic
@@ -212,16 +238,23 @@ document.addEventListener('DOMContentLoaded', () => {
         try { const res = await fetch('/api/properties'); state.properties = await res.json(); } catch (e) { }
         try { const res = await fetch('/api/loans'); state.loans = await res.json(); } catch (e) { }
         try { const res = await fetch('/api/rds'); state.rds = await res.json(); } catch (e) { }
+        try { const res = await fetch('/api/fds'); state.fds = await res.json(); } catch (e) { }
 
         const totalLent = state.contacts.reduce((sum, c) => sum + c.balance, 0);
         const totalInv = state.investments.reduce((sum, i) => sum + i.balance, 0);
         const totalProp = state.properties.reduce((sum, p) => sum + p.balance, 0);
         const totalLoansOwed = state.loans.reduce((sum, l) => sum + l.balance, 0);
         const totalRdDeposited = state.rds.reduce((sum, r) => sum + r.balance, 0);
-        const totalNetWorth = totalLent + totalInv + totalProp + totalRdDeposited - totalLoansOwed;
+        const totalFdDeposited = state.fds.reduce((sum, f) => sum + f.balance, 0);
+        const totalNetWorthExcl = totalLent + totalInv + totalRdDeposited + totalFdDeposited - totalLoansOwed;
+        const totalNetWorthIncl = totalNetWorthExcl + totalProp;
 
-        document.getElementById('dash-net-worth').textContent = formatCurrencyShort(totalNetWorth);
-        document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv + totalRdDeposited);
+        const elNetWorthExcl = document.getElementById('dash-net-worth-excl');
+        if (elNetWorthExcl) elNetWorthExcl.textContent = formatCurrencyShort(totalNetWorthExcl);
+        
+        const elNetWorthIncl = document.getElementById('dash-net-worth-incl');
+        if (elNetWorthIncl) elNetWorthIncl.textContent = formatCurrencyShort(totalNetWorthIncl);
+        document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv + totalRdDeposited + totalFdDeposited);
 
         const elDashLent = document.getElementById('dash-lent');
         elDashLent.textContent = formatCurrencyShort(totalLent);
@@ -244,6 +277,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (totalRdDeposited > 0) {
             breakdown['Recurring Deposit'] = totalRdDeposited;
         }
+        // FDs: single group for all FDs
+        if (totalFdDeposited > 0) {
+            breakdown['Fixed Deposit'] = totalFdDeposited;
+        }
 
         const breakdownContainer = document.getElementById('dash-inv-breakdown');
         if (breakdownContainer) {
@@ -263,6 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if(type === 'Apartment' || type === 'House') iconName = 'home';
                 else if(type === 'Agricultural' || type === 'Plot') iconName = 'map';
                 else if(type === 'Recurring Deposit') iconName = 'calendar-check';
+                else if(type === 'Fixed Deposit') iconName = 'calendar-clock';
                 
                 breakdownContainer.innerHTML += `
                     <div class="kpi-card" style="padding: 24px; min-height: 120px; justify-content: center;">
@@ -1287,6 +1325,234 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 await loadRds();
                 if (state.currentRdId) selectRd(state.currentRdId);
+            }
+        }
+    });
+
+    // ==========================================
+    // FD (FIXED DEPOSIT) LOGIC
+    // ==========================================
+
+    const loadFds = async () => {
+        try {
+            const res = await fetch('/api/fds');
+            state.fds = await res.json();
+            renderFds();
+            updateTotalFdBalance();
+        } catch (error) {
+            fdList.innerHTML = '<div class="loading">Error loading</div>';
+        }
+    };
+
+    const renderFds = () => {
+        fdList.innerHTML = '';
+        if (state.fds.length === 0) {
+            fdList.innerHTML = '<div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">No FDs yet</div>';
+            return;
+        }
+
+        state.fds.forEach(fd => {
+            const item = document.createElement('div');
+            item.className = `contact-item ${state.currentFdId === fd.id ? 'active' : ''}`;
+            item.onclick = () => selectFd(fd.id);
+
+            const initial = fd.name.charAt(0).toUpperCase();
+
+            item.innerHTML = `
+                <div class="avatar" style="background: linear-gradient(135deg, #10b981, #059669);">${initial}</div>
+                <div class="contact-details-list">
+                    <div class="contact-name">${fd.name}</div>
+                    <div class="contact-time">${fd.bank || fd.interestRate ? `${fd.bank || ''}${fd.bank && fd.interestRate ? ' • ' : ''}${fd.interestRate ? fd.interestRate + '% p.a.' : ''}` : 'Fixed Deposit'}</div>
+                </div>
+                <div class="contact-bal text-success">${formatCurrency(fd.balance)}</div>
+            `;
+            fdList.appendChild(item);
+        });
+        renderIcons();
+    };
+
+    const updateTotalFdBalance = () => {
+        let total = state.fds.reduce((sum, f) => sum + f.balance, 0);
+        totalFdBalance.textContent = formatCurrency(total);
+        totalFdBalance.className = `balance-amount ${total >= 0 ? 'text-success' : 'text-neutral'}`;
+    };
+
+    const selectFd = async (id) => {
+        state.currentFdId = id;
+        renderFds();
+
+        const fd = state.fds.find(f => f.id === id);
+        if (!fd) return;
+
+        document.getElementById('fd-detail-avatar').textContent = fd.name.charAt(0).toUpperCase();
+        document.getElementById('fd-detail-name').textContent = fd.name;
+
+        const metaParts = [];
+        if (fd.bank) metaParts.push(fd.bank);
+        if (fd.interestRate) metaParts.push(`${fd.interestRate}% p.a.`);
+        if (fd.tenureMonths) metaParts.push(`${fd.tenureMonths} months`);
+        document.getElementById('fd-detail-meta').textContent = metaParts.length > 0 ? metaParts.join(' • ') : 'Fixed Deposit';
+
+        const detailBal = document.getElementById('fd-detail-balance');
+        detailBal.textContent = formatCurrency(fd.balance);
+        detailBal.className = 'balance-amount text-success';
+
+        const maturityEl = document.getElementById('fd-detail-maturity');
+        if (fd.maturityDate) {
+            const matDate = new Date(fd.maturityDate);
+            maturityEl.textContent = `Matures: ${matDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+        } else {
+            maturityEl.textContent = `Principal: ${formatCurrency(fd.principalAmount)}`;
+        }
+
+        fdEmptyState.classList.remove('active');
+        fdEmptyState.classList.add('hidden');
+        fdDetail.classList.remove('hidden');
+
+        await loadFdTransactions(id);
+    };
+
+    const loadFdTransactions = async (id) => {
+        const transList = document.getElementById('fd-transactions-list');
+        transList.innerHTML = '<div class="loading" style="text-align:center;color:var(--text-secondary);padding:20px;">Loading...</div>';
+
+        try {
+            const res = await fetch(`/api/fd-transactions/${id}`);
+            const transactions = await res.json();
+
+            transList.innerHTML = '';
+            if (transactions.length === 0) {
+                transList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">No transactions yet.</div>';
+                return;
+            }
+
+            transactions.forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'transaction-card';
+
+                if (t.type === 'deposit') item.classList.add('payment');          // green
+                else if (t.type === 'interest') item.classList.add('payment');    // green
+                else if (t.type === 'maturity') item.classList.add('interest');   // amber
+                else item.classList.add('credit');                                 // red (premature)
+
+                let noteDefault = 'Transaction';
+                if (t.type === 'deposit') noteDefault = 'Principal Deposit';
+                if (t.type === 'interest') noteDefault = 'Interest Added';
+                if (t.type === 'maturity') noteDefault = 'Maturity Amount Received';
+                if (t.type === 'premature_withdrawal') noteDefault = 'Premature Withdrawal';
+
+                const sign = (t.type === 'deposit' || t.type === 'interest' || t.type === 'maturity') ? '+' : '-';
+                const amtClass = (t.type === 'deposit' || t.type === 'interest') ? 'payment' : (t.type === 'maturity' ? 'interest' : 'credit');
+
+                item.innerHTML = `
+                    <div class="trans-info">
+                        <div class="trans-note">${t.note || noteDefault}</div>
+                        <div class="trans-date">${formatDate(t.date)}</div>
+                    </div>
+                    <div class="trans-amount-wrapper">
+                        <div class="trans-amount ${amtClass}">${sign}${formatCurrency(t.amount)}</div>
+                        <button class="delete-fd-trans-btn delete-trans-btn" data-id="${t.id}" title="Delete Transaction"><i data-lucide="trash-2" style="width:18px;height:18px;"></i></button>
+                    </div>
+                `;
+                transList.appendChild(item);
+            });
+            renderIcons();
+        } catch (error) {
+            console.error('Failed to load FD transactions', error);
+        }
+    };
+
+    document.getElementById('form-add-fd').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('fd-name').value;
+        const bank = document.getElementById('fd-bank').value;
+        const principalAmount = document.getElementById('fd-principal-amount').value;
+        const interestRate = document.getElementById('fd-interest-rate').value;
+        const tenureMonths = document.getElementById('fd-tenure').value;
+        const maturityDate = document.getElementById('fd-maturity-date').value;
+
+        const res = await fetch('/api/fds', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, bank, principalAmount, interestRate, tenureMonths, maturityDate })
+        });
+        if (res.ok) {
+            const newFd = await res.json();
+            // Automatically log the principal deposit transaction
+            await fetch('/api/fd-transactions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ fdId: newFd.id, amount: principalAmount, type: 'deposit', note: 'Initial Principal Deposit' })
+            });
+
+            document.getElementById('form-add-fd').reset();
+            modalAddFd.classList.add('hidden');
+            loadFds();
+        }
+    });
+
+    btnFdDeposit.addEventListener('click', () => {
+        document.getElementById('fd-trans-modal-title').textContent = 'Add Principal / Interest';
+        document.getElementById('fd-trans-type').value = 'interest'; // Treat additional as interest normally
+        document.getElementById('fd-trans-amount').value = '';
+        modalAddFdTrans.classList.remove('hidden');
+    });
+
+    btnFdMaturity.addEventListener('click', () => {
+        document.getElementById('fd-trans-modal-title').textContent = 'Record Maturity Amount';
+        document.getElementById('fd-trans-type').value = 'maturity';
+        document.getElementById('fd-trans-amount').value = '';
+        modalAddFdTrans.classList.remove('hidden');
+    });
+
+    btnFdPremature.addEventListener('click', () => {
+        document.getElementById('fd-trans-modal-title').textContent = 'Premature Withdrawal';
+        document.getElementById('fd-trans-type').value = 'premature_withdrawal';
+        document.getElementById('fd-trans-amount').value = '';
+        modalAddFdTrans.classList.remove('hidden');
+    });
+
+    document.getElementById('form-add-fd-trans').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = document.getElementById('fd-trans-amount').value;
+        const note = document.getElementById('fd-trans-note').value;
+        const type = document.getElementById('fd-trans-type').value;
+
+        const res = await fetch('/api/fd-transactions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fdId: state.currentFdId, amount, type, note })
+        });
+        if (res.ok) {
+            document.getElementById('form-add-fd-trans').reset();
+            modalAddFdTrans.classList.add('hidden');
+            await loadFds();
+            selectFd(state.currentFdId);
+        }
+    });
+
+    btnDeleteFd.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to delete this FD?')) {
+            const res = await fetch(`/api/fds/${state.currentFdId}`, { method: 'DELETE' });
+            if (res.ok) {
+                state.currentFdId = null;
+                fdDetail.classList.add('hidden');
+                fdEmptyState.classList.remove('hidden');
+                fdEmptyState.classList.add('active');
+                loadFds();
+            }
+        }
+    });
+
+    document.getElementById('fd-transactions-list').addEventListener('click', async (e) => {
+        const btn = e.target.closest('.delete-fd-trans-btn');
+        if (!btn) return;
+        const transId = btn.dataset.id;
+        if (confirm('Delete this transaction?')) {
+            const res = await fetch(`/api/fd-transactions/${transId}`, { method: 'DELETE' });
+            if (res.ok) {
+                await loadFds();
+                if (state.currentFdId) selectFd(state.currentFdId);
             }
         }
     });

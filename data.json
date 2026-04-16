@@ -522,7 +522,7 @@
       "id": "1774114269430",
       "name": "NPS",
       "type": "NPS",
-      "balance": 827478,
+      "balance": 885354,
       "createdAt": "2026-03-21T17:31:09.430Z"
     },
     {
@@ -536,7 +536,7 @@
       "id": "1774114353677",
       "name": "Jyoti Mutual Fund",
       "type": "Mutual Fund",
-      "balance": 436000,
+      "balance": 495379,
       "createdAt": "2026-03-21T17:32:33.677Z"
     },
     {
@@ -571,21 +571,21 @@
       "id": "1774114842520",
       "name": "Aanya Dhansanchai 178932",
       "type": "Society",
-      "balance": 87000,
+      "balance": 60000,
       "createdAt": "2026-03-21T17:40:42.520Z"
     },
     {
       "id": "1774115168561",
       "name": "Jyoti Samridh 106",
       "type": "Society",
-      "balance": 1006000,
+      "balance": 6000,
       "createdAt": "2026-03-21T17:46:08.561Z"
     },
     {
       "id": "1774115185330",
       "name": "Aanya Samridh 2919",
       "type": "Society",
-      "balance": 1100700,
+      "balance": 700,
       "createdAt": "2026-03-21T17:46:25.331Z"
     },
     {
@@ -678,22 +678,6 @@
       "date": "2026-03-21T17:44:24.392Z"
     },
     {
-      "id": "1774115109719",
-      "investmentId": "1774114842520",
-      "amount": 16000,
-      "type": "invest",
-      "note": "FD  16000 M  : 25 May 2028",
-      "date": "2026-03-21T17:45:09.719Z"
-    },
-    {
-      "id": "1774115130458",
-      "investmentId": "1774114842520",
-      "amount": 11000,
-      "type": "invest",
-      "note": "FD 11000 M : 1 Jan 2028",
-      "date": "2026-03-21T17:45:30.458Z"
-    },
-    {
       "id": "1774115263069",
       "investmentId": "1774115168561",
       "amount": 6000,
@@ -702,60 +686,12 @@
       "date": "2026-03-21T17:47:43.069Z"
     },
     {
-      "id": "1774115310861",
-      "investmentId": "1774115168561",
-      "amount": 500000,
-      "type": "invest",
-      "note": "FD M : 22 Sep 2026",
-      "date": "2026-03-21T17:48:30.861Z"
-    },
-    {
-      "id": "1774115340943",
-      "investmentId": "1774115168561",
-      "amount": 100000,
-      "type": "invest",
-      "note": "FD M : 25 Oct 2026",
-      "date": "2026-03-21T17:49:00.943Z"
-    },
-    {
-      "id": "1774115375125",
-      "investmentId": "1774115168561",
-      "amount": 400000,
-      "type": "invest",
-      "note": "FD M : 22 Jan 2028",
-      "date": "2026-03-21T17:49:35.125Z"
-    },
-    {
       "id": "1774115803562",
       "investmentId": "1774115185330",
       "amount": 700,
       "type": "invest",
       "note": "CD + Share Money",
       "date": "2026-03-21T17:56:43.562Z"
-    },
-    {
-      "id": "1774115859130",
-      "investmentId": "1774115185330",
-      "amount": 700000,
-      "type": "invest",
-      "note": "MIS :7L  M: 2 Jan 2029 Monthly : 7145",
-      "date": "2026-03-21T17:57:39.130Z"
-    },
-    {
-      "id": "1774115887452",
-      "investmentId": "1774115185330",
-      "amount": 300000,
-      "type": "invest",
-      "note": "MIS :3L  M: 8 Dec 2028 Monthly : 3063",
-      "date": "2026-03-21T17:58:07.452Z"
-    },
-    {
-      "id": "1774115914247",
-      "investmentId": "1774115185330",
-      "amount": 100000,
-      "type": "invest",
-      "note": "FD : 1 L M: 1 Jan 2027",
-      "date": "2026-03-21T17:58:34.247Z"
     },
     {
       "id": "1774116405614",
@@ -788,6 +724,30 @@
       "type": "invest",
       "note": "",
       "date": "2026-04-16T08:53:31.599Z"
+    },
+    {
+      "id": "1776334912487",
+      "investmentId": "1774114353677",
+      "amount": 59379,
+      "type": "invest",
+      "note": "",
+      "date": "2026-04-16T10:21:52.487Z"
+    },
+    {
+      "id": "1776335021119",
+      "investmentId": "1774114269430",
+      "amount": 32029,
+      "type": "invest",
+      "note": "",
+      "date": "2026-04-16T10:23:41.119Z"
+    },
+    {
+      "id": "1776335052616",
+      "investmentId": "1774114269430",
+      "amount": 25847,
+      "type": "return",
+      "note": "APRIL",
+      "date": "2026-04-16T10:24:12.616Z"
     }
   ],
   "properties": [
@@ -984,7 +944,7 @@
       "monthlyAmount": 6250,
       "interestRate": 12.25,
       "tenureMonths": 36,
-      "maturityDate": "2026-02-01",
+      "maturityDate": "2028-02-01",
       "balance": 25000,
       "createdAt": "2026-04-16T09:25:57.260Z"
     },
@@ -995,7 +955,7 @@
       "monthlyAmount": 6250,
       "interestRate": 12,
       "tenureMonths": 24,
-      "maturityDate": "2025-10-01",
+      "maturityDate": "2028-10-01",
       "balance": 43750,
       "createdAt": "2026-04-16T09:35:10.263Z"
     },
@@ -1214,6 +1174,162 @@
       "type": "deposit",
       "note": "APRIL 2026",
       "date": "2026-04-16T09:42:18.886Z"
+    }
+  ],
+  "fds": [
+    {
+      "id": "1776333805315",
+      "name": "AANYA SAMRIDH 2919",
+      "bank": "SAMRIDH BHARAT",
+      "principalAmount": 100000,
+      "interestRate": 10.5,
+      "tenureMonths": 12,
+      "maturityDate": "2027-01-01",
+      "balance": 100000,
+      "createdAt": "2026-04-16T10:03:25.315Z"
+    },
+    {
+      "id": "1776333914161",
+      "name": "JYOTI SAMRIDH 106",
+      "bank": "SAMRIDH BHARAT",
+      "principalAmount": 500000,
+      "interestRate": 10.5,
+      "tenureMonths": 12,
+      "maturityDate": "2026-09-21",
+      "balance": 500000,
+      "createdAt": "2026-04-16T10:05:14.161Z"
+    },
+    {
+      "id": "1776333981429",
+      "name": "JYOTI SAMRIDH 106",
+      "bank": "SAMRIDH BHARAT",
+      "principalAmount": 400000,
+      "interestRate": 11.5,
+      "tenureMonths": 24,
+      "maturityDate": "2028-01-22",
+      "balance": 400000,
+      "createdAt": "2026-04-16T10:06:21.429Z"
+    },
+    {
+      "id": "1776334026352",
+      "name": "JYOTI SAMRIDH 106",
+      "bank": "SAMRIDH BHARAT",
+      "principalAmount": 100000,
+      "interestRate": 10.5,
+      "tenureMonths": 12,
+      "maturityDate": "2026-10-23",
+      "balance": 100000,
+      "createdAt": "2026-04-16T10:07:06.352Z"
+    },
+    {
+      "id": "1776334251749",
+      "name": "MIS AANYA SAMRIDH 2919",
+      "bank": "SAMRIDH BHARAT",
+      "principalAmount": 700000,
+      "interestRate": 12,
+      "tenureMonths": 36,
+      "maturityDate": "2029-01-02",
+      "balance": 700000,
+      "createdAt": "2026-04-16T10:10:51.749Z"
+    },
+    {
+      "id": "1776334286595",
+      "name": "MIS AANYA SAMRIDH 2919",
+      "bank": "SAMRIDH BHARAT",
+      "principalAmount": 300000,
+      "interestRate": 12,
+      "tenureMonths": 36,
+      "maturityDate": "2028-12-08",
+      "balance": 300000,
+      "createdAt": "2026-04-16T10:11:26.596Z"
+    },
+    {
+      "id": "1776334416782",
+      "name": "Aanya Dhansanchai 178932",
+      "bank": "Dhansanchai",
+      "principalAmount": 11000,
+      "interestRate": 12,
+      "tenureMonths": 60,
+      "maturityDate": "2028-05-25",
+      "balance": 11000,
+      "createdAt": "2026-04-16T10:13:36.782Z"
+    },
+    {
+      "id": "1776334461496",
+      "name": "Aanya Dhansanchai 178932",
+      "bank": "Dhansanchai",
+      "principalAmount": 16000,
+      "interestRate": 12,
+      "tenureMonths": 60,
+      "maturityDate": "2028-05-25",
+      "balance": 16000,
+      "createdAt": "2026-04-16T10:14:21.496Z"
+    }
+  ],
+  "fd_transactions": [
+    {
+      "id": "1776333805321",
+      "fdId": "1776333805315",
+      "amount": 100000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-04-16T10:03:25.321Z"
+    },
+    {
+      "id": "1776333914167",
+      "fdId": "1776333914161",
+      "amount": 500000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-04-16T10:05:14.167Z"
+    },
+    {
+      "id": "1776333981436",
+      "fdId": "1776333981429",
+      "amount": 400000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-04-16T10:06:21.436Z"
+    },
+    {
+      "id": "1776334026357",
+      "fdId": "1776334026352",
+      "amount": 100000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-04-16T10:07:06.357Z"
+    },
+    {
+      "id": "1776334251752",
+      "fdId": "1776334251749",
+      "amount": 700000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-04-16T10:10:51.752Z"
+    },
+    {
+      "id": "1776334286601",
+      "fdId": "1776334286595",
+      "amount": 300000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-04-16T10:11:26.601Z"
+    },
+    {
+      "id": "1776334416787",
+      "fdId": "1776334416782",
+      "amount": 11000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-04-16T10:13:36.787Z"
+    },
+    {
+      "id": "1776334461502",
+      "fdId": "1776334461496",
+      "amount": 16000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-04-16T10:14:21.502Z"
     }
   ]
 }
