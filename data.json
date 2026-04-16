@@ -540,13 +540,6 @@
       "createdAt": "2026-03-21T17:32:33.677Z"
     },
     {
-      "id": "1774114465329",
-      "name": "Ashish Stocks",
-      "type": "Stocks",
-      "balance": 0,
-      "createdAt": "2026-03-21T17:34:25.329Z"
-    },
-    {
       "id": "1774114488328",
       "name": "Jyoti Stocks",
       "type": "Stocks",
@@ -585,14 +578,14 @@
       "id": "1774115168561",
       "name": "Jyoti Samridh 106",
       "type": "Society",
-      "balance": 1131000,
+      "balance": 1006000,
       "createdAt": "2026-03-21T17:46:08.561Z"
     },
     {
       "id": "1774115185330",
       "name": "Aanya Samridh 2919",
       "type": "Society",
-      "balance": 1138200,
+      "balance": 1100700,
       "createdAt": "2026-03-21T17:46:25.331Z"
     },
     {
@@ -643,14 +636,6 @@
       "type": "invest",
       "note": "",
       "date": "2026-03-21T17:34:00.611Z"
-    },
-    {
-      "id": "1774114500716",
-      "investmentId": "1774114465329",
-      "amount": 50000,
-      "type": "invest",
-      "note": "",
-      "date": "2026-03-21T17:35:00.716Z"
     },
     {
       "id": "1774114524367",
@@ -741,22 +726,6 @@
       "date": "2026-03-21T17:49:35.125Z"
     },
     {
-      "id": "1774115652647",
-      "investmentId": "1774115168561",
-      "amount": 104000,
-      "type": "invest",
-      "note": "RD : 13000 M : 02 Jul 2027",
-      "date": "2026-03-21T17:54:12.647Z"
-    },
-    {
-      "id": "1774115729185",
-      "investmentId": "1774115168561",
-      "amount": 21000,
-      "type": "invest",
-      "note": "RD : 12000 M : 14 Jan 2028",
-      "date": "2026-03-21T17:55:29.185Z"
-    },
-    {
       "id": "1774115803562",
       "investmentId": "1774115185330",
       "amount": 700,
@@ -789,14 +758,6 @@
       "date": "2026-03-21T17:58:34.247Z"
     },
     {
-      "id": "1774116045584",
-      "investmentId": "1774115185330",
-      "amount": 37500,
-      "type": "invest",
-      "note": "RD : 6250 M : 2 Year",
-      "date": "2026-03-21T18:00:45.584Z"
-    },
-    {
       "id": "1774116405614",
       "investmentId": "1774116259827",
       "amount": 288000,
@@ -819,14 +780,6 @@
       "type": "invest",
       "note": "",
       "date": "2026-03-22T09:24:13.021Z"
-    },
-    {
-      "id": "1776329593376",
-      "investmentId": "1774114465329",
-      "amount": 50000,
-      "type": "withdraw",
-      "note": "",
-      "date": "2026-04-16T08:53:13.376Z"
     },
     {
       "id": "1776329611599",
@@ -1021,6 +974,246 @@
       "type": "borrow",
       "note": "HDFC MILENIA",
       "date": "2026-04-16T08:49:01.082Z"
+    }
+  ],
+  "rds": [
+    {
+      "id": "1776331557260",
+      "name": "SIYA SAMRIDH 3327",
+      "bank": "SAMRIDH BHARAT",
+      "monthlyAmount": 6250,
+      "interestRate": 12.25,
+      "tenureMonths": 36,
+      "maturityDate": "2026-02-01",
+      "balance": 25000,
+      "createdAt": "2026-04-16T09:25:57.260Z"
+    },
+    {
+      "id": "1776332110263",
+      "name": "AANYA SAMRIDH 2919",
+      "bank": "SAMRIDH BHARAT",
+      "monthlyAmount": 6250,
+      "interestRate": 12,
+      "tenureMonths": 24,
+      "maturityDate": "2025-10-01",
+      "balance": 43750,
+      "createdAt": "2026-04-16T09:35:10.263Z"
+    },
+    {
+      "id": "1776332382734",
+      "name": "JYOTI SAMRIDH 106",
+      "bank": "SAMRIDH BHARAT",
+      "monthlyAmount": 13000,
+      "interestRate": 12,
+      "tenureMonths": 24,
+      "maturityDate": "2027-07-02",
+      "balance": 117000,
+      "createdAt": "2026-04-16T09:39:42.734Z"
+    },
+    {
+      "id": "1776332516671",
+      "name": "JYOTI SAMRIDH 106",
+      "bank": "SAMRIDH BHARAT",
+      "monthlyAmount": 12000,
+      "interestRate": 12,
+      "tenureMonths": 24,
+      "maturityDate": "2028-01-14",
+      "balance": 48000,
+      "createdAt": "2026-04-16T09:41:56.671Z"
+    }
+  ],
+  "rd_transactions": [
+    {
+      "id": "1776331583093",
+      "rdId": "1776331557260",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:26:23.093Z"
+    },
+    {
+      "id": "1776331586750",
+      "rdId": "1776331557260",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:26:26.750Z"
+    },
+    {
+      "id": "1776331588529",
+      "rdId": "1776331557260",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:26:28.529Z"
+    },
+    {
+      "id": "1776331757087",
+      "rdId": "1776331557260",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:29:17.087Z"
+    },
+    {
+      "id": "1776332113742",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:35:13.742Z"
+    },
+    {
+      "id": "1776332115388",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:35:15.388Z"
+    },
+    {
+      "id": "1776332117052",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:35:17.052Z"
+    },
+    {
+      "id": "1776332119512",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:35:19.512Z"
+    },
+    {
+      "id": "1776332121399",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:35:21.399Z"
+    },
+    {
+      "id": "1776332127948",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:35:27.948Z"
+    },
+    {
+      "id": "1776332130380",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:35:30.381Z"
+    },
+    {
+      "id": "1776332394368",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:39:54.368Z"
+    },
+    {
+      "id": "1776332395985",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:39:55.985Z"
+    },
+    {
+      "id": "1776332397863",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:39:57.863Z"
+    },
+    {
+      "id": "1776332399266",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:39:59.266Z"
+    },
+    {
+      "id": "1776332400656",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:40:00.656Z"
+    },
+    {
+      "id": "1776332402303",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:40:02.303Z"
+    },
+    {
+      "id": "1776332406591",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:40:06.591Z"
+    },
+    {
+      "id": "1776332408235",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:40:08.235Z"
+    },
+    {
+      "id": "1776332429197",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "MARCH 2026",
+      "date": "2026-04-16T09:40:29.197Z"
+    },
+    {
+      "id": "1776332528321",
+      "rdId": "1776332516671",
+      "amount": 12000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:42:08.321Z"
+    },
+    {
+      "id": "1776332529705",
+      "rdId": "1776332516671",
+      "amount": 12000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:42:09.705Z"
+    },
+    {
+      "id": "1776332531234",
+      "rdId": "1776332516671",
+      "amount": 12000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-04-16T09:42:11.234Z"
+    },
+    {
+      "id": "1776332538886",
+      "rdId": "1776332516671",
+      "amount": 12000,
+      "type": "deposit",
+      "note": "APRIL 2026",
+      "date": "2026-04-16T09:42:18.886Z"
     }
   ]
 }

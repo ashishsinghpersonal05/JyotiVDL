@@ -9,7 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
         properties: [],
         currentPropId: null,
         loans: [],
-        currentLoanId: null
+        currentLoanId: null,
+        rds: [],
+        currentRdId: null
     };
 
     // DOM Elements - Tabs & Views
@@ -18,12 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const navInvestments = document.getElementById('nav-investments');
     const navProperties = document.getElementById('nav-properties');
     const navLoans = document.getElementById('nav-loans');
+    const navRd = document.getElementById('nav-rd');
     const navReport = document.getElementById('nav-report');
     const workspaceHome = document.getElementById('home-workspace');
     const workspaceCustomers = document.getElementById('customers-workspace');
     const workspaceInvestments = document.getElementById('investments-workspace');
     const workspaceProperties = document.getElementById('properties-workspace');
     const workspaceLoans = document.getElementById('loans-workspace');
+    const workspaceRd = document.getElementById('rd-workspace');
     const workspaceReport = document.getElementById('report-workspace');
 
     // DOM Elements - Customers
@@ -78,6 +82,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnLoanInterest = document.getElementById('btn-loan-interest');
     const btnDeleteLoan = document.getElementById('btn-delete-loan');
 
+    // DOM Elements - RD
+    const rdList = document.getElementById('rd-list');
+    const totalRdBalance = document.getElementById('total-rd-balance');
+    const rdEmptyState = document.getElementById('rd-empty-state');
+    const rdDetail = document.getElementById('rd-detail');
+    const modalAddRd = document.getElementById('modal-add-rd');
+    const modalAddRdTrans = document.getElementById('modal-add-rd-trans');
+    const btnAddRd = document.getElementById('add-rd-btn');
+    const btnRdDeposit = document.getElementById('btn-rd-deposit');
+    const btnRdMaturity = document.getElementById('btn-rd-maturity');
+    const btnRdPremature = document.getElementById('btn-rd-premature');
+    const btnDeleteRd = document.getElementById('btn-delete-rd');
+
     // Modals Setup helper
     const setupModal = (modal, btnOpen, closeId) => {
         const btnClose = document.getElementById(closeId);
@@ -96,6 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal(modalAddPropTrans, null, 'close-prop-trans-modal');
     setupModal(modalAddLoan, btnAddLoan, 'close-loan-modal');
     setupModal(modalAddLoanTrans, null, 'close-loan-trans-modal');
+    setupModal(modalAddRd, btnAddRd, 'close-rd-modal');
+    setupModal(modalAddRdTrans, null, 'close-rd-trans-modal');
 
     const renderIcons = () => {
         if (window.lucide) {
@@ -133,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navInvestments.classList.remove('active');
         navProperties.classList.remove('active');
         navLoans.classList.remove('active');
+        navRd.classList.remove('active');
         navReport.classList.remove('active');
 
         // Hide Workspaces
@@ -141,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         workspaceInvestments.classList.add('hidden');
         workspaceProperties.classList.add('hidden');
         workspaceLoans.classList.add('hidden');
+        workspaceRd.classList.add('hidden');
         workspaceReport.classList.add('hidden');
 
         if (mode === 'home') {
@@ -163,6 +184,10 @@ document.addEventListener('DOMContentLoaded', () => {
             navLoans.classList.add('active');
             workspaceLoans.classList.remove('hidden');
             loadLoans();
+        } else if (mode === 'rd') {
+            navRd.classList.add('active');
+            workspaceRd.classList.remove('hidden');
+            loadRds();
         } else if (mode === 'report') {
             navReport.classList.add('active');
             workspaceReport.classList.remove('hidden');
@@ -176,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navInvestments.addEventListener('click', () => switchTab('investments'));
     navProperties.addEventListener('click', () => switchTab('properties'));
     navLoans.addEventListener('click', () => switchTab('loans'));
+    navRd.addEventListener('click', () => switchTab('rd'));
     navReport.addEventListener('click', () => switchTab('report'));
 
     // Dashboard Logic
@@ -185,15 +211,17 @@ document.addEventListener('DOMContentLoaded', () => {
         try { const res = await fetch('/api/investments'); state.investments = await res.json(); } catch (e) { }
         try { const res = await fetch('/api/properties'); state.properties = await res.json(); } catch (e) { }
         try { const res = await fetch('/api/loans'); state.loans = await res.json(); } catch (e) { }
+        try { const res = await fetch('/api/rds'); state.rds = await res.json(); } catch (e) { }
 
         const totalLent = state.contacts.reduce((sum, c) => sum + c.balance, 0);
         const totalInv = state.investments.reduce((sum, i) => sum + i.balance, 0);
         const totalProp = state.properties.reduce((sum, p) => sum + p.balance, 0);
         const totalLoansOwed = state.loans.reduce((sum, l) => sum + l.balance, 0);
-        const totalNetWorth = totalLent + totalInv + totalProp - totalLoansOwed;
+        const totalRdDeposited = state.rds.reduce((sum, r) => sum + r.balance, 0);
+        const totalNetWorth = totalLent + totalInv + totalProp + totalRdDeposited - totalLoansOwed;
 
         document.getElementById('dash-net-worth').textContent = formatCurrencyShort(totalNetWorth);
-        document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv);
+        document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv + totalRdDeposited);
 
         const elDashLent = document.getElementById('dash-lent');
         elDashLent.textContent = formatCurrencyShort(totalLent);
@@ -212,6 +240,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!breakdown[prop.type]) breakdown[prop.type] = 0;
             breakdown[prop.type] += prop.balance;
         });
+        // RDs: single group for all RDs
+        if (totalRdDeposited > 0) {
+            breakdown['Recurring Deposit'] = totalRdDeposited;
+        }
 
         const breakdownContainer = document.getElementById('dash-inv-breakdown');
         if (breakdownContainer) {
@@ -230,6 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if(type === 'Society' || type === 'Commercial') iconName = 'building';
                 else if(type === 'Apartment' || type === 'House') iconName = 'home';
                 else if(type === 'Agricultural' || type === 'Plot') iconName = 'map';
+                else if(type === 'Recurring Deposit') iconName = 'calendar-check';
                 
                 breakdownContainer.innerHTML += `
                     <div class="kpi-card" style="padding: 24px; min-height: 120px; justify-content: center;">
@@ -1026,6 +1059,234 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 await loadLoans();
                 if (state.currentLoanId) selectLoan(state.currentLoanId);
+            }
+        }
+    });
+
+    // ==========================================
+    // RD (RECURRING DEPOSIT) LOGIC
+    // ==========================================
+
+    const loadRds = async () => {
+        try {
+            const res = await fetch('/api/rds');
+            state.rds = await res.json();
+            renderRds();
+            updateTotalRdBalance();
+        } catch (error) {
+            rdList.innerHTML = '<div class="loading">Error loading</div>';
+        }
+    };
+
+    const renderRds = () => {
+        rdList.innerHTML = '';
+        if (state.rds.length === 0) {
+            rdList.innerHTML = '<div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">No RDs yet</div>';
+            return;
+        }
+
+        state.rds.forEach(rd => {
+            const item = document.createElement('div');
+            item.className = `contact-item ${state.currentRdId === rd.id ? 'active' : ''}`;
+            item.onclick = () => selectRd(rd.id);
+
+            const initial = rd.name.charAt(0).toUpperCase();
+            const progressPct = rd.tenureMonths > 0
+                ? Math.min(100, Math.round((rd.balance / (rd.monthlyAmount * rd.tenureMonths)) * 100))
+                : null;
+
+            item.innerHTML = `
+                <div class="avatar" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">${initial}</div>
+                <div class="contact-details-list">
+                    <div class="contact-name">${rd.name}</div>
+                    <div class="contact-time">${rd.bank || rd.interestRate ? `${rd.bank || ''}${rd.bank && rd.interestRate ? ' • ' : ''}${rd.interestRate ? rd.interestRate + '% p.a.' : ''}` : 'Recurring Deposit'}</div>
+                </div>
+                <div class="contact-bal text-success">${formatCurrency(rd.balance)}${progressPct !== null ? `<br><span style="font-size:0.7rem;color:var(--text-secondary);">${progressPct}% complete</span>` : ''}</div>
+            `;
+            rdList.appendChild(item);
+        });
+        renderIcons();
+    };
+
+    const updateTotalRdBalance = () => {
+        let total = state.rds.reduce((sum, r) => sum + r.balance, 0);
+        totalRdBalance.textContent = formatCurrency(total);
+        totalRdBalance.className = `balance-amount ${total >= 0 ? 'text-success' : 'text-neutral'}`;
+    };
+
+    const selectRd = async (id) => {
+        state.currentRdId = id;
+        renderRds();
+
+        const rd = state.rds.find(r => r.id === id);
+        if (!rd) return;
+
+        document.getElementById('rd-detail-avatar').textContent = rd.name.charAt(0).toUpperCase();
+        document.getElementById('rd-detail-name').textContent = rd.name;
+
+        const metaParts = [];
+        if (rd.bank) metaParts.push(rd.bank);
+        if (rd.interestRate) metaParts.push(`${rd.interestRate}% p.a.`);
+        if (rd.tenureMonths) metaParts.push(`${rd.tenureMonths} months`);
+        document.getElementById('rd-detail-meta').textContent = metaParts.length > 0 ? metaParts.join(' • ') : 'Recurring Deposit';
+
+        const detailBal = document.getElementById('rd-detail-balance');
+        detailBal.textContent = formatCurrency(rd.balance);
+        detailBal.className = 'balance-amount text-success';
+
+        const maturityEl = document.getElementById('rd-detail-maturity');
+        if (rd.maturityDate) {
+            const matDate = new Date(rd.maturityDate);
+            maturityEl.textContent = `Matures: ${matDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+        } else if (rd.tenureMonths && rd.monthlyAmount) {
+            const target = rd.monthlyAmount * rd.tenureMonths;
+            const pct = Math.min(100, Math.round((rd.balance / target) * 100));
+            maturityEl.textContent = `Target: ${formatCurrency(target)} (${pct}% complete)`;
+        } else {
+            maturityEl.textContent = '';
+        }
+
+        rdEmptyState.classList.remove('active');
+        rdEmptyState.classList.add('hidden');
+        rdDetail.classList.remove('hidden');
+
+        await loadRdTransactions(id);
+    };
+
+    const loadRdTransactions = async (id) => {
+        const transList = document.getElementById('rd-transactions-list');
+        transList.innerHTML = '<div class="loading" style="text-align:center;color:var(--text-secondary);padding:20px;">Loading...</div>';
+
+        try {
+            const res = await fetch(`/api/rd-transactions/${id}`);
+            const transactions = await res.json();
+
+            transList.innerHTML = '';
+            if (transactions.length === 0) {
+                transList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">No transactions yet. Add the first installment!</div>';
+                return;
+            }
+
+            transactions.forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'transaction-card';
+
+                if (t.type === 'deposit') item.classList.add('payment');          // green
+                else if (t.type === 'maturity') item.classList.add('interest');   // amber
+                else item.classList.add('credit');                                 // red (premature)
+
+                let noteDefault = 'Transaction';
+                if (t.type === 'deposit') noteDefault = 'Monthly Installment';
+                if (t.type === 'maturity') noteDefault = 'Maturity Amount Received';
+                if (t.type === 'premature_withdrawal') noteDefault = 'Premature Withdrawal';
+
+                const sign = t.type === 'deposit' ? '+' : (t.type === 'maturity' ? '+' : '-');
+                const amtClass = t.type === 'deposit' ? 'payment' : (t.type === 'maturity' ? 'interest' : 'credit');
+
+                item.innerHTML = `
+                    <div class="trans-info">
+                        <div class="trans-note">${t.note || noteDefault}</div>
+                        <div class="trans-date">${formatDate(t.date)}</div>
+                    </div>
+                    <div class="trans-amount-wrapper">
+                        <div class="trans-amount ${amtClass}">${sign}${formatCurrency(t.amount)}</div>
+                        <button class="delete-rd-trans-btn delete-trans-btn" data-id="${t.id}" title="Delete Transaction"><i data-lucide="trash-2" style="width:18px;height:18px;"></i></button>
+                    </div>
+                `;
+                transList.appendChild(item);
+            });
+            renderIcons();
+        } catch (error) {
+            console.error('Failed to load RD transactions', error);
+        }
+    };
+
+    document.getElementById('form-add-rd').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('rd-name').value;
+        const bank = document.getElementById('rd-bank').value;
+        const monthlyAmount = document.getElementById('rd-monthly-amount').value;
+        const interestRate = document.getElementById('rd-interest-rate').value;
+        const tenureMonths = document.getElementById('rd-tenure').value;
+        const maturityDate = document.getElementById('rd-maturity-date').value;
+
+        const res = await fetch('/api/rds', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, bank, monthlyAmount, interestRate, tenureMonths, maturityDate })
+        });
+        if (res.ok) {
+            document.getElementById('form-add-rd').reset();
+            modalAddRd.classList.add('hidden');
+            loadRds();
+        }
+    });
+
+    btnRdDeposit.addEventListener('click', () => {
+        const rd = state.rds.find(r => r.id === state.currentRdId);
+        document.getElementById('rd-trans-modal-title').textContent = 'Add Monthly Installment';
+        document.getElementById('rd-trans-type').value = 'deposit';
+        if (rd && rd.monthlyAmount) {
+            document.getElementById('rd-trans-amount').value = rd.monthlyAmount;
+        }
+        modalAddRdTrans.classList.remove('hidden');
+    });
+
+    btnRdMaturity.addEventListener('click', () => {
+        document.getElementById('rd-trans-modal-title').textContent = 'Record Maturity Amount';
+        document.getElementById('rd-trans-type').value = 'maturity';
+        document.getElementById('rd-trans-amount').value = '';
+        modalAddRdTrans.classList.remove('hidden');
+    });
+
+    btnRdPremature.addEventListener('click', () => {
+        document.getElementById('rd-trans-modal-title').textContent = 'Premature Withdrawal';
+        document.getElementById('rd-trans-type').value = 'premature_withdrawal';
+        document.getElementById('rd-trans-amount').value = '';
+        modalAddRdTrans.classList.remove('hidden');
+    });
+
+    document.getElementById('form-add-rd-trans').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = document.getElementById('rd-trans-amount').value;
+        const note = document.getElementById('rd-trans-note').value;
+        const type = document.getElementById('rd-trans-type').value;
+
+        const res = await fetch('/api/rd-transactions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ rdId: state.currentRdId, amount, type, note })
+        });
+        if (res.ok) {
+            document.getElementById('form-add-rd-trans').reset();
+            modalAddRdTrans.classList.add('hidden');
+            await loadRds();
+            selectRd(state.currentRdId);
+        }
+    });
+
+    btnDeleteRd.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to delete this RD?')) {
+            const res = await fetch(`/api/rds/${state.currentRdId}`, { method: 'DELETE' });
+            if (res.ok) {
+                state.currentRdId = null;
+                rdDetail.classList.add('hidden');
+                rdEmptyState.classList.remove('hidden');
+                rdEmptyState.classList.add('active');
+                loadRds();
+            }
+        }
+    });
+
+    document.getElementById('rd-transactions-list').addEventListener('click', async (e) => {
+        const btn = e.target.closest('.delete-rd-trans-btn');
+        if (!btn) return;
+        const transId = btn.dataset.id;
+        if (confirm('Delete this transaction?')) {
+            const res = await fetch(`/api/rd-transactions/${transId}`, { method: 'DELETE' });
+            if (res.ok) {
+                await loadRds();
+                if (state.currentRdId) selectRd(state.currentRdId);
             }
         }
     });

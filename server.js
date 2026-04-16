@@ -23,10 +23,12 @@ const readData = () => {
         if (!parsed.property_transactions) parsed.property_transactions = [];
         if (!parsed.loans) parsed.loans = [];
         if (!parsed.loan_transactions) parsed.loan_transactions = [];
+        if (!parsed.rds) parsed.rds = [];
+        if (!parsed.rd_transactions) parsed.rd_transactions = [];
         return parsed;
     } catch (error) {
         console.error(error);
-        return { contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [] };
+        return { contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [], rds: [], rd_transactions: [] };
     }
 };
 
@@ -37,7 +39,7 @@ const writeData = (data) => {
 
 // Ensure data file exists with default schema
 if (!fs.existsSync(DATA_FILE)) {
-    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [] });
+    writeData({ contacts: [], transactions: [], investments: [], investment_transactions: [], properties: [], property_transactions: [], loans: [], loan_transactions: [], rds: [], rd_transactions: [] });
 }
 
 // Routes
@@ -600,6 +602,124 @@ app.get('/api/reports/monthly', (req, res) => {
     const sorted = Object.values(monthlyData).sort((a, b) => b.sortKey.localeCompare(a.sortKey));
 
     res.json(sorted);
+});
+
+// ==========================================
+// RD (RECURRING DEPOSIT) ROUTES
+// ==========================================
+
+app.get('/api/rds', (req, res) => {
+    const data = readData();
+    res.json(data.rds);
+});
+
+app.post('/api/rds', (req, res) => {
+    const data = readData();
+    const { name, monthlyAmount, interestRate, tenureMonths, bank, maturityDate } = req.body;
+
+    if (!name || !monthlyAmount) return res.status(400).json({ error: 'Name and monthly amount are required' });
+
+    const newRd = {
+        id: Date.now().toString(),
+        name,
+        bank: bank || '',
+        monthlyAmount: parseFloat(monthlyAmount),
+        interestRate: parseFloat(interestRate) || 0,
+        tenureMonths: parseInt(tenureMonths) || 0,
+        maturityDate: maturityDate || '',
+        balance: 0, // total deposited so far
+        createdAt: new Date().toISOString()
+    };
+
+    data.rds.push(newRd);
+    writeData(data);
+    res.status(201).json(newRd);
+});
+
+app.delete('/api/rds/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+
+    const initialLen = data.rds.length;
+    data.rds = data.rds.filter(r => r.id !== id);
+    data.rd_transactions = data.rd_transactions.filter(t => t.rdId !== id);
+
+    if (data.rds.length === initialLen) {
+        return res.status(404).json({ error: 'RD not found' });
+    }
+
+    writeData(data);
+    res.json({ success: true });
+});
+
+app.get('/api/rd-transactions/:rdId', (req, res) => {
+    const data = readData();
+    const { rdId } = req.params;
+    const rdTransactions = data.rd_transactions.filter(t => t.rdId === rdId);
+    rdTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    res.json(rdTransactions);
+});
+
+app.post('/api/rd-transactions', (req, res) => {
+    const data = readData();
+    const { rdId, amount, type, note } = req.body;
+
+    if (!rdId || !amount || !type) {
+        return res.status(400).json({ error: 'rdId, amount, and type are required' });
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+        return res.status(400).json({ error: 'Valid amount is required' });
+    }
+
+    const newTransaction = {
+        id: Date.now().toString(),
+        rdId,
+        amount: numAmount,
+        type, // 'deposit', 'maturity', 'premature_withdrawal'
+        note: note || '',
+        date: new Date().toISOString()
+    };
+
+    let found = false;
+    for (const rd of data.rds) {
+        if (rd.id === rdId) {
+            found = true;
+            if (type === 'deposit') {
+                rd.balance += numAmount;
+            } else if (type === 'maturity' || type === 'premature_withdrawal') {
+                // Maturity/withdrawal doesn't change deposit balance — it's a separate event
+                // But we can track it; balance represents total deposited
+            }
+            break;
+        }
+    }
+
+    if (!found) return res.status(404).json({ error: 'RD not found' });
+
+    data.rd_transactions.push(newTransaction);
+    writeData(data);
+    res.status(201).json(newTransaction);
+});
+
+app.delete('/api/rd-transactions/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+
+    const index = data.rd_transactions.findIndex(t => t.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
+
+    const trans = data.rd_transactions[index];
+    const rd = data.rds.find(r => r.id === trans.rdId);
+
+    if (rd && trans.type === 'deposit') {
+        rd.balance -= trans.amount;
+    }
+
+    data.rd_transactions.splice(index, 1);
+    writeData(data);
+    res.json({ success: true });
 });
 
 // Start the server

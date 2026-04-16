@@ -40,6 +40,10 @@
                     <i data-lucide="trending-up" class="nav-icon"></i>
                     <span class="nav-label">Investments</span>
                 </button>
+                <button id="nav-rd" class="nav-btn">
+                    <i data-lucide="calendar-check" class="nav-icon"></i>
+                    <span class="nav-label">RD</span>
+                </button>
                 <button id="nav-report" class="nav-btn">
                     <i data-lucide="bar-chart-2" class="nav-icon"></i>
                     <span class="nav-label">Report</span>
@@ -400,6 +404,75 @@
                 </div>
             </div>
 
+            <!-- 5. RD WORKSPACE -->
+            <div id="rd-workspace" class="workspace-view split-layout hidden">
+                <!-- Sidebar: RD List -->
+                <aside class="sidebar inner-sidebar">
+                    <div class="sidebar-header">
+                        <h1>Recurring Deposits</h1>
+                        <p class="subtitle">Track your RD savings &amp; maturity</p>
+                    </div>
+
+                    <div class="view-section" style="flex:1; overflow:hidden;">
+                        <button id="add-rd-btn" class="btn primary-btn"
+                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add RD</button>
+                        <div class="summary-card">
+                            <h2>Total Deposited</h2>
+                            <div id="total-rd-balance" class="balance-amount">₹0.00</div>
+                        </div>
+                        <div class="contacts-list" id="rd-list">
+                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                                RDs...</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content: RD Detail -->
+                <main class="main-content">
+                    <div id="rd-empty-state" class="empty-state active">
+                        <div class="empty-icon"><i data-lucide="calendar-check"
+                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                        <h2>Select an RD</h2>
+                        <p>Choose a Recurring Deposit from the sidebar to view its status, add monthly installments, or record maturity.</p>
+                    </div>
+
+                    <div id="rd-detail" class="contact-detail hidden">
+                        <header class="detail-header">
+                            <div class="contact-info">
+                                <div class="avatar" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"
+                                    id="rd-detail-avatar">R</div>
+                                <div>
+                                    <h2 id="rd-detail-name">RD Name</h2>
+                                    <p id="rd-detail-meta">Bank &bull; Rate &bull; Tenure</p>
+                                </div>
+                            </div>
+                            <div class="contact-balance-card">
+                                <span>Total Deposited</span>
+                                <div id="rd-detail-balance" class="balance-amount text-success">₹0.00</div>
+                                <div id="rd-detail-maturity" style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
+                                <button id="btn-delete-rd" class="btn"
+                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                    RD</button>
+                            </div>
+                        </header>
+
+                        <div class="action-buttons">
+                            <button id="btn-rd-deposit" class="btn action-btn success-btn"><i
+                                    data-lucide="plus-circle"></i> Add Installment</button>
+                            <button id="btn-rd-maturity" class="btn action-btn warning-btn"><i
+                                    data-lucide="award"></i> Record Maturity</button>
+                            <button id="btn-rd-premature" class="btn action-btn danger-btn"><i
+                                    data-lucide="alert-triangle"></i> Premature Withdrawal</button>
+                        </div>
+
+                        <div class="transactions-section">
+                            <h3>Transaction History</h3>
+                            <div class="transactions-list" id="rd-transactions-list"></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
         </div>
     </div>
 
@@ -582,6 +655,62 @@
                 <div class="form-group">
                     <label for="loan-trans-note">Note (Optional)</label>
                     <input type="text" id="loan-trans-note" placeholder="What was this for?">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add RD Modal -->
+    <div id="modal-add-rd" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-rd-modal">&times;</button>
+            <h2>Add New Recurring Deposit</h2>
+            <form id="form-add-rd">
+                <div class="form-group">
+                    <label for="rd-name">RD Name</label>
+                    <input type="text" id="rd-name" required placeholder="E.g., SBI Monthly RD">
+                </div>
+                <div class="form-group">
+                    <label for="rd-bank">Bank / Institution (Optional)</label>
+                    <input type="text" id="rd-bank" placeholder="E.g., State Bank of India">
+                </div>
+                <div class="form-group">
+                    <label for="rd-monthly-amount">Monthly Installment (₹)</label>
+                    <input type="number" id="rd-monthly-amount" required placeholder="E.g., 5000" min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="rd-interest-rate">Interest Rate (% p.a.) (Optional)</label>
+                    <input type="number" id="rd-interest-rate" placeholder="E.g., 7.5" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="rd-tenure">Tenure (Months) (Optional)</label>
+                    <input type="number" id="rd-tenure" placeholder="E.g., 24" min="1">
+                </div>
+                <div class="form-group">
+                    <label for="rd-maturity-date">Maturity Date (Optional)</label>
+                    <input type="date" id="rd-maturity-date"
+                        style="width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; outline: none; margin-top: 4px;">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save RD</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add RD Transaction Modal -->
+    <div id="modal-add-rd-trans" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-rd-trans-modal">&times;</button>
+            <h2 id="rd-trans-modal-title">Add RD Transaction</h2>
+            <form id="form-add-rd-trans">
+                <input type="hidden" id="rd-trans-type">
+                <div class="form-group">
+                    <label for="rd-trans-amount">Amount (₹)</label>
+                    <input type="number" id="rd-trans-amount" required placeholder="0.00" min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="rd-trans-note">Note (Optional)</label>
+                    <input type="text" id="rd-trans-note" placeholder="What was this for?">
                 </div>
                 <button type="submit" class="btn primary-btn submit-btn">Save</button>
             </form>
