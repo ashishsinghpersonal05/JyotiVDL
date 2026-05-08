@@ -4,42 +4,42 @@
       "id": "1774109056300",
       "name": "Kirti Singh",
       "phone": "",
-      "balance": 204768,
+      "balance": 197327.6,
       "createdAt": "2026-03-21T16:04:16.300Z"
     },
     {
       "id": "1774109163711",
       "name": "Anuj",
       "phone": "",
-      "balance": 350000,
+      "balance": 353500,
       "createdAt": "2026-03-21T16:06:03.711Z"
     },
     {
       "id": "1774109261699",
       "name": "Manish",
       "phone": "",
-      "balance": 200000,
+      "balance": 202500,
       "createdAt": "2026-03-21T16:07:41.699Z"
     },
     {
       "id": "1774109314676",
       "name": "DK SINGH 3.9L",
       "phone": "",
-      "balance": 385000,
+      "balance": 380000,
       "createdAt": "2026-03-21T16:08:34.676Z"
     },
     {
       "id": "1774109387289",
       "name": "Anand",
       "phone": "",
-      "balance": 285700,
+      "balance": 315700,
       "createdAt": "2026-03-21T16:09:47.289Z"
     },
     {
       "id": "1774109462344",
       "name": "AMIT",
       "phone": "Loan : 2.5 L ",
-      "balance": 200405,
+      "balance": 100405,
       "createdAt": "2026-03-21T16:11:02.344Z"
     },
     {
@@ -53,36 +53,43 @@
       "id": "1774110392099",
       "name": "DK SINGH 5L",
       "phone": "",
-      "balance": 375000,
+      "balance": 370000,
       "createdAt": "2026-03-21T16:26:32.099Z"
     },
     {
       "id": "1774110427703",
       "name": "DK SINGH 4L",
       "phone": "",
-      "balance": 300000,
+      "balance": 295000,
       "createdAt": "2026-03-21T16:27:07.703Z"
     },
     {
       "id": "1774110608288",
       "name": "Ashish Mausa",
       "phone": "",
-      "balance": 493847,
+      "balance": 484149,
       "createdAt": "2026-03-21T16:30:08.288Z"
     },
     {
       "id": "1774111180336",
       "name": "DK SINGH 6L",
       "phone": "6L Loan",
-      "balance": 399669,
+      "balance": 385395,
       "createdAt": "2026-03-21T16:39:40.336Z"
     },
     {
       "id": "1774112747248",
       "name": "KIRTI House 20L",
       "phone": "",
-      "balance": 2381619,
+      "balance": 2352925,
       "createdAt": "2026-03-21T17:05:47.248Z"
+    },
+    {
+      "id": "1777904832297",
+      "name": "ANURAG",
+      "phone": "LOAN",
+      "balance": 1000000,
+      "createdAt": "2026-05-04T14:27:12.298Z"
     }
   ],
   "transactions": [
@@ -501,6 +508,158 @@
       "type": "payment",
       "note": "APRIL Month EMI",
       "date": "2026-04-16T08:05:49.756Z"
+    },
+    {
+      "id": "1777704538655",
+      "contactId": "1774109163711",
+      "amount": 3500,
+      "type": "interest",
+      "note": "APRIL INT",
+      "date": "2026-05-02T06:48:58.655Z"
+    },
+    {
+      "id": "1777704545480",
+      "contactId": "1774109261699",
+      "amount": 2500,
+      "type": "interest",
+      "note": "APRIL INT",
+      "date": "2026-05-02T06:49:05.481Z"
+    },
+    {
+      "id": "1777704614394",
+      "contactId": "1774109314676",
+      "amount": 4812.5,
+      "type": "interest",
+      "note": "APRIL INT",
+      "date": "2026-05-02T06:50:14.394Z"
+    },
+    {
+      "id": "1777704665461",
+      "contactId": "1774110392099",
+      "amount": 4687.5,
+      "type": "interest",
+      "note": "APRIL INT",
+      "date": "2026-05-02T06:51:05.461Z"
+    },
+    {
+      "id": "1777704698006",
+      "contactId": "1774110427703",
+      "amount": 3750,
+      "type": "interest",
+      "note": "APRIL INT",
+      "date": "2026-05-02T06:51:38.006Z"
+    },
+    {
+      "id": "1777704730724",
+      "contactId": "1774112747248",
+      "amount": 28694,
+      "type": "payment",
+      "note": "APRIL EMI",
+      "date": "2026-05-02T06:52:10.724Z"
+    },
+    {
+      "id": "1777704844643",
+      "contactId": "1774109056300",
+      "amount": 2559.6,
+      "type": "interest",
+      "note": "APRIL INT",
+      "date": "2026-05-02T06:54:04.643Z"
+    },
+    {
+      "id": "1777704854002",
+      "contactId": "1774109056300",
+      "amount": 10000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-02T06:54:14.002Z"
+    },
+    {
+      "id": "1777704888590",
+      "contactId": "1774109462344",
+      "amount": 100000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-02T06:54:48.590Z"
+    },
+    {
+      "id": "1777904702112",
+      "contactId": "1774109314676",
+      "amount": 4812.5,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-04T14:25:02.112Z"
+    },
+    {
+      "id": "1777904711206",
+      "contactId": "1774109314676",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-04T14:25:11.206Z"
+    },
+    {
+      "id": "1777904728633",
+      "contactId": "1774109387289",
+      "amount": 30000,
+      "type": "credit",
+      "note": "",
+      "date": "2026-05-04T14:25:28.633Z"
+    },
+    {
+      "id": "1777904746391",
+      "contactId": "1774110392099",
+      "amount": 4687.5,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-04T14:25:46.391Z"
+    },
+    {
+      "id": "1777904754128",
+      "contactId": "1774110392099",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-04T14:25:54.128Z"
+    },
+    {
+      "id": "1777904761507",
+      "contactId": "1774110427703",
+      "amount": 3750,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-04T14:26:01.507Z"
+    },
+    {
+      "id": "1777904766449",
+      "contactId": "1774110427703",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-04T14:26:06.449Z"
+    },
+    {
+      "id": "1777904776625",
+      "contactId": "1774111180336",
+      "amount": 14274,
+      "type": "payment",
+      "note": "",
+      "date": "2026-05-04T14:26:16.625Z"
+    },
+    {
+      "id": "1777904857893",
+      "contactId": "1777904832297",
+      "amount": 1000000,
+      "type": "credit",
+      "note": "8L MIS + 2 L Transfer",
+      "date": "2026-05-04T14:27:37.893Z"
+    },
+    {
+      "id": "1778163948846",
+      "contactId": "1774110608288",
+      "amount": 9698,
+      "type": "payment",
+      "note": "MAY",
+      "date": "2026-05-07T14:25:48.846Z"
     }
   ],
   "investments": [
@@ -524,27 +683,6 @@
       "type": "NPS",
       "balance": 885354,
       "createdAt": "2026-03-21T17:31:09.430Z"
-    },
-    {
-      "id": "1774114316526",
-      "name": "Ashish Mutual Fund",
-      "type": "Mutual Fund",
-      "balance": 175000,
-      "createdAt": "2026-03-21T17:31:56.526Z"
-    },
-    {
-      "id": "1774114353677",
-      "name": "Jyoti Mutual Fund",
-      "type": "Mutual Fund",
-      "balance": 495379,
-      "createdAt": "2026-03-21T17:32:33.677Z"
-    },
-    {
-      "id": "1774114488328",
-      "name": "Jyoti Stocks",
-      "type": "Stocks",
-      "balance": 300000,
-      "createdAt": "2026-03-21T17:34:48.328Z"
     },
     {
       "id": "1774114576047",
@@ -622,30 +760,6 @@
       "date": "2026-03-21T17:31:23.263Z"
     },
     {
-      "id": "1774114334139",
-      "investmentId": "1774114316526",
-      "amount": 175000,
-      "type": "invest",
-      "note": "",
-      "date": "2026-03-21T17:32:14.139Z"
-    },
-    {
-      "id": "1774114440611",
-      "investmentId": "1774114353677",
-      "amount": 436000,
-      "type": "invest",
-      "note": "",
-      "date": "2026-03-21T17:34:00.611Z"
-    },
-    {
-      "id": "1774114524367",
-      "investmentId": "1774114488328",
-      "amount": 275000,
-      "type": "invest",
-      "note": "",
-      "date": "2026-03-21T17:35:24.367Z"
-    },
-    {
       "id": "1774114585804",
       "investmentId": "1774114576047",
       "amount": 46000,
@@ -718,22 +832,6 @@
       "date": "2026-03-22T09:24:13.021Z"
     },
     {
-      "id": "1776329611599",
-      "investmentId": "1774114488328",
-      "amount": 25000,
-      "type": "invest",
-      "note": "",
-      "date": "2026-04-16T08:53:31.599Z"
-    },
-    {
-      "id": "1776334912487",
-      "investmentId": "1774114353677",
-      "amount": 59379,
-      "type": "invest",
-      "note": "",
-      "date": "2026-04-16T10:21:52.487Z"
-    },
-    {
       "id": "1776335021119",
       "investmentId": "1774114269430",
       "amount": 32029,
@@ -755,7 +853,7 @@
       "id": "1776327895208",
       "name": "Godrej Park Retreat Phase 2",
       "type": "Apartment",
-      "balance": 12500000,
+      "balance": 9500000,
       "createdAt": "2026-04-16T08:24:55.208Z"
     },
     {
@@ -781,14 +879,6 @@
       "type": "buy",
       "note": "",
       "date": "2026-04-16T08:26:39.582Z"
-    },
-    {
-      "id": "1776328014540",
-      "propertyId": "1776327895208",
-      "amount": 3000000,
-      "type": "appreciation",
-      "note": "",
-      "date": "2026-04-16T08:26:54.540Z"
     },
     {
       "id": "1776329766617",
@@ -819,14 +909,14 @@
       "id": "1776328777707",
       "name": "Credit Card Loan",
       "type": "Credit Card",
-      "balance": 829250,
+      "balance": 847649,
       "createdAt": "2026-04-16T08:39:37.707Z"
     },
     {
       "id": "1776329106522",
       "name": "JYOTI Credit Card",
       "type": "Credit Card",
-      "balance": 950000,
+      "balance": 570000,
       "createdAt": "2026-04-16T08:45:06.522Z"
     }
   ],
@@ -850,18 +940,18 @@
     {
       "id": "1776328858076",
       "loanId": "1776328777707",
-      "amount": 60000,
+      "amount": 50000,
       "type": "borrow",
       "note": "IDFC First Bank",
-      "date": "2026-04-16T08:40:58.076Z"
+      "date": "2026-04-16T14:10"
     },
     {
       "id": "1776328918798",
       "loanId": "1776328777707",
-      "amount": 68000,
+      "amount": 114399,
       "type": "borrow",
       "note": "Jupitor Card",
-      "date": "2026-04-16T08:41:58.798Z"
+      "date": "2026-04-16T14:11"
     },
     {
       "id": "1776328962741",
@@ -874,10 +964,10 @@
     {
       "id": "1776329043041",
       "loanId": "1776328777707",
-      "amount": 200000,
+      "amount": 182000,
       "type": "borrow",
       "note": "KOTAK ",
-      "date": "2026-04-16T08:44:03.042Z"
+      "date": "2026-04-16T14:14"
     },
     {
       "id": "1776329119018",
@@ -898,10 +988,10 @@
     {
       "id": "1776329195456",
       "loanId": "1776329106522",
-      "amount": 400000,
+      "amount": 200000,
       "type": "borrow",
       "note": "ICICI AMZAON",
-      "date": "2026-04-16T08:46:35.456Z"
+      "date": "2026-04-16T14:16"
     },
     {
       "id": "1776329207965",
@@ -910,14 +1000,6 @@
       "type": "borrow",
       "note": "ONE CARD",
       "date": "2026-04-16T08:46:47.965Z"
-    },
-    {
-      "id": "1776329244222",
-      "loanId": "1776329106522",
-      "amount": 150000,
-      "type": "borrow",
-      "note": "KOTAK ",
-      "date": "2026-04-16T08:47:24.222Z"
     },
     {
       "id": "1776329279353",
@@ -930,10 +1012,10 @@
     {
       "id": "1776329341082",
       "loanId": "1776329106522",
-      "amount": 100000,
+      "amount": 70000,
       "type": "borrow",
       "note": "HDFC MILENIA",
-      "date": "2026-04-16T08:49:01.082Z"
+      "date": "2026-04-16T14:19"
     }
   ],
   "rds": [
@@ -945,7 +1027,7 @@
       "interestRate": 12.25,
       "tenureMonths": 36,
       "maturityDate": "2028-02-01",
-      "balance": 25000,
+      "balance": 31250,
       "createdAt": "2026-04-16T09:25:57.260Z"
     },
     {
@@ -956,7 +1038,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2028-10-01",
-      "balance": 43750,
+      "balance": 50000,
       "createdAt": "2026-04-16T09:35:10.263Z"
     },
     {
@@ -967,7 +1049,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2027-07-02",
-      "balance": 117000,
+      "balance": 130000,
       "createdAt": "2026-04-16T09:39:42.734Z"
     },
     {
@@ -978,7 +1060,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2028-01-14",
-      "balance": 48000,
+      "balance": 60000,
       "createdAt": "2026-04-16T09:41:56.671Z"
     }
   ],
@@ -1174,6 +1256,38 @@
       "type": "deposit",
       "note": "APRIL 2026",
       "date": "2026-04-16T09:42:18.886Z"
+    },
+    {
+      "id": "1777904912301",
+      "rdId": "1776331557260",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-05-04T14:28:32.301Z"
+    },
+    {
+      "id": "1777904928892",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-05-04T14:28:48.892Z"
+    },
+    {
+      "id": "1777904938498",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-05-04T14:28:58.498Z"
+    },
+    {
+      "id": "1777904942110",
+      "rdId": "1776332516671",
+      "amount": 12000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-05-04T14:29:02.110Z"
     }
   ],
   "fds": [
@@ -1330,6 +1444,61 @@
       "type": "deposit",
       "note": "Initial Principal Deposit",
       "date": "2026-04-16T10:14:21.502Z"
+    }
+  ],
+  "mfs": [
+    {
+      "id": "1778165543961",
+      "name": "JYOTI MUTUAL FUND - COIN",
+      "platform": "Zerodha",
+      "sipAmount": 55000,
+      "startDate": "2026-05-01",
+      "balance": 430000,
+      "createdAt": "2026-05-07T14:52:23.961Z"
+    },
+    {
+      "id": "1778165584901",
+      "name": "JYOTI MUTUAL FUND - JIO",
+      "platform": "JIO",
+      "sipAmount": 1,
+      "startDate": "2026-05-01",
+      "balance": 100000,
+      "createdAt": "2026-05-07T14:53:04.901Z"
+    },
+    {
+      "id": "1778165634878",
+      "name": "ASHISH MUTUAL FUND - COIN",
+      "platform": "Zerodha COIN",
+      "sipAmount": 12000,
+      "startDate": "2026-05-01",
+      "balance": 207288,
+      "createdAt": "2026-05-07T14:53:54.878Z"
+    }
+  ],
+  "mf_transactions": [
+    {
+      "id": "1778165563032",
+      "mfId": "1778165543961",
+      "amount": 430000,
+      "type": "invest",
+      "note": "ZERODHA COIN",
+      "date": "2026-05-07T14:52:43.032Z"
+    },
+    {
+      "id": "1778165592932",
+      "mfId": "1778165584901",
+      "amount": 100000,
+      "type": "invest",
+      "note": "",
+      "date": "2026-05-07T14:53:12.932Z"
+    },
+    {
+      "id": "1778165728254",
+      "mfId": "1778165634878",
+      "amount": 207288,
+      "type": "invest",
+      "note": "",
+      "date": "2026-05-07T14:55:28.254Z"
     }
   ]
 }

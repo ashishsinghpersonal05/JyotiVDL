@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
         rds: [],
         currentRdId: null,
         fds: [],
-        currentFdId: null
+        currentFdId: null,
+        mfs: [],
+        currentMfId: null
     };
 
     // DOM Elements - Tabs & Views
@@ -24,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navLoans = document.getElementById('nav-loans');
     const navRd = document.getElementById('nav-rd');
     const navFd = document.getElementById('nav-fd');
+    const navMf = document.getElementById('nav-mf');
     const navReport = document.getElementById('nav-report');
     const workspaceHome = document.getElementById('home-workspace');
     const workspaceCustomers = document.getElementById('customers-workspace');
@@ -32,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const workspaceLoans = document.getElementById('loans-workspace');
     const workspaceRd = document.getElementById('rd-workspace');
     const workspaceFd = document.getElementById('fd-workspace');
+    const workspaceMf = document.getElementById('mf-workspace');
     const workspaceReport = document.getElementById('report-workspace');
 
     // DOM Elements - Customers
@@ -80,6 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loanDetail = document.getElementById('loan-detail');
     const modalAddLoan = document.getElementById('modal-add-loan');
     const modalAddLoanTrans = document.getElementById('modal-add-loan-trans');
+    const modalEditLoanTrans = document.getElementById('modal-edit-loan-trans');
     const btnAddLoan = document.getElementById('add-loan-btn');
     const btnLoanRepay = document.getElementById('btn-loan-repay');
     const btnLoanBorrow = document.getElementById('btn-loan-borrow');
@@ -112,6 +117,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnFdPremature = document.getElementById('btn-fd-premature');
     const btnDeleteFd = document.getElementById('btn-delete-fd');
 
+    // DOM Elements - MF
+    const mfList = document.getElementById('mf-list');
+    const totalMfBalance = document.getElementById('total-mf-balance');
+    const mfEmptyState = document.getElementById('mf-empty-state');
+    const mfDetail = document.getElementById('mf-detail');
+    const modalAddMf = document.getElementById('modal-add-mf');
+    const modalAddMfTrans = document.getElementById('modal-add-mf-trans');
+    const btnAddMf = document.getElementById('add-mf-btn');
+    const btnMfInvest = document.getElementById('btn-mf-invest');
+    const btnMfReturn = document.getElementById('btn-mf-return');
+    const btnMfWithdraw = document.getElementById('btn-mf-withdraw');
+    const btnDeleteMf = document.getElementById('btn-delete-mf');
+
     // Modals Setup helper
     const setupModal = (modal, btnOpen, closeId) => {
         const btnClose = document.getElementById(closeId);
@@ -130,10 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal(modalAddPropTrans, null, 'close-prop-trans-modal');
     setupModal(modalAddLoan, btnAddLoan, 'close-loan-modal');
     setupModal(modalAddLoanTrans, null, 'close-loan-trans-modal');
+    setupModal(modalEditLoanTrans, null, 'close-edit-loan-trans-modal');
     setupModal(modalAddRd, btnAddRd, 'close-rd-modal');
     setupModal(modalAddRdTrans, null, 'close-rd-trans-modal');
     setupModal(modalAddFd, btnAddFd, 'close-fd-modal');
     setupModal(modalAddFdTrans, null, 'close-fd-trans-modal');
+    setupModal(modalAddMf, btnAddMf, 'close-mf-modal');
+    setupModal(modalAddMfTrans, null, 'close-mf-trans-modal');
 
     const renderIcons = () => {
         if (window.lucide) {
@@ -173,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navLoans.classList.remove('active');
         navRd.classList.remove('active');
         navFd.classList.remove('active');
+        navMf.classList.remove('active');
         navReport.classList.remove('active');
 
         // Hide Workspaces
@@ -183,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
         workspaceLoans.classList.add('hidden');
         workspaceRd.classList.add('hidden');
         workspaceFd.classList.add('hidden');
+        workspaceMf.classList.add('hidden');
         workspaceReport.classList.add('hidden');
 
         if (mode === 'home') {
@@ -213,6 +236,10 @@ document.addEventListener('DOMContentLoaded', () => {
             navFd.classList.add('active');
             workspaceFd.classList.remove('hidden');
             loadFds();
+        } else if (mode === 'mf') {
+            navMf.classList.add('active');
+            workspaceMf.classList.remove('hidden');
+            loadMfs();
         } else if (mode === 'report') {
             navReport.classList.add('active');
             workspaceReport.classList.remove('hidden');
@@ -228,6 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navLoans.addEventListener('click', () => switchTab('loans'));
     navRd.addEventListener('click', () => switchTab('rd'));
     navFd.addEventListener('click', () => switchTab('fd'));
+    navMf.addEventListener('click', () => switchTab('mf'));
     navReport.addEventListener('click', () => switchTab('report'));
 
     // Dashboard Logic
@@ -239,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try { const res = await fetch('/api/loans'); state.loans = await res.json(); } catch (e) { }
         try { const res = await fetch('/api/rds'); state.rds = await res.json(); } catch (e) { }
         try { const res = await fetch('/api/fds'); state.fds = await res.json(); } catch (e) { }
+        try { const res = await fetch('/api/mfs'); state.mfs = await res.json(); } catch (e) { }
 
         const totalLent = state.contacts.reduce((sum, c) => sum + c.balance, 0);
         const totalInv = state.investments.reduce((sum, i) => sum + i.balance, 0);
@@ -246,7 +275,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalLoansOwed = state.loans.reduce((sum, l) => sum + l.balance, 0);
         const totalRdDeposited = state.rds.reduce((sum, r) => sum + r.balance, 0);
         const totalFdDeposited = state.fds.reduce((sum, f) => sum + f.balance, 0);
-        const totalNetWorthExcl = totalLent + totalInv + totalRdDeposited + totalFdDeposited - totalLoansOwed;
+        const totalMfDeposited = state.mfs.reduce((sum, m) => sum + m.balance, 0);
+        const totalNetWorthExcl = totalLent + totalInv + totalRdDeposited + totalFdDeposited + totalMfDeposited - totalLoansOwed;
         const totalNetWorthIncl = totalNetWorthExcl + totalProp;
 
         const elNetWorthExcl = document.getElementById('dash-net-worth-excl');
@@ -254,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const elNetWorthIncl = document.getElementById('dash-net-worth-incl');
         if (elNetWorthIncl) elNetWorthIncl.textContent = formatCurrencyShort(totalNetWorthIncl);
-        document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv + totalRdDeposited + totalFdDeposited);
+        document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv + totalRdDeposited + totalFdDeposited + totalMfDeposited);
 
         const elDashLent = document.getElementById('dash-lent');
         elDashLent.textContent = formatCurrencyShort(totalLent);
@@ -281,6 +311,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (totalFdDeposited > 0) {
             breakdown['Fixed Deposit'] = totalFdDeposited;
         }
+        // MFs: single group for all MFs tracked here
+        if (totalMfDeposited > 0) {
+            breakdown['Mutual Fund SIP'] = totalMfDeposited;
+        }
 
         const breakdownContainer = document.getElementById('dash-inv-breakdown');
         if (breakdownContainer) {
@@ -301,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if(type === 'Agricultural' || type === 'Plot') iconName = 'map';
                 else if(type === 'Recurring Deposit') iconName = 'calendar-check';
                 else if(type === 'Fixed Deposit') iconName = 'calendar-clock';
+                else if(type === 'Mutual Fund SIP') iconName = 'trending-up';
                 
                 breakdownContainer.innerHTML += `
                     <div class="kpi-card" style="padding: 24px; min-height: 120px; justify-content: center;">
@@ -1019,6 +1054,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <div class="trans-amount-wrapper">
                         <div class="trans-amount ${amtClass}">${sign}${formatCurrency(t.amount)}</div>
+                        <button class="edit-loan-trans-btn edit-trans-btn" data-id="${t.id}" data-amount="${t.amount}" data-note="${t.note}" data-date="${t.date}" title="Edit Transaction" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px;"><i data-lucide="edit-2" style="width:18px;height:18px;"></i></button>
                         <button class="delete-loan-trans-btn delete-trans-btn" data-id="${t.id}" title="Delete Transaction"><i data-lucide="trash-2" style="width:18px;height:18px;"></i></button>
                     </div>
                 `;
@@ -1075,6 +1111,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    document.getElementById('form-edit-loan-trans').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const id = document.getElementById('edit-loan-trans-id').value;
+        const amount = document.getElementById('edit-loan-trans-amount').value;
+        const note = document.getElementById('edit-loan-trans-note').value;
+        const date = document.getElementById('edit-loan-trans-date').value;
+
+        const res = await fetch(`/api/loan-transactions/${id}`, { 
+            method: 'PUT', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ amount, note, date }) 
+        });
+        
+        if (res.ok) {
+            document.getElementById('form-edit-loan-trans').reset();
+            modalEditLoanTrans.classList.add('hidden');
+            await loadLoans();
+            selectLoan(state.currentLoanId);
+        }
+    });
+
     btnDeleteLoan.addEventListener('click', async () => {
         if (confirm('Are you sure you want to delete this loan?')) {
             const res = await fetch(`/api/loans/${state.currentLoanId}`, { method: 'DELETE' });
@@ -1089,15 +1146,36 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById('loan-transactions-list').addEventListener('click', async (e) => {
-        const btn = e.target.closest('.delete-loan-trans-btn');
-        if (!btn) return;
-        const transId = btn.dataset.id;
-        if (confirm('Delete this transaction?')) {
-            const res = await fetch(`/api/loan-transactions/${transId}`, { method: 'DELETE' });
-            if (res.ok) {
-                await loadLoans();
-                if (state.currentLoanId) selectLoan(state.currentLoanId);
+        const deleteBtn = e.target.closest('.delete-loan-trans-btn');
+        if (deleteBtn) {
+            const transId = deleteBtn.dataset.id;
+            if (confirm('Delete this transaction?')) {
+                const res = await fetch(`/api/loan-transactions/${transId}`, { method: 'DELETE' });
+                if (res.ok) {
+                    await loadLoans();
+                    if (state.currentLoanId) selectLoan(state.currentLoanId);
+                }
             }
+            return;
+        }
+
+        const editBtn = e.target.closest('.edit-loan-trans-btn');
+        if (editBtn) {
+            document.getElementById('edit-loan-trans-id').value = editBtn.dataset.id;
+            document.getElementById('edit-loan-trans-amount').value = editBtn.dataset.amount;
+            document.getElementById('edit-loan-trans-note').value = editBtn.dataset.note !== 'undefined' ? editBtn.dataset.note : '';
+            
+            // Format datetime for local datetime input
+            const dateStr = editBtn.dataset.date;
+            if (dateStr) {
+                const dateObj = new Date(dateStr);
+                const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+                const localISOTime = (new Date(dateObj - tzoffset)).toISOString().slice(0,16);
+                document.getElementById('edit-loan-trans-date').value = localISOTime;
+            }
+            
+            modalEditLoanTrans.classList.remove('hidden');
+            return;
         }
     });
 
@@ -1665,6 +1743,210 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(error);
         }
     };
+
+    // ==========================================
+    // MF (MUTUAL FUNDS) LOGIC
+    // ==========================================
+
+    const loadMfs = async () => {
+        try {
+            const res = await fetch('/api/mfs');
+            state.mfs = await res.json();
+            renderMfs();
+            updateTotalMfBalance();
+        } catch (error) {
+            mfList.innerHTML = '<div class="loading">Error loading</div>';
+        }
+    };
+
+    const renderMfs = () => {
+        mfList.innerHTML = '';
+        if (state.mfs.length === 0) {
+            mfList.innerHTML = '<div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">No Mutual Funds yet</div>';
+            return;
+        }
+
+        state.mfs.forEach(mf => {
+            const item = document.createElement('div');
+            item.className = `contact-item ${state.currentMfId === mf.id ? 'active' : ''}`;
+            item.onclick = () => selectMf(mf.id);
+
+            const initial = mf.name.charAt(0).toUpperCase();
+
+            item.innerHTML = `
+                <div class="avatar" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">${initial}</div>
+                <div class="contact-details-list">
+                    <div class="contact-name">${mf.name}</div>
+                    <div class="contact-time">${mf.platform || 'MF SIP'} - ₹${mf.sipAmount}/mo</div>
+                </div>
+                <div class="contact-bal text-success">${formatCurrency(mf.balance)}</div>
+            `;
+            mfList.appendChild(item);
+        });
+        renderIcons();
+    };
+
+    const updateTotalMfBalance = () => {
+        let total = state.mfs.reduce((sum, m) => sum + m.balance, 0);
+        totalMfBalance.textContent = formatCurrency(total);
+        totalMfBalance.className = `balance-amount text-success`;
+    };
+
+    const selectMf = async (id) => {
+        state.currentMfId = id;
+        renderMfs();
+
+        const mf = state.mfs.find(m => m.id === id);
+        if (!mf) return;
+
+        document.getElementById('mf-detail-avatar').textContent = mf.name.charAt(0).toUpperCase();
+        document.getElementById('mf-detail-name').textContent = mf.name;
+        document.getElementById('mf-detail-meta').textContent = `${mf.platform || 'MF SIP'} • ₹${mf.sipAmount}/mo`;
+        
+        let startText = mf.startDate ? `Started: ${formatDate(mf.startDate).split(',')[0]}` : '';
+        document.getElementById('mf-detail-start').textContent = startText;
+
+        const detailBal = document.getElementById('mf-detail-balance');
+        detailBal.textContent = formatCurrency(mf.balance);
+
+        mfEmptyState.classList.remove('active');
+        mfEmptyState.classList.add('hidden');
+        mfDetail.classList.remove('hidden');
+
+        await loadMfTransactions(id);
+    };
+
+    const loadMfTransactions = async (id) => {
+        const transList = document.getElementById('mf-transactions-list');
+        transList.innerHTML = '<div class="loading" style="text-align:center;color:var(--text-secondary);padding:20px;">Loading...</div>';
+
+        try {
+            const res = await fetch(`/api/mf-transactions/${id}`);
+            const transactions = await res.json();
+
+            transList.innerHTML = '';
+            if (transactions.length === 0) {
+                transList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">No transactions yet. Add your first investment!</div>';
+                return;
+            }
+
+            transactions.forEach(t => {
+                const item = document.createElement('div');
+                item.className = 'transaction-card';
+
+                if (t.type === 'withdraw') item.classList.add('credit');
+                else if (t.type === 'invest') item.classList.add('payment');
+                else item.classList.add('interest');
+
+                let noteDefault = 'Transaction';
+                if (t.type === 'invest') noteDefault = 'Investment';
+                if (t.type === 'return') noteDefault = 'Return / Interest';
+                if (t.type === 'withdraw') noteDefault = 'Withdrawal';
+
+                const sign = (t.type === 'withdraw') ? '-' : '+';
+                const balClass = (t.type === 'withdraw') ? 'credit' : (t.type === 'invest' ? 'payment' : 'interest');
+
+                item.innerHTML = `
+                    <div class="trans-info">
+                        <div class="trans-note">${t.note || noteDefault}</div>
+                        <div class="trans-date">${formatDate(t.date)}</div>
+                    </div>
+                    <div class="trans-amount-wrapper">
+                        <div class="trans-amount ${balClass}">${sign}${formatCurrency(t.amount)}</div>
+                        <button class="delete-mf-trans-btn delete-trans-btn" data-id="${t.id}" title="Delete Transaction"><i data-lucide="trash-2" style="width:18px;height:18px;"></i></button>
+                    </div>
+                `;
+                transList.appendChild(item);
+            });
+            renderIcons();
+        } catch (error) {
+            console.error('Fail to load transactions', error);
+        }
+    };
+
+    document.getElementById('form-add-mf').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('mf-name').value;
+        const platform = document.getElementById('mf-platform').value;
+        const sipAmount = document.getElementById('mf-sip-amount').value;
+        const startDate = document.getElementById('mf-start-date').value;
+        
+        const res = await fetch('/api/mfs', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ name, platform, sipAmount, startDate }) 
+        });
+        
+        if (res.ok) {
+            document.getElementById('form-add-mf').reset();
+            modalAddMf.classList.add('hidden');
+            loadMfs();
+        }
+    });
+
+    // Transaction Modals (MFs)
+    btnMfInvest.addEventListener('click', () => {
+        document.getElementById('mf-trans-modal-title').textContent = 'Add Investment';
+        document.getElementById('mf-trans-type').value = 'invest';
+        modalAddMfTrans.classList.remove('hidden');
+    });
+
+    btnMfReturn.addEventListener('click', () => {
+        document.getElementById('mf-trans-modal-title').textContent = 'Add Returns / Interest';
+        document.getElementById('mf-trans-type').value = 'return';
+        modalAddMfTrans.classList.remove('hidden');
+    });
+
+    btnMfWithdraw.addEventListener('click', () => {
+        document.getElementById('mf-trans-modal-title').textContent = 'Withdraw Funds';
+        document.getElementById('mf-trans-type').value = 'withdraw';
+        modalAddMfTrans.classList.remove('hidden');
+    });
+
+    document.getElementById('form-add-mf-trans').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const amount = document.getElementById('mf-trans-amount').value;
+        const note = document.getElementById('mf-trans-note').value;
+        const type = document.getElementById('mf-trans-type').value;
+
+        const res = await fetch('/api/mf-transactions', { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ mfId: state.currentMfId, amount, type, note }) 
+        });
+        if (res.ok) {
+            document.getElementById('form-add-mf-trans').reset();
+            modalAddMfTrans.classList.add('hidden');
+            await loadMfs();
+            selectMf(state.currentMfId);
+        }
+    });
+
+    btnDeleteMf.addEventListener('click', async () => {
+        if (confirm('Are you sure you want to delete this Mutual Fund?')) {
+            const res = await fetch(`/api/mfs/${state.currentMfId}`, { method: 'DELETE' });
+            if (res.ok) {
+                state.currentMfId = null;
+                mfDetail.classList.add('hidden');
+                mfEmptyState.classList.remove('hidden');
+                mfEmptyState.classList.add('active');
+                loadMfs();
+            }
+        }
+    });
+
+    document.getElementById('mf-transactions-list').addEventListener('click', async (e) => {
+        const btn = e.target.closest('.delete-mf-trans-btn');
+        if (!btn) return;
+        const transId = btn.dataset.id;
+        if (confirm('Delete this transaction?')) {
+            const res = await fetch(`/api/mf-transactions/${transId}`, { method: 'DELETE' });
+            if (res.ok) {
+                await loadMfs();
+                if (state.currentMfId) selectMf(state.currentMfId);
+            }
+        }
+    });
 
     // Boot
     switchTab('home');

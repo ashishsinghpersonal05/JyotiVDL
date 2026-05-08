@@ -48,6 +48,10 @@
                     <i data-lucide="calendar-clock" class="nav-icon"></i>
                     <span class="nav-label">FD</span>
                 </button>
+                <button id="nav-mf" class="nav-btn">
+                    <i data-lucide="trending-up" class="nav-icon"></i>
+                    <span class="nav-label">Mutual Funds</span>
+                </button>
                 <button id="nav-report" class="nav-btn">
                     <i data-lucide="bar-chart-2" class="nav-icon"></i>
                     <span class="nav-label">Report</span>
@@ -555,6 +559,75 @@
                 </main>
             </div>
 
+            <!-- 7. MF WORKSPACE -->
+            <div id="mf-workspace" class="workspace-view split-layout hidden">
+                <!-- Sidebar: MF List -->
+                <aside class="sidebar inner-sidebar">
+                    <div class="sidebar-header">
+                        <h1>Mutual Funds</h1>
+                        <p class="subtitle">Track your SIPs & investments</p>
+                    </div>
+
+                    <div class="view-section" style="flex:1; overflow:hidden;">
+                        <button id="add-mf-btn" class="btn primary-btn"
+                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add MF</button>
+                        <div class="summary-card">
+                            <h2>Total Invested</h2>
+                            <div id="total-mf-balance" class="balance-amount">₹0.00</div>
+                        </div>
+                        <div class="contacts-list" id="mf-list">
+                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                                MFs...</div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content: MF Detail -->
+                <main class="main-content">
+                    <div id="mf-empty-state" class="empty-state active">
+                        <div class="empty-icon"><i data-lucide="trending-up"
+                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                        <h2>Select a Mutual Fund</h2>
+                        <p>Choose a Mutual Fund from the sidebar to view its status, add SIPs, or record withdrawals.</p>
+                    </div>
+
+                    <div id="mf-detail" class="contact-detail hidden">
+                        <header class="detail-header">
+                            <div class="contact-info">
+                                <div class="avatar" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);"
+                                    id="mf-detail-avatar">M</div>
+                                <div>
+                                    <h2 id="mf-detail-name">MF Name</h2>
+                                    <p id="mf-detail-meta">Platform &bull; SIP Amount</p>
+                                </div>
+                            </div>
+                            <div class="contact-balance-card">
+                                <span>Total Invested</span>
+                                <div id="mf-detail-balance" class="balance-amount text-success">₹0.00</div>
+                                <div id="mf-detail-start" style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
+                                <button id="btn-delete-mf" class="btn"
+                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                    MF</button>
+                            </div>
+                        </header>
+
+                        <div class="action-buttons">
+                            <button id="btn-mf-invest" class="btn action-btn success-btn"><i
+                                    data-lucide="plus-circle"></i> Add Investment</button>
+                            <button id="btn-mf-return" class="btn action-btn warning-btn"><i
+                                    data-lucide="trending-up"></i> Add Return / Interest</button>
+                            <button id="btn-mf-withdraw" class="btn action-btn danger-btn"><i
+                                    data-lucide="alert-triangle"></i> Withdraw</button>
+                        </div>
+
+                        <div class="transactions-section">
+                            <h3>Transaction History</h3>
+                            <div class="transactions-list" id="mf-transactions-list"></div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
         </div>
     </div>
 
@@ -743,6 +816,31 @@
         </div>
     </div>
 
+    <!-- Edit Loan Transaction Modal -->
+    <div id="modal-edit-loan-trans" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-edit-loan-trans-modal">&times;</button>
+            <h2>Edit Transaction</h2>
+            <form id="form-edit-loan-trans">
+                <input type="hidden" id="edit-loan-trans-id">
+                <div class="form-group">
+                    <label for="edit-loan-trans-amount">Amount (₹)</label>
+                    <input type="number" id="edit-loan-trans-amount" required min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="edit-loan-trans-note">Note (Optional)</label>
+                    <input type="text" id="edit-loan-trans-note">
+                </div>
+                <div class="form-group">
+                    <label for="edit-loan-trans-date">Date</label>
+                    <input type="datetime-local" id="edit-loan-trans-date" required
+                        style="width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; outline: none; margin-top: 4px;">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Add RD Modal -->
     <div id="modal-add-rd" class="modal-overlay hidden">
         <div class="modal">
@@ -849,6 +947,54 @@
                 <div class="form-group">
                     <label for="fd-trans-note">Note (Optional)</label>
                     <input type="text" id="fd-trans-note" placeholder="What was this for?">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add MF Modal -->
+    <div id="modal-add-mf" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-mf-modal">&times;</button>
+            <h2>Add New Mutual Fund</h2>
+            <form id="form-add-mf">
+                <div class="form-group">
+                    <label for="mf-name">Fund Name</label>
+                    <input type="text" id="mf-name" required placeholder="E.g., Parag Parikh Flexi Cap">
+                </div>
+                <div class="form-group">
+                    <label for="mf-platform">Platform / AMC (Optional)</label>
+                    <input type="text" id="mf-platform" placeholder="E.g., Groww, Zerodha">
+                </div>
+                <div class="form-group">
+                    <label for="mf-sip-amount">Monthly SIP Amount (₹)</label>
+                    <input type="number" id="mf-sip-amount" required placeholder="E.g., 5000" min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="mf-start-date">Start Date (Optional)</label>
+                    <input type="date" id="mf-start-date"
+                        style="width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; outline: none; margin-top: 4px;">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save MF</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add MF Transaction Modal -->
+    <div id="modal-add-mf-trans" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-mf-trans-modal">&times;</button>
+            <h2 id="mf-trans-modal-title">Add MF Transaction</h2>
+            <form id="form-add-mf-trans">
+                <input type="hidden" id="mf-trans-type">
+                <div class="form-group">
+                    <label for="mf-trans-amount">Amount (₹)</label>
+                    <input type="number" id="mf-trans-amount" required placeholder="0.00" min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="mf-trans-note">Note (Optional)</label>
+                    <input type="text" id="mf-trans-note" placeholder="What was this for?">
                 </div>
                 <button type="submit" class="btn primary-btn submit-btn">Save</button>
             </form>

@@ -524,6 +524,51 @@ app.delete('/api/loan-transactions/:id', (req, res) => {
     res.json({ success: true });
 });
 
+app.put('/api/loan-transactions/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    const { amount, note, date } = req.body;
+    
+    const index = data.loan_transactions.findIndex(t => t.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
+    
+    const trans = data.loan_transactions[index];
+    const loan = data.loans.find(l => l.id === trans.loanId);
+    
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+        return res.status(400).json({ error: 'Valid amount is required' });
+    }
+
+    if (loan) {
+        // Reverse the old amount's effect
+        if (trans.type === 'borrow' || trans.type === 'interest') {
+            loan.balance -= trans.amount;
+        } else if (trans.type === 'repay') {
+            loan.balance += trans.amount;
+        }
+
+        // Apply the new amount's effect
+        if (trans.type === 'borrow' || trans.type === 'interest') {
+            loan.balance += numAmount;
+        } else if (trans.type === 'repay') {
+            loan.balance -= numAmount;
+        }
+    }
+
+    // Update transaction
+    data.loan_transactions[index].amount = numAmount;
+    if (note !== undefined) {
+        data.loan_transactions[index].note = note;
+    }
+    if (date) {
+        data.loan_transactions[index].date = date; // Allows changing transaction date
+    }
+
+    writeData(data);
+    res.json(data.loan_transactions[index]);
+});
+
 // ==========================================
 // REPORTS ROUTES
 // ==========================================
@@ -838,6 +883,139 @@ app.delete('/api/fd-transactions/:id', (req, res) => {
     }
 
     data.fd_transactions.splice(index, 1);
+    writeData(data);
+    res.json({ success: true });
+});
+
+// ==========================================
+// MF (MUTUAL FUND) ROUTES
+// ==========================================
+
+app.get('/api/mfs', (req, res) => {
+    const data = readData();
+    res.json(data.mfs || []);
+});
+
+app.post('/api/mfs', (req, res) => {
+    const data = readData();
+    const { name, sipAmount, platform, startDate } = req.body;
+
+    if (!name || !sipAmount) return res.status(400).json({ error: 'Name and SIP amount are required' });
+
+    if (!data.mfs) data.mfs = [];
+
+    const newMf = {
+        id: Date.now().toString(),
+        name,
+        platform: platform || '',
+        sipAmount: parseFloat(sipAmount),
+        startDate: startDate || '',
+        balance: 0, // Total invested
+        createdAt: new Date().toISOString()
+    };
+
+    data.mfs.push(newMf);
+    writeData(data);
+    res.status(201).json(newMf);
+});
+
+app.delete('/api/mfs/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+
+    if (!data.mfs) data.mfs = [];
+    if (!data.mf_transactions) data.mf_transactions = [];
+
+    const initialLen = data.mfs.length;
+    data.mfs = data.mfs.filter(m => m.id !== id);
+    data.mf_transactions = data.mf_transactions.filter(t => t.mfId !== id);
+
+    if (data.mfs.length === initialLen) {
+        return res.status(404).json({ error: 'MF not found' });
+    }
+
+    writeData(data);
+    res.json({ success: true });
+});
+
+app.get('/api/mf-transactions/:mfId', (req, res) => {
+    const data = readData();
+    const { mfId } = req.params;
+    
+    if (!data.mf_transactions) data.mf_transactions = [];
+    
+    const mfTransactions = data.mf_transactions.filter(t => t.mfId === mfId);
+    mfTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+    res.json(mfTransactions);
+});
+
+app.post('/api/mf-transactions', (req, res) => {
+    const data = readData();
+    const { mfId, amount, type, note } = req.body;
+
+    if (!mfId || !amount || !type) {
+        return res.status(400).json({ error: 'mfId, amount, and type are required' });
+    }
+
+    const numAmount = parseFloat(amount);
+    if (isNaN(numAmount) || numAmount <= 0) {
+        return res.status(400).json({ error: 'Valid amount is required' });
+    }
+
+    if (!data.mf_transactions) data.mf_transactions = [];
+    if (!data.mfs) data.mfs = [];
+
+    const newTransaction = {
+        id: Date.now().toString(),
+        mfId,
+        amount: numAmount,
+        type, // 'invest', 'return', 'withdraw'
+        note: note || '',
+        date: new Date().toISOString()
+    };
+
+    let found = false;
+    for (const mf of data.mfs) {
+        if (mf.id === mfId) {
+            found = true;
+            if (type === 'invest' || type === 'return') {
+                mf.balance += numAmount; // Adds to total invested/value
+            } else if (type === 'withdraw') {
+                mf.balance -= numAmount;
+            }
+            break;
+        }
+    }
+
+    if (!found) return res.status(404).json({ error: 'MF not found' });
+
+    data.mf_transactions.push(newTransaction);
+    writeData(data);
+    res.status(201).json(newTransaction);
+});
+
+app.delete('/api/mf-transactions/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+
+    if (!data.mf_transactions) data.mf_transactions = [];
+    if (!data.mfs) data.mfs = [];
+
+    const index = data.mf_transactions.findIndex(t => t.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
+
+    const trans = data.mf_transactions[index];
+    const mf = data.mfs.find(m => m.id === trans.mfId);
+
+    if (mf) {
+        if (trans.type === 'invest' || trans.type === 'return') {
+            mf.balance -= trans.amount;
+        } else if (trans.type === 'withdraw') {
+            mf.balance += trans.amount;
+        }
+    }
+
+    data.mf_transactions.splice(index, 1);
     writeData(data);
     res.json({ success: true });
 });
