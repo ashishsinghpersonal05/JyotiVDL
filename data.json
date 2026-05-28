@@ -88,7 +88,7 @@
       "id": "1777904832297",
       "name": "ANURAG",
       "phone": "LOAN",
-      "balance": 1000000,
+      "balance": 1200000,
       "createdAt": "2026-05-04T14:27:12.298Z"
     }
   ],
@@ -708,6 +708,14 @@
       "type": "payment",
       "note": "",
       "date": "2026-05-17T04:52:43.904Z"
+    },
+    {
+      "id": "1779605082818",
+      "contactId": "1777904832297",
+      "amount": 200000,
+      "type": "credit",
+      "note": "",
+      "date": "2026-05-24T06:44:42.818Z"
     }
   ],
   "investments": [
@@ -715,14 +723,14 @@
       "id": "1774114057173",
       "name": "Aanya Sukanya",
       "type": "Sukanya Samriddhi",
-      "balance": 341000,
+      "balance": 382076,
       "createdAt": "2026-03-21T17:27:37.173Z"
     },
     {
       "id": "1774114230590",
       "name": "EPF",
       "type": "EPF",
-      "balance": 1948281,
+      "balance": 2025149,
       "createdAt": "2026-03-21T17:30:30.590Z"
     },
     {
@@ -736,7 +744,7 @@
       "id": "1774114576047",
       "name": "Ashish PPF",
       "type": "PPF",
-      "balance": 46000,
+      "balance": 50000,
       "createdAt": "2026-03-21T17:36:16.047Z"
     },
     {
@@ -778,7 +786,7 @@
       "id": "1774116259827",
       "name": "Ashish BAJAJ Allianz Goal",
       "type": "ULIP",
-      "balance": 288000,
+      "balance": 388000,
       "createdAt": "2026-03-21T18:04:19.828Z"
     }
   ],
@@ -894,6 +902,38 @@
       "type": "return",
       "note": "APRIL",
       "date": "2026-04-16T10:24:12.616Z"
+    },
+    {
+      "id": "1779605290660",
+      "investmentId": "1774114057173",
+      "amount": 41076,
+      "type": "invest",
+      "note": "",
+      "date": "2026-05-24T06:48:10.660Z"
+    },
+    {
+      "id": "1779605627167",
+      "investmentId": "1774114230590",
+      "amount": 76868,
+      "type": "invest",
+      "note": "Updated May",
+      "date": "2026-05-24T06:53:47.167Z"
+    },
+    {
+      "id": "1779988339446",
+      "investmentId": "1774116259827",
+      "amount": 100000,
+      "type": "return",
+      "note": "",
+      "date": "2026-05-28T17:12:19.446Z"
+    },
+    {
+      "id": "1779988468347",
+      "investmentId": "1774114576047",
+      "amount": 4000,
+      "type": "return",
+      "note": "",
+      "date": "2026-05-28T17:14:28.347Z"
     }
   ],
   "properties": [
@@ -957,15 +997,29 @@
       "id": "1776328777707",
       "name": "Credit Card Loan",
       "type": "Credit Card",
-      "balance": 847649,
+      "balance": 1065649,
       "createdAt": "2026-04-16T08:39:37.707Z"
     },
     {
       "id": "1776329106522",
       "name": "JYOTI Credit Card",
       "type": "Credit Card",
-      "balance": 570000,
+      "balance": 450000,
       "createdAt": "2026-04-16T08:45:06.522Z"
+    },
+    {
+      "id": "1779988954985",
+      "name": "ANUJ CARD",
+      "type": "Home Loan",
+      "balance": 250000,
+      "createdAt": "2026-05-28T17:22:34.985Z"
+    },
+    {
+      "id": "1779989166715",
+      "name": "PAPA CARD",
+      "type": "Home Loan",
+      "balance": 100000,
+      "createdAt": "2026-05-28T17:26:06.715Z"
     }
   ],
   "loan_transactions": [
@@ -980,10 +1034,10 @@
     {
       "id": "1776328798646",
       "loanId": "1776328777707",
-      "amount": 200000,
+      "amount": 100000,
       "type": "borrow",
       "note": "MOM Credit Card KOTAK",
-      "date": "2026-04-16T08:39:58.646Z"
+      "date": "2026-04-16T14:09"
     },
     {
       "id": "1776328858076",
@@ -1012,18 +1066,10 @@
     {
       "id": "1776329043041",
       "loanId": "1776328777707",
-      "amount": 182000,
+      "amount": 300000,
       "type": "borrow",
       "note": "KOTAK ",
       "date": "2026-04-16T14:14"
-    },
-    {
-      "id": "1776329119018",
-      "loanId": "1776328777707",
-      "amount": 100000,
-      "type": "borrow",
-      "note": "PAPA ICICI",
-      "date": "2026-04-16T08:45:19.018Z"
     },
     {
       "id": "1776329128842",
@@ -1044,26 +1090,66 @@
     {
       "id": "1776329207965",
       "loanId": "1776329106522",
-      "amount": 250000,
+      "amount": 100000,
       "type": "borrow",
       "note": "ONE CARD",
-      "date": "2026-04-16T08:46:47.965Z"
-    },
-    {
-      "id": "1776329279353",
-      "loanId": "1776329106522",
-      "amount": 50000,
-      "type": "borrow",
-      "note": "IDFC First Bank",
-      "date": "2026-04-16T08:47:59.353Z"
+      "date": "2026-04-16T14:16"
     },
     {
       "id": "1776329341082",
       "loanId": "1776329106522",
-      "amount": 70000,
+      "amount": 50000,
       "type": "borrow",
       "note": "HDFC MILENIA",
       "date": "2026-04-16T14:19"
+    },
+    {
+      "id": "1779988711707",
+      "loanId": "1776328777707",
+      "amount": 100000,
+      "type": "borrow",
+      "note": "HSBC LIVE",
+      "date": "2026-05-28T17:18:31.707Z"
+    },
+    {
+      "id": "1779988807133",
+      "loanId": "1776328777707",
+      "amount": 200000,
+      "type": "borrow",
+      "note": "ONE CARD",
+      "date": "2026-05-28T17:20:07.133Z"
+    },
+    {
+      "id": "1779988928405",
+      "loanId": "1776329106522",
+      "amount": 100000,
+      "type": "borrow",
+      "note": "POP YES BANK",
+      "date": "2026-05-28T22:52"
+    },
+    {
+      "id": "1779988967181",
+      "loanId": "1779988954985",
+      "amount": 200000,
+      "type": "borrow",
+      "note": "HDFC",
+      "date": "2026-05-28T17:22:47.181Z"
+    },
+    {
+      "id": "1779988987500",
+      "loanId": "1779988954985",
+      "amount": 50000,
+      "type": "borrow",
+      "note": "KOTAK",
+      "date": "2026-05-28T17:23:07.500Z"
+    },
+    {
+      "id": "1779989173457",
+      "loanId": "1779989166715",
+      "amount": 100000,
+      "type": "borrow",
+      "note": "",
+      "date": "2026-05-28T17:26:13.457Z"
     }
   ],
   "rds": [
@@ -1097,7 +1183,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2027-07-02",
-      "balance": 130000,
+      "balance": 143000,
       "createdAt": "2026-04-16T09:39:42.734Z"
     },
     {
@@ -1336,6 +1422,14 @@
       "type": "deposit",
       "note": "",
       "date": "2026-05-04T14:29:02.110Z"
+    },
+    {
+      "id": "1779988576181",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-05-28T17:16:16.181Z"
     }
   ],
   "fds": [
@@ -1501,7 +1595,7 @@
       "platform": "Zerodha",
       "sipAmount": 55000,
       "startDate": "2026-05-01",
-      "balance": 430000,
+      "balance": 464000,
       "createdAt": "2026-05-07T14:52:23.961Z"
     },
     {
@@ -1547,6 +1641,14 @@
       "type": "invest",
       "note": "",
       "date": "2026-05-07T14:55:28.254Z"
+    },
+    {
+      "id": "1779605848323",
+      "mfId": "1778165543961",
+      "amount": 34000,
+      "type": "invest",
+      "note": "May",
+      "date": "2026-05-24T06:57:28.323Z"
     }
   ]
 }
