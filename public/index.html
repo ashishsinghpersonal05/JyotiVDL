@@ -36,10 +36,45 @@
                     <i data-lucide="credit-card" class="nav-icon"></i>
                     <span class="nav-label">Loans</span>
                 </button>
-                <button id="nav-investments" class="nav-btn">
+                <button id="nav-mega-investments" class="nav-btn">
                     <i data-lucide="trending-up" class="nav-icon"></i>
                     <span class="nav-label">Investments</span>
+                    <i data-lucide="chevron-down" class="nav-icon chevron" style="margin-left: auto; width: 18px; height: 18px; transition: transform 0.2s;"></i>
                 </button>
+                <div id="investments-submenu" class="nav-submenu hidden">
+                    <button id="nav-inv-epf" class="nav-btn" data-mode="epf">
+                        <i data-lucide="piggy-bank" class="nav-icon"></i>
+                        <span class="nav-label">EPF</span>
+                    </button>
+                    <button id="nav-inv-nps" class="nav-btn" data-mode="nps">
+                        <i data-lucide="piggy-bank" class="nav-icon"></i>
+                        <span class="nav-label">NPS</span>
+                    </button>
+                    <button id="nav-inv-sukanya" class="nav-btn" data-mode="sukanya">
+                        <i data-lucide="piggy-bank" class="nav-icon"></i>
+                        <span class="nav-label">Sukanya</span>
+                    </button>
+                    <button id="nav-inv-ppf" class="nav-btn" data-mode="ppf">
+                        <i data-lucide="piggy-bank" class="nav-icon"></i>
+                        <span class="nav-label">PPF</span>
+                    </button>
+                    <button id="nav-inv-society" class="nav-btn" data-mode="society">
+                        <i data-lucide="piggy-bank" class="nav-icon"></i>
+                        <span class="nav-label">Society</span>
+                    </button>
+                    <button id="nav-inv-ulip" class="nav-btn" data-mode="ulip">
+                        <i data-lucide="piggy-bank" class="nav-icon"></i>
+                        <span class="nav-label">ULIP</span>
+                    </button>
+                    <button id="nav-inv-other" class="nav-btn" data-mode="other">
+                        <i data-lucide="piggy-bank" class="nav-icon"></i>
+                        <span class="nav-label">Other</span>
+                    </button>
+                    <button id="nav-mf" class="nav-btn">
+                        <i data-lucide="trending-up" class="nav-icon"></i>
+                        <span class="nav-label">Mutual Funds</span>
+                    </button>
+                </div>
                 <button id="nav-rd" class="nav-btn">
                     <i data-lucide="calendar-check" class="nav-icon"></i>
                     <span class="nav-label">RD</span>
@@ -47,10 +82,6 @@
                 <button id="nav-fd" class="nav-btn">
                     <i data-lucide="calendar-clock" class="nav-icon"></i>
                     <span class="nav-label">FD</span>
-                </button>
-                <button id="nav-mf" class="nav-btn">
-                    <i data-lucide="trending-up" class="nav-icon"></i>
-                    <span class="nav-label">Mutual Funds</span>
                 </button>
                 <button id="nav-report" class="nav-btn">
                     <i data-lucide="bar-chart-2" class="nav-icon"></i>
@@ -695,6 +726,8 @@
                         <option value="RD">Recurring Deposit</option>
                         <option value="NPS">NPS</option>
                         <option value="Sukanya Samriddhi">Sukanya Samriddhi</option>
+                        <option value="PPF">PPF</option>
+                        <option value="ULIP">ULIP</option>
                         <option value="Stocks">Stocks</option>
                         <option value="Crypto">Crypto</option>
                         <option value="Society">Society</option>

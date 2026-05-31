@@ -654,6 +654,22 @@ body {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.1) transparent;
+}
+
+.nav-links::-webkit-scrollbar {
+    width: 6px;
+}
+
+.nav-links::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.nav-links::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .nav-btn {
@@ -685,6 +701,28 @@ body {
 
 .nav-btn.active .nav-icon {
     transform: scale(1.1);
+}
+
+.nav-btn.expanded .chevron {
+    transform: rotate(180deg);
+}
+
+.nav-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-left: 20px;
+    margin-top: -4px;
+    margin-bottom: 4px;
+}
+
+.nav-submenu.hidden {
+    display: none;
+}
+
+.nav-submenu .nav-btn {
+    padding: 10px 16px;
+    font-size: 0.95rem;
 }
 
 .nav-icon {

@@ -21,7 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements - Tabs & Views
     const navHome = document.getElementById('nav-home');
     const navCustomers = document.getElementById('nav-customers');
-    const navInvestments = document.getElementById('nav-investments');
+    const navMegaInvestments = document.getElementById('nav-mega-investments');
+    const investmentsSubmenu = document.getElementById('investments-submenu');
+    const navInvTabs = [
+        { id: 'epf', el: document.getElementById('nav-inv-epf') },
+        { id: 'nps', el: document.getElementById('nav-inv-nps') },
+        { id: 'sukanya', el: document.getElementById('nav-inv-sukanya') },
+        { id: 'ppf', el: document.getElementById('nav-inv-ppf') },
+        { id: 'society', el: document.getElementById('nav-inv-society') },
+        { id: 'ulip', el: document.getElementById('nav-inv-ulip') },
+        { id: 'other', el: document.getElementById('nav-inv-other') }
+    ];
     const navProperties = document.getElementById('nav-properties');
     const navLoans = document.getElementById('nav-loans');
     const navRd = document.getElementById('nav-rd');
@@ -145,6 +155,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal(modalAddContact, btnAddContact, 'close-contact-modal');
     setupModal(modalAddTransaction, null, 'close-trans-modal');
     setupModal(modalAddInv, btnAddInv, 'close-inv-modal');
+    if (btnAddInv) {
+        btnAddInv.addEventListener('click', () => {
+            const selectEl = document.getElementById('inv-type');
+            if (selectEl) {
+                selectEl.value = getMappedInvType(state.mode);
+            }
+        });
+    }
     setupModal(modalAddInvTrans, null, 'close-inv-trans-modal');
     setupModal(modalAddProp, btnAddProp, 'close-prop-modal');
     setupModal(modalAddPropTrans, null, 'close-prop-trans-modal');
@@ -185,6 +203,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
     };
 
+    const getMappedInvType = (mode) => {
+        const mapping = {
+            'epf': 'EPF',
+            'nps': 'NPS',
+            'sukanya': 'Sukanya Samriddhi',
+            'ppf': 'PPF',
+            'society': 'Society',
+            'ulip': 'ULIP',
+            'other': 'Other'
+        };
+        return mapping[mode] || 'Other';
+    };
+
     // Tab Switching Logic
     const switchTab = async (mode) => {
         state.mode = mode;
@@ -192,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset Nav
         navHome.classList.remove('active');
         navCustomers.classList.remove('active');
-        navInvestments.classList.remove('active');
+        navInvTabs.forEach(tab => tab.el.classList.remove('active'));
         navProperties.classList.remove('active');
         navLoans.classList.remove('active');
         navRd.classList.remove('active');
@@ -220,9 +251,12 @@ document.addEventListener('DOMContentLoaded', () => {
             workspaceCustomers.classList.remove('hidden');
             if (customerSearchInput) customerSearchInput.value = '';
             loadContacts();
-        } else if (mode === 'investments') {
-            navInvestments.classList.add('active');
+        } else if (navInvTabs.some(tab => tab.id === mode)) {
+            const activeTab = navInvTabs.find(tab => tab.id === mode);
+            activeTab.el.classList.add('active');
             workspaceInvestments.classList.remove('hidden');
+            const typeLabel = activeTab.id === 'other' ? 'Other' : getMappedInvType(mode);
+            document.querySelector('#investments-workspace .sidebar-header h1').textContent = typeLabel + ' Investments';
             loadInvestments();
         } else if (mode === 'properties') {
             navProperties.classList.add('active');
@@ -254,7 +288,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     navHome.addEventListener('click', () => switchTab('home'));
     navCustomers.addEventListener('click', () => switchTab('customers'));
-    navInvestments.addEventListener('click', () => switchTab('investments'));
+    if (navMegaInvestments && investmentsSubmenu) {
+        navMegaInvestments.addEventListener('click', () => {
+            navMegaInvestments.classList.toggle('expanded');
+            investmentsSubmenu.classList.toggle('hidden');
+        });
+    }
+    navInvTabs.forEach(tab => {
+        tab.el.addEventListener('click', () => switchTab(tab.id));
+    });
     navProperties.addEventListener('click', () => switchTab('properties'));
     navLoans.addEventListener('click', () => switchTab('loans'));
     navRd.addEventListener('click', () => switchTab('rd'));
@@ -592,7 +634,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch('/api/investments');
             state.investments = await res.json();
             renderInvestments();
-            updateTotalInvBalance();
         } catch (error) {
             invList.innerHTML = '<div class="loading">Error loading</div>';
         }
@@ -600,12 +641,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderInvestments = () => {
         invList.innerHTML = '';
-        if (state.investments.length === 0) {
+        const requiredType = getMappedInvType(state.mode);
+        const filteredInvestments = state.investments.filter(inv => inv.type === requiredType);
+
+        if (filteredInvestments.length === 0) {
             invList.innerHTML = '<div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">No investments yet</div>';
+            updateTotalInvBalance(filteredInvestments);
             return;
         }
 
-        state.investments.forEach(inv => {
+        filteredInvestments.forEach(inv => {
             const item = document.createElement('div');
             item.className = `contact-item ${state.currentInvId === inv.id ? 'active' : ''}`;
             item.onclick = () => selectInvestment(inv.id);
@@ -623,11 +668,12 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             invList.appendChild(item);
         });
+        updateTotalInvBalance(filteredInvestments);
         renderIcons();
     };
 
-    const updateTotalInvBalance = () => {
-        let total = state.investments.reduce((sum, i) => sum + i.balance, 0);
+    const updateTotalInvBalance = (filtered) => {
+        let total = (filtered || state.investments).reduce((sum, i) => sum + i.balance, 0);
         totalInvBalance.textContent = formatCurrency(total);
         totalInvBalance.className = `balance-amount ${total >= 0 ? 'text-success' : 'text-danger'}`;
     };
