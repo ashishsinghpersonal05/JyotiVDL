@@ -1269,7 +1269,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        state.rds.forEach(rd => {
+        const sortedRds = [...state.rds].sort((a, b) => {
+            if (!a.maturityDate && !b.maturityDate) return 0;
+            if (!a.maturityDate) return 1;
+            if (!b.maturityDate) return -1;
+            return new Date(a.maturityDate) - new Date(b.maturityDate);
+        });
+
+        sortedRds.forEach(rd => {
             const item = document.createElement('div');
             item.className = `contact-item ${state.currentRdId === rd.id ? 'active' : ''}`;
             item.onclick = () => selectRd(rd.id);
@@ -1279,11 +1286,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? Math.min(100, Math.round((rd.balance / (rd.monthlyAmount * rd.tenureMonths)) * 100))
                 : null;
 
+            let timeText = rd.bank || rd.interestRate ? `${rd.bank || ''}${rd.bank && rd.interestRate ? ' • ' : ''}${rd.interestRate ? rd.interestRate + '% p.a.' : ''}` : 'Recurring Deposit';
+            if (rd.maturityDate) {
+                const matDate = new Date(rd.maturityDate);
+                timeText += ` • Matures: ${matDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+            }
+
             item.innerHTML = `
                 <div class="avatar" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">${initial}</div>
                 <div class="contact-details-list">
                     <div class="contact-name">${rd.name}</div>
-                    <div class="contact-time">${rd.bank || rd.interestRate ? `${rd.bank || ''}${rd.bank && rd.interestRate ? ' • ' : ''}${rd.interestRate ? rd.interestRate + '% p.a.' : ''}` : 'Recurring Deposit'}</div>
+                    <div class="contact-time">${timeText}</div>
                 </div>
                 <div class="contact-bal text-success">${formatCurrency(rd.balance)}${progressPct !== null ? `<br><span style="font-size:0.7rem;color:var(--text-secondary);">${progressPct}% complete</span>` : ''}</div>
             `;
@@ -1499,18 +1512,31 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        state.fds.forEach(fd => {
+        const sortedFds = [...state.fds].sort((a, b) => {
+            if (!a.maturityDate && !b.maturityDate) return 0;
+            if (!a.maturityDate) return 1;
+            if (!b.maturityDate) return -1;
+            return new Date(a.maturityDate) - new Date(b.maturityDate);
+        });
+
+        sortedFds.forEach(fd => {
             const item = document.createElement('div');
             item.className = `contact-item ${state.currentFdId === fd.id ? 'active' : ''}`;
             item.onclick = () => selectFd(fd.id);
 
             const initial = fd.name.charAt(0).toUpperCase();
 
+            let timeText = fd.bank || fd.interestRate ? `${fd.bank || ''}${fd.bank && fd.interestRate ? ' • ' : ''}${fd.interestRate ? fd.interestRate + '% p.a.' : ''}` : 'Fixed Deposit';
+            if (fd.maturityDate) {
+                const matDate = new Date(fd.maturityDate);
+                timeText += ` • Matures: ${matDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+            }
+
             item.innerHTML = `
                 <div class="avatar" style="background: linear-gradient(135deg, #10b981, #059669);">${initial}</div>
                 <div class="contact-details-list">
                     <div class="contact-name">${fd.name}</div>
-                    <div class="contact-time">${fd.bank || fd.interestRate ? `${fd.bank || ''}${fd.bank && fd.interestRate ? ' • ' : ''}${fd.interestRate ? fd.interestRate + '% p.a.' : ''}` : 'Fixed Deposit'}</div>
+                    <div class="contact-time">${timeText}</div>
                 </div>
                 <div class="contact-bal text-success">${formatCurrency(fd.balance)}</div>
             `;

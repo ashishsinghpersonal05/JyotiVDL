@@ -956,7 +956,7 @@
       "id": "1776327895208",
       "name": "Godrej Park Retreat Phase 2",
       "type": "Apartment",
-      "balance": 9500000,
+      "balance": 12500000,
       "createdAt": "2026-04-16T08:24:55.208Z"
     },
     {
@@ -998,6 +998,14 @@
       "type": "buy",
       "note": "1st Installment and 2nd Installment",
       "date": "2026-04-16T08:57:46.546Z"
+    },
+    {
+      "id": "1780205724238",
+      "propertyId": "1776327895208",
+      "amount": 3000000,
+      "type": "appreciation",
+      "note": "",
+      "date": "2026-05-31T05:35:24.238Z"
     }
   ],
   "loans": [
@@ -1186,7 +1194,7 @@
       "monthlyAmount": 6250,
       "interestRate": 12,
       "tenureMonths": 24,
-      "maturityDate": "2028-10-01",
+      "maturityDate": "2027-10-03",
       "balance": 50000,
       "createdAt": "2026-04-16T09:35:10.263Z"
     },
@@ -1499,7 +1507,7 @@
       "principalAmount": 700000,
       "interestRate": 12,
       "tenureMonths": 36,
-      "maturityDate": "2029-01-02",
+      "maturityDate": "2029-01-01",
       "balance": 700000,
       "createdAt": "2026-04-16T10:10:51.749Z"
     },
