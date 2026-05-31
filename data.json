@@ -788,6 +788,13 @@
       "type": "ULIP",
       "balance": 388000,
       "createdAt": "2026-03-21T18:04:19.828Z"
+    },
+    {
+      "id": "1780199915719",
+      "name": "ASHISH LIC",
+      "type": "Other",
+      "balance": 250000,
+      "createdAt": "2026-05-31T03:58:35.719Z"
     }
   ],
   "investment_transactions": [
@@ -934,6 +941,14 @@
       "type": "return",
       "note": "",
       "date": "2026-05-28T17:14:28.347Z"
+    },
+    {
+      "id": "1780200026746",
+      "investmentId": "1780199915719",
+      "amount": 250000,
+      "type": "invest",
+      "note": "LIC : 45K Per Year ",
+      "date": "2026-05-31T04:00:26.746Z"
     }
   ],
   "properties": [

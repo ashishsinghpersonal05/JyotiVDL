@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAcceptPayment = document.getElementById('btn-accept-payment');
     const btnAddInterest = document.getElementById('btn-add-interest');
     const btnDeleteContact = document.getElementById('btn-delete-contact');
+    const customerSearchInput = document.getElementById('customer-search-input');
 
     // DOM Elements - Investments
     const invList = document.getElementById('investments-list');
@@ -129,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnMfReturn = document.getElementById('btn-mf-return');
     const btnMfWithdraw = document.getElementById('btn-mf-withdraw');
     const btnDeleteMf = document.getElementById('btn-delete-mf');
+    const modalEditMaturity = document.getElementById('modal-edit-maturity');
 
     // Modals Setup helper
     const setupModal = (modal, btnOpen, closeId) => {
@@ -155,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModal(modalAddFdTrans, null, 'close-fd-trans-modal');
     setupModal(modalAddMf, btnAddMf, 'close-mf-modal');
     setupModal(modalAddMfTrans, null, 'close-mf-trans-modal');
+    setupModal(modalEditMaturity, null, 'close-edit-maturity-modal');
 
     const renderIcons = () => {
         if (window.lucide) {
@@ -215,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (mode === 'customers') {
             navCustomers.classList.add('active');
             workspaceCustomers.classList.remove('hidden');
+            if (customerSearchInput) customerSearchInput.value = '';
             loadContacts();
         } else if (mode === 'investments') {
             navInvestments.classList.add('active');
@@ -373,7 +377,18 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        state.contacts.forEach(contact => {
+        const query = customerSearchInput ? customerSearchInput.value.toLowerCase().trim() : '';
+        const filtered = state.contacts.filter(contact => 
+            contact.name.toLowerCase().includes(query) || 
+            (contact.phone && contact.phone.toLowerCase().includes(query))
+        );
+
+        if (filtered.length === 0) {
+            contactsList.innerHTML = '<div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">No matching customers found</div>';
+            return;
+        }
+
+        filtered.forEach(contact => {
             const item = document.createElement('div');
             item.className = `contact-item ${state.currentContactId === contact.id ? 'active' : ''}`;
             item.onclick = () => selectContact(contact.id);
@@ -490,6 +505,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    if (customerSearchInput) {
+        customerSearchInput.addEventListener('input', () => {
+            renderContacts();
+        });
+    }
+
     document.getElementById('form-add-contact').addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.getElementById('contact-name').value;
@@ -498,6 +519,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (res.ok) {
             document.getElementById('form-add-contact').reset();
             modalAddContact.classList.add('hidden');
+            if (customerSearchInput) customerSearchInput.value = '';
             loadContacts();
         }
     });
@@ -1253,13 +1275,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const maturityEl = document.getElementById('rd-detail-maturity');
         if (rd.maturityDate) {
             const matDate = new Date(rd.maturityDate);
-            maturityEl.textContent = `Matures: ${matDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
-        } else if (rd.tenureMonths && rd.monthlyAmount) {
-            const target = rd.monthlyAmount * rd.tenureMonths;
-            const pct = Math.min(100, Math.round((rd.balance / target) * 100));
-            maturityEl.textContent = `Target: ${formatCurrency(target)} (${pct}% complete)`;
+            maturityEl.innerHTML = `Matures: ${matDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })} <button id="btn-edit-rd-maturity" style="background:transparent; border:none; color:var(--accent-primary); cursor:pointer; padding: 2px 4px; display:inline-flex; align-items:center; vertical-align:middle;" title="Edit Maturity Date"><i data-lucide="edit-3" style="width:14px; height:14px;"></i></button>`;
         } else {
-            maturityEl.textContent = '';
+            let targetText = '';
+            if (rd.tenureMonths && rd.monthlyAmount) {
+                const target = rd.monthlyAmount * rd.tenureMonths;
+                const pct = Math.min(100, Math.round((rd.balance / target) * 100));
+                targetText = `Target: ${formatCurrency(target)} (${pct}% complete)<br>`;
+            }
+            maturityEl.innerHTML = `${targetText}<button id="btn-edit-rd-maturity" class="btn" style="margin-top: 6px; padding: 4px 8px; font-size: 0.8rem; background: transparent; border: 1px solid var(--accent-primary); color: var(--accent-primary); width: auto; display: inline-block;">+ Add Maturity Date</button>`;
         }
 
         rdEmptyState.classList.remove('active');
@@ -1478,9 +1502,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const maturityEl = document.getElementById('fd-detail-maturity');
         if (fd.maturityDate) {
             const matDate = new Date(fd.maturityDate);
-            maturityEl.textContent = `Matures: ${matDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+            maturityEl.innerHTML = `Matures: ${matDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })} <button id="btn-edit-fd-maturity" style="background:transparent; border:none; color:var(--accent-primary); cursor:pointer; padding: 2px 4px; display:inline-flex; align-items:center; vertical-align:middle;" title="Edit Maturity Date"><i data-lucide="edit-3" style="width:14px; height:14px;"></i></button>`;
         } else {
-            maturityEl.textContent = `Principal: ${formatCurrency(fd.principalAmount)}`;
+            maturityEl.innerHTML = `Principal: ${formatCurrency(fd.principalAmount)}<br><button id="btn-edit-fd-maturity" class="btn" style="margin-top: 6px; padding: 4px 8px; font-size: 0.8rem; background: transparent; border: 1px solid var(--accent-primary); color: var(--accent-primary); width: auto; display: inline-block;">+ Add Maturity Date</button>`;
         }
 
         fdEmptyState.classList.remove('active');
@@ -1944,6 +1968,58 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 await loadMfs();
                 if (state.currentMfId) selectMf(state.currentMfId);
+            }
+        }
+    });
+
+    document.getElementById('rd-detail-maturity').addEventListener('click', (e) => {
+        const btn = e.target.closest('#btn-edit-rd-maturity');
+        if (!btn) return;
+
+        const rd = state.rds.find(r => r.id === state.currentRdId);
+        if (!rd) return;
+
+        document.getElementById('edit-maturity-target-type').value = 'rd';
+        document.getElementById('edit-maturity-date').value = rd.maturityDate || '';
+        document.getElementById('edit-maturity-modal-title').textContent = 'Edit RD Maturity Date';
+        modalEditMaturity.classList.remove('hidden');
+    });
+
+    document.getElementById('fd-detail-maturity').addEventListener('click', (e) => {
+        const btn = e.target.closest('#btn-edit-fd-maturity');
+        if (!btn) return;
+
+        const fd = state.fds.find(f => f.id === state.currentFdId);
+        if (!fd) return;
+
+        document.getElementById('edit-maturity-target-type').value = 'fd';
+        document.getElementById('edit-maturity-date').value = fd.maturityDate || '';
+        document.getElementById('edit-maturity-modal-title').textContent = 'Edit FD Maturity Date';
+        modalEditMaturity.classList.remove('hidden');
+    });
+
+    document.getElementById('form-edit-maturity').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const targetType = document.getElementById('edit-maturity-target-type').value;
+        const newMaturityDate = document.getElementById('edit-maturity-date').value;
+
+        const id = targetType === 'rd' ? state.currentRdId : state.currentFdId;
+        const url = targetType === 'rd' ? `/api/rds/${id}` : `/api/fds/${id}`;
+
+        const res = await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ maturityDate: newMaturityDate })
+        });
+
+        if (res.ok) {
+            modalEditMaturity.classList.add('hidden');
+            if (targetType === 'rd') {
+                await loadRds();
+                selectRd(id);
+            } else {
+                await loadFds();
+                selectFd(id);
             }
         }
     });

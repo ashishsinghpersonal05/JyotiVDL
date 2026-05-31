@@ -143,6 +143,10 @@
                     <div class="view-section" style="flex:1; overflow:hidden;">
                         <button id="add-contact-btn" class="btn primary-btn"
                             style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Customer</button>
+                        <div class="search-container">
+                            <input type="text" id="customer-search-input" class="search-input" placeholder="Search by name or phone...">
+                            <i data-lucide="search" class="search-container-icon" style="width: 18px; height: 18px;"></i>
+                        </div>
                         <div class="summary-card">
                             <h2>Total You'll Get</h2>
                             <div id="total-balance" class="balance-amount">₹0.00</div>
@@ -997,6 +1001,23 @@
                     <input type="text" id="mf-trans-note" placeholder="What was this for?">
                 </div>
                 <button type="submit" class="btn primary-btn submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Maturity Date Modal -->
+    <div id="modal-edit-maturity" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-edit-maturity-modal">&times;</button>
+            <h2 id="edit-maturity-modal-title">Edit Maturity Date</h2>
+            <form id="form-edit-maturity">
+                <input type="hidden" id="edit-maturity-target-type">
+                <div class="form-group">
+                    <label for="edit-maturity-date">Maturity Date</label>
+                    <input type="date" id="edit-maturity-date" required
+                        style="width: 100%; padding: 14px; background: var(--bg-color); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 1rem; outline: none; margin-top: 4px;">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save Maturity Date</button>
             </form>
         </div>
     </div>

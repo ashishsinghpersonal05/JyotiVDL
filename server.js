@@ -696,6 +696,22 @@ app.delete('/api/rds/:id', (req, res) => {
     res.json({ success: true });
 });
 
+app.put('/api/rds/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    const { maturityDate } = req.body;
+
+    const index = data.rds.findIndex(r => r.id === id);
+    if (index === -1) return res.status(404).json({ error: 'RD not found' });
+
+    if (maturityDate !== undefined) {
+        data.rds[index].maturityDate = maturityDate;
+    }
+
+    writeData(data);
+    res.json(data.rds[index]);
+});
+
 app.get('/api/rd-transactions/:rdId', (req, res) => {
     const data = readData();
     const { rdId } = req.params;
@@ -812,6 +828,22 @@ app.delete('/api/fds/:id', (req, res) => {
 
     writeData(data);
     res.json({ success: true });
+});
+
+app.put('/api/fds/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    const { maturityDate } = req.body;
+
+    const index = data.fds.findIndex(f => f.id === id);
+    if (index === -1) return res.status(404).json({ error: 'FD not found' });
+
+    if (maturityDate !== undefined) {
+        data.fds[index].maturityDate = maturityDate;
+    }
+
+    writeData(data);
+    res.json(data.fds[index]);
 });
 
 app.get('/api/fd-transactions/:fdId', (req, res) => {
