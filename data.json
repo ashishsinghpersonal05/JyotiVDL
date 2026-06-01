@@ -4,28 +4,28 @@
       "id": "1774109056300",
       "name": "Kirti Singh",
       "phone": "",
-      "balance": 197327.6,
+      "balance": 189794.6,
       "createdAt": "2026-03-21T16:04:16.300Z"
     },
     {
       "id": "1774109163711",
       "name": "Anuj",
       "phone": "",
-      "balance": 327500,
+      "balance": 330775,
       "createdAt": "2026-03-21T16:06:03.711Z"
     },
     {
       "id": "1774109261699",
       "name": "Manish",
       "phone": "",
-      "balance": 200000,
+      "balance": 202500,
       "createdAt": "2026-03-21T16:07:41.699Z"
     },
     {
       "id": "1774109314676",
       "name": "DK SINGH 3.9L",
       "phone": "",
-      "balance": 380000,
+      "balance": 384750,
       "createdAt": "2026-03-21T16:08:34.676Z"
     },
     {
@@ -53,14 +53,14 @@
       "id": "1774110392099",
       "name": "DK SINGH 5L",
       "phone": "",
-      "balance": 370000,
+      "balance": 374625,
       "createdAt": "2026-03-21T16:26:32.099Z"
     },
     {
       "id": "1774110427703",
       "name": "DK SINGH 4L",
       "phone": "",
-      "balance": 295000,
+      "balance": 298688,
       "createdAt": "2026-03-21T16:27:07.703Z"
     },
     {
@@ -81,14 +81,14 @@
       "id": "1774112747248",
       "name": "KIRTI House 20L",
       "phone": "",
-      "balance": 2352925,
+      "balance": 2324231,
       "createdAt": "2026-03-21T17:05:47.248Z"
     },
     {
       "id": "1777904832297",
       "name": "ANURAG",
       "phone": "LOAN",
-      "balance": 1200000,
+      "balance": 1212000,
       "createdAt": "2026-05-04T14:27:12.298Z"
     }
   ],
@@ -716,6 +716,78 @@
       "type": "credit",
       "note": "",
       "date": "2026-05-24T06:44:42.818Z"
+    },
+    {
+      "id": "1780310450696",
+      "contactId": "1774109056300",
+      "amount": 2467,
+      "type": "interest",
+      "note": "May INT",
+      "date": "2026-06-01T10:40:50.696Z"
+    },
+    {
+      "id": "1780310466739",
+      "contactId": "1774109056300",
+      "amount": 10000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-01T10:41:06.739Z"
+    },
+    {
+      "id": "1780310487547",
+      "contactId": "1774109163711",
+      "amount": 3275,
+      "type": "interest",
+      "note": "May INT",
+      "date": "2026-06-01T10:41:27.548Z"
+    },
+    {
+      "id": "1780310496851",
+      "contactId": "1774109261699",
+      "amount": 2500,
+      "type": "interest",
+      "note": "May INT",
+      "date": "2026-06-01T10:41:36.852Z"
+    },
+    {
+      "id": "1780310553130",
+      "contactId": "1774109314676",
+      "amount": 4750,
+      "type": "interest",
+      "note": "May INT",
+      "date": "2026-06-01T10:42:33.130Z"
+    },
+    {
+      "id": "1780310599744",
+      "contactId": "1774110392099",
+      "amount": 4625,
+      "type": "interest",
+      "note": "",
+      "date": "2026-06-01T10:43:19.744Z"
+    },
+    {
+      "id": "1780310646682",
+      "contactId": "1774110427703",
+      "amount": 3688,
+      "type": "interest",
+      "note": "May INT",
+      "date": "2026-06-01T10:44:06.682Z"
+    },
+    {
+      "id": "1780310672272",
+      "contactId": "1777904832297",
+      "amount": 12000,
+      "type": "interest",
+      "note": "MAY INT",
+      "date": "2026-06-01T10:44:32.272Z"
+    },
+    {
+      "id": "1780311028683",
+      "contactId": "1774112747248",
+      "amount": 28694,
+      "type": "payment",
+      "note": "MAY EMI",
+      "date": "2026-06-01T10:50:28.683Z"
     }
   ],
   "investments": [
@@ -795,6 +867,13 @@
       "type": "Other",
       "balance": 250000,
       "createdAt": "2026-05-31T03:58:35.719Z"
+    },
+    {
+      "id": "1780208097030",
+      "name": "JYOTI LIC",
+      "type": "Other",
+      "balance": 200000,
+      "createdAt": "2026-05-31T06:14:57.030Z"
     }
   ],
   "investment_transactions": [
@@ -949,6 +1028,14 @@
       "type": "invest",
       "note": "LIC : 45K Per Year ",
       "date": "2026-05-31T04:00:26.746Z"
+    },
+    {
+      "id": "1780208119768",
+      "investmentId": "1780208097030",
+      "amount": 200000,
+      "type": "invest",
+      "note": "25000 8 Year",
+      "date": "2026-05-31T06:15:19.768Z"
     }
   ],
   "properties": [
@@ -1184,7 +1271,7 @@
       "interestRate": 12.25,
       "tenureMonths": 36,
       "maturityDate": "2028-02-01",
-      "balance": 31250,
+      "balance": 37500,
       "createdAt": "2026-04-16T09:25:57.260Z"
     },
     {
@@ -1195,7 +1282,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2027-10-03",
-      "balance": 50000,
+      "balance": 56250,
       "createdAt": "2026-04-16T09:35:10.263Z"
     },
     {
@@ -1206,7 +1293,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2027-07-02",
-      "balance": 143000,
+      "balance": 156000,
       "createdAt": "2026-04-16T09:39:42.734Z"
     },
     {
@@ -1217,7 +1304,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2028-01-14",
-      "balance": 60000,
+      "balance": 72000,
       "createdAt": "2026-04-16T09:41:56.671Z"
     }
   ],
@@ -1453,6 +1540,38 @@
       "type": "deposit",
       "note": "",
       "date": "2026-05-28T17:16:16.181Z"
+    },
+    {
+      "id": "1780310957948",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "MAY 2026",
+      "date": "2026-06-01T10:49:17.948Z"
+    },
+    {
+      "id": "1780310964730",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "MAY 2026",
+      "date": "2026-06-01T10:49:24.730Z"
+    },
+    {
+      "id": "1780310970557",
+      "rdId": "1776332516671",
+      "amount": 12000,
+      "type": "deposit",
+      "note": "MAY 2026",
+      "date": "2026-06-01T10:49:30.557Z"
+    },
+    {
+      "id": "1780310978174",
+      "rdId": "1776331557260",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "MAY 2026",
+      "date": "2026-06-01T10:49:38.174Z"
     }
   ],
   "fds": [
