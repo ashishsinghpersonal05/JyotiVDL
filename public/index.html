@@ -66,6 +66,10 @@
                         <i data-lucide="piggy-bank" class="nav-icon"></i>
                         <span class="nav-label">ULIP</span>
                     </button>
+                    <button id="nav-inv-esops" class="nav-btn" data-mode="esops">
+                        <i data-lucide="briefcase" class="nav-icon"></i>
+                        <span class="nav-label">ESOPs</span>
+                    </button>
                     <button id="nav-inv-other" class="nav-btn" data-mode="other">
                         <i data-lucide="piggy-bank" class="nav-icon"></i>
                         <span class="nav-label">Other</span>
@@ -279,6 +283,7 @@
                             <div class="contact-balance-card">
                                 <span>Current Value</span>
                                 <div id="inv-detail-balance" class="balance-amount text-success">₹0.00</div>
+                                <div id="inv-detail-esops-info" style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
                                 <button id="btn-delete-inv" class="btn"
                                     style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
                                     Investment</button>
@@ -292,6 +297,8 @@
                                     data-lucide="trending-up"></i> Add Return</button>
                             <button id="btn-inv-withdraw" class="btn action-btn danger-btn"><i
                                     data-lucide="arrow-up-from-dot"></i> Withdraw</button>
+                            <button id="btn-inv-update-esop" class="btn action-btn success-btn hidden"><i
+                                    data-lucide="refresh-cw"></i> Update ESOP Value</button>
                         </div>
 
                         <div class="transactions-section">
@@ -731,6 +738,7 @@
                         <option value="Stocks">Stocks</option>
                         <option value="Crypto">Crypto</option>
                         <option value="Society">Society</option>
+                        <option value="ESOPs">ESOPs</option>
                         <option value="Other">Other</option>
                     </select>
                 </div>
@@ -755,6 +763,29 @@
                     <input type="text" id="inv-trans-note" placeholder="What was this for?">
                 </div>
                 <button type="submit" class="btn primary-btn submit-btn">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update ESOP Modal -->
+    <div id="modal-update-esop" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-modal" id="close-esop-modal">&times;</button>
+            <h2>Update ESOP Details</h2>
+            <form id="form-update-esop">
+                <div class="form-group">
+                    <label for="esop-vested">No. of ESOPs Vested</label>
+                    <input type="number" id="esop-vested" required placeholder="0" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="esop-share-price">Current Share Price ($)</label>
+                    <input type="number" id="esop-share-price" required placeholder="0.00" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="esop-exchange-rate">USD to INR Exchange Rate (₹)</label>
+                    <input type="number" id="esop-exchange-rate" required placeholder="83.00" min="0" step="0.01">
+                </div>
+                <button type="submit" class="btn primary-btn submit-btn">Save Changes</button>
             </form>
         </div>
     </div>

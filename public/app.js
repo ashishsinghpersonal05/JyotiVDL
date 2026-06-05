@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'ppf', el: document.getElementById('nav-inv-ppf') },
         { id: 'society', el: document.getElementById('nav-inv-society') },
         { id: 'ulip', el: document.getElementById('nav-inv-ulip') },
+        { id: 'esops', el: document.getElementById('nav-inv-esops') },
         { id: 'other', el: document.getElementById('nav-inv-other') }
     ];
     const navProperties = document.getElementById('nav-properties');
@@ -73,6 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnInvInvest = document.getElementById('btn-inv-invest');
     const btnInvReturn = document.getElementById('btn-inv-return');
     const btnInvWithdraw = document.getElementById('btn-inv-withdraw');
+    const btnInvUpdateEsop = document.getElementById('btn-inv-update-esop');
+    const modalUpdateEsop = document.getElementById('modal-update-esop');
     const btnDeleteInv = document.getElementById('btn-delete-inv');
 
     // DOM Elements - Properties
@@ -164,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     setupModal(modalAddInvTrans, null, 'close-inv-trans-modal');
+    setupModal(modalUpdateEsop, null, 'close-esop-modal');
     setupModal(modalAddProp, btnAddProp, 'close-prop-modal');
     setupModal(modalAddPropTrans, null, 'close-prop-trans-modal');
     setupModal(modalAddLoan, btnAddLoan, 'close-loan-modal');
@@ -211,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'ppf': 'PPF',
             'society': 'Society',
             'ulip': 'ULIP',
+            'esops': 'ESOPs',
             'other': 'Other'
         };
         return mapping[mode] || 'Other';
@@ -375,6 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 if(type === 'EPF' || type === 'NPS' || type === 'FD' || type === 'RD') iconName = 'piggy-bank';
                 else if(type === 'Mutual Fund' || type === 'Stocks') iconName = 'trending-up';
+                else if(type === 'ESOPs') iconName = 'briefcase';
                 else if(type === 'Sukanya Samriddhi') iconName = 'heart';
                 else if(type === 'Society' || type === 'Commercial') iconName = 'building';
                 else if(type === 'Apartment' || type === 'House') iconName = 'home';
@@ -693,6 +699,21 @@ document.addEventListener('DOMContentLoaded', () => {
         detailBal.textContent = formatCurrency(inv.balance);
         detailBal.className = `balance-amount ${inv.balance >= 0 ? 'text-success' : 'text-danger'}`;
 
+        const esopsInfo = document.getElementById('inv-detail-esops-info');
+        if (inv.type === 'ESOPs') {
+            esopsInfo.textContent = `Vested: ${inv.esopsVested || 0} • Share Price: $${inv.esopSharePrice || 0} • Rate: ₹${inv.esopExchangeRate || 83}`;
+            btnInvInvest.classList.add('hidden');
+            btnInvReturn.classList.add('hidden');
+            btnInvWithdraw.classList.add('hidden');
+            if (btnInvUpdateEsop) btnInvUpdateEsop.classList.remove('hidden');
+        } else {
+            esopsInfo.textContent = '';
+            btnInvInvest.classList.remove('hidden');
+            btnInvReturn.classList.remove('hidden');
+            btnInvWithdraw.classList.remove('hidden');
+            if (btnInvUpdateEsop) btnInvUpdateEsop.classList.add('hidden');
+        }
+
         invEmptyState.classList.remove('active');
         invEmptyState.classList.add('hidden');
         invDetail.classList.remove('hidden');
@@ -794,6 +815,40 @@ document.addEventListener('DOMContentLoaded', () => {
             selectInvestment(state.currentInvId);
         }
     });
+
+    if (btnInvUpdateEsop) {
+        btnInvUpdateEsop.addEventListener('click', () => {
+            const inv = state.investments.find(i => i.id === state.currentInvId);
+            if (inv) {
+                document.getElementById('esop-vested').value = inv.esopsVested || 0;
+                document.getElementById('esop-share-price').value = inv.esopSharePrice || 0;
+                document.getElementById('esop-exchange-rate').value = inv.esopExchangeRate || 83.00;
+            }
+            modalUpdateEsop.classList.remove('hidden');
+        });
+    }
+
+    const formUpdateEsop = document.getElementById('form-update-esop');
+    if (formUpdateEsop) {
+        formUpdateEsop.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const esopsVested = document.getElementById('esop-vested').value;
+            const esopSharePrice = document.getElementById('esop-share-price').value;
+            const esopExchangeRate = document.getElementById('esop-exchange-rate').value;
+            
+            const res = await fetch(`/api/investments/${state.currentInvId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ esopsVested, esopSharePrice, esopExchangeRate })
+            });
+            if (res.ok) {
+                formUpdateEsop.reset();
+                modalUpdateEsop.classList.add('hidden');
+                await loadInvestments();
+                selectInvestment(state.currentInvId);
+            }
+        });
+    }
 
     btnDeleteInv.addEventListener('click', async () => {
         if (confirm('Are you sure you want to delete this investment profile?')) {

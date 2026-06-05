@@ -217,6 +217,29 @@ app.delete('/api/investments/:id', (req, res) => {
     res.json({ success: true });
 });
 
+app.put('/api/investments/:id', (req, res) => {
+    const data = readData();
+    const { id } = req.params;
+    const { esopsVested, esopSharePrice, esopExchangeRate } = req.body;
+    
+    const index = data.investments.findIndex(i => i.id === id);
+    if (index === -1) return res.status(404).json({ error: 'Investment not found' });
+    
+    if (esopsVested !== undefined) data.investments[index].esopsVested = parseFloat(esopsVested);
+    if (esopSharePrice !== undefined) data.investments[index].esopSharePrice = parseFloat(esopSharePrice);
+    if (esopExchangeRate !== undefined) data.investments[index].esopExchangeRate = parseFloat(esopExchangeRate);
+    
+    if (data.investments[index].type === 'ESOPs') {
+        const vested = data.investments[index].esopsVested || 0;
+        const price = data.investments[index].esopSharePrice || 0;
+        const rate = data.investments[index].esopExchangeRate || 83; // default rate
+        data.investments[index].balance = vested * price * rate;
+    }
+    
+    writeData(data);
+    res.json(data.investments[index]);
+});
+
 app.get('/api/investment-transactions/:investmentId', (req, res) => {
     const data = readData();
     const { investmentId } = req.params;

@@ -25,7 +25,7 @@
       "id": "1774109314676",
       "name": "DK SINGH 3.9L",
       "phone": "",
-      "balance": 384750,
+      "balance": 375000,
       "createdAt": "2026-03-21T16:08:34.676Z"
     },
     {
@@ -53,14 +53,14 @@
       "id": "1774110392099",
       "name": "DK SINGH 5L",
       "phone": "",
-      "balance": 374625,
+      "balance": 365000,
       "createdAt": "2026-03-21T16:26:32.099Z"
     },
     {
       "id": "1774110427703",
       "name": "DK SINGH 4L",
       "phone": "",
-      "balance": 298688,
+      "balance": 290000,
       "createdAt": "2026-03-21T16:27:07.703Z"
     },
     {
@@ -74,7 +74,7 @@
       "id": "1774111180336",
       "name": "DK SINGH 6L",
       "phone": "6L Loan",
-      "balance": 385395,
+      "balance": 371121,
       "createdAt": "2026-03-21T16:39:40.336Z"
     },
     {
@@ -788,6 +788,62 @@
       "type": "payment",
       "note": "MAY EMI",
       "date": "2026-06-01T10:50:28.683Z"
+    },
+    {
+      "id": "1780678272683",
+      "contactId": "1774109314676",
+      "amount": 4750,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-05T16:51:12.683Z"
+    },
+    {
+      "id": "1780678299722",
+      "contactId": "1774109314676",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-05T16:51:39.722Z"
+    },
+    {
+      "id": "1780678315161",
+      "contactId": "1774110392099",
+      "amount": 4625,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-05T16:51:55.161Z"
+    },
+    {
+      "id": "1780678322377",
+      "contactId": "1774110392099",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-05T16:52:02.377Z"
+    },
+    {
+      "id": "1780678335714",
+      "contactId": "1774110427703",
+      "amount": 3688,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-05T16:52:15.714Z"
+    },
+    {
+      "id": "1780678340543",
+      "contactId": "1774110427703",
+      "amount": 5000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-05T16:52:20.543Z"
+    },
+    {
+      "id": "1780678372211",
+      "contactId": "1774111180336",
+      "amount": 14274,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-05T16:52:52.211Z"
     }
   ],
   "investments": [
@@ -874,6 +930,16 @@
       "type": "Other",
       "balance": 200000,
       "createdAt": "2026-05-31T06:14:57.030Z"
+    },
+    {
+      "id": "1780678689478",
+      "name": "Walmart",
+      "type": "ESOPs",
+      "balance": 496510.128,
+      "createdAt": "2026-06-05T16:58:09.478Z",
+      "esopsVested": 43.38,
+      "esopSharePrice": 120,
+      "esopExchangeRate": 95.38
     }
   ],
   "investment_transactions": [
