@@ -493,6 +493,29 @@
                                 style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
                         <h2>Select an RD</h2>
                         <p>Choose a Recurring Deposit from the sidebar to view its status, add monthly installments, or record maturity.</p>
+                        <div style="display: flex; gap: 24px; justify-content: center; margin-top: 32px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto;">
+                            <div class="kpi-card" style="min-width: 200px; flex: 1;">
+                                <div class="kpi-header">
+                                    <span class="kpi-label">Total RD Running</span>
+                                    <div class="kpi-icon"><i data-lucide="activity"></i></div>
+                                </div>
+                                <div id="total-rd-running" class="kpi-amount text-success">0</div>
+                            </div>
+                            <div class="kpi-card" style="min-width: 200px; flex: 1;">
+                                <div class="kpi-header">
+                                    <span class="kpi-label">Total Target Amount</span>
+                                    <div class="kpi-icon"><i data-lucide="target"></i></div>
+                                </div>
+                                <div id="total-rd-target" class="kpi-amount text-primary">₹0.00</div>
+                            </div>
+                            <div class="kpi-card" style="min-width: 200px; flex: 1;">
+                                <div class="kpi-header">
+                                    <span class="kpi-label">Total Monthly Installment</span>
+                                    <div class="kpi-icon"><i data-lucide="calendar"></i></div>
+                                </div>
+                                <div id="total-rd-monthly" class="kpi-amount text-warning">₹0.00</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="rd-detail" class="contact-detail hidden">

@@ -1364,6 +1364,25 @@ document.addEventListener('DOMContentLoaded', () => {
         let total = state.rds.reduce((sum, r) => sum + r.balance, 0);
         totalRdBalance.textContent = formatCurrency(total);
         totalRdBalance.className = `balance-amount ${total >= 0 ? 'text-success' : 'text-neutral'}`;
+
+        const totalRdRunningEl = document.getElementById('total-rd-running');
+        if (totalRdRunningEl) {
+            // Count all RDs as running unless explicitly closed (we don't have a status field yet)
+            const runningCount = state.rds.length;
+            totalRdRunningEl.textContent = runningCount;
+        }
+
+        const totalRdTargetEl = document.getElementById('total-rd-target');
+        if (totalRdTargetEl) {
+            const target = state.rds.reduce((sum, r) => sum + ((r.monthlyAmount || 0) * (r.tenureMonths || 0)), 0);
+            totalRdTargetEl.textContent = formatCurrency(target);
+        }
+
+        const totalRdMonthlyEl = document.getElementById('total-rd-monthly');
+        if (totalRdMonthlyEl) {
+            const monthly = state.rds.reduce((sum, r) => sum + (r.monthlyAmount || 0), 0);
+            totalRdMonthlyEl.textContent = formatCurrency(monthly);
+        }
     };
 
     const selectRd = async (id) => {

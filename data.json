@@ -11,14 +11,14 @@
       "id": "1774109163711",
       "name": "Anuj",
       "phone": "",
-      "balance": 330775,
+      "balance": 300000,
       "createdAt": "2026-03-21T16:06:03.711Z"
     },
     {
       "id": "1774109261699",
       "name": "Manish",
       "phone": "",
-      "balance": 202500,
+      "balance": 200000,
       "createdAt": "2026-03-21T16:07:41.699Z"
     },
     {
@@ -32,7 +32,7 @@
       "id": "1774109387289",
       "name": "Anand",
       "phone": "",
-      "balance": 307766,
+      "balance": 299832,
       "createdAt": "2026-03-21T16:09:47.289Z"
     },
     {
@@ -67,7 +67,7 @@
       "id": "1774110608288",
       "name": "Ashish Mausa",
       "phone": "",
-      "balance": 484149,
+      "balance": 474451,
       "createdAt": "2026-03-21T16:30:08.288Z"
     },
     {
@@ -88,7 +88,7 @@
       "id": "1777904832297",
       "name": "ANURAG",
       "phone": "LOAN",
-      "balance": 1212000,
+      "balance": 402000,
       "createdAt": "2026-05-04T14:27:12.298Z"
     }
   ],
@@ -844,6 +844,62 @@
       "type": "payment",
       "note": "",
       "date": "2026-06-05T16:52:52.211Z"
+    },
+    {
+      "id": "1782020668578",
+      "contactId": "1777904832297",
+      "amount": 10000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-21T05:44:28.578Z"
+    },
+    {
+      "id": "1782020700252",
+      "contactId": "1774110608288",
+      "amount": 9698,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-21T05:45:00.252Z"
+    },
+    {
+      "id": "1782020716244",
+      "contactId": "1774109387289",
+      "amount": 7934,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-21T05:45:16.244Z"
+    },
+    {
+      "id": "1782020761365",
+      "contactId": "1774109261699",
+      "amount": 2500,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-21T05:46:01.365Z"
+    },
+    {
+      "id": "1782020796402",
+      "contactId": "1774109163711",
+      "amount": 3275,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-21T05:46:36.402Z"
+    },
+    {
+      "id": "1782020878319",
+      "contactId": "1774109163711",
+      "amount": 27500,
+      "type": "payment",
+      "note": "",
+      "date": "2026-06-21T05:47:58.319Z"
+    },
+    {
+      "id": "1782021732989",
+      "contactId": "1777904832297",
+      "amount": 800000,
+      "type": "payment",
+      "note": "THIS IS FROM SOCIETY",
+      "date": "2026-06-21T06:02:12.989Z"
     }
   ],
   "investments": [
@@ -851,7 +907,7 @@
       "id": "1774114057173",
       "name": "Aanya Sukanya",
       "type": "Sukanya Samriddhi",
-      "balance": 382076,
+      "balance": 408326,
       "createdAt": "2026-03-21T17:27:37.173Z"
     },
     {
@@ -865,7 +921,7 @@
       "id": "1774114269430",
       "name": "NPS",
       "type": "NPS",
-      "balance": 885354,
+      "balance": 922858,
       "createdAt": "2026-03-21T17:31:09.430Z"
     },
     {
@@ -1102,6 +1158,22 @@
       "type": "invest",
       "note": "25000 8 Year",
       "date": "2026-05-31T06:15:19.768Z"
+    },
+    {
+      "id": "1782021262155",
+      "investmentId": "1774114269430",
+      "amount": 37504,
+      "type": "invest",
+      "note": "",
+      "date": "2026-06-21T05:54:22.155Z"
+    },
+    {
+      "id": "1782021373001",
+      "investmentId": "1774114057173",
+      "amount": 26250,
+      "type": "invest",
+      "note": "",
+      "date": "2026-06-21T05:56:13.001Z"
     }
   ],
   "properties": [
@@ -1173,14 +1245,14 @@
       "id": "1776328777707",
       "name": "Credit Card Loan",
       "type": "Credit Card",
-      "balance": 1065649,
+      "balance": 815649,
       "createdAt": "2026-04-16T08:39:37.707Z"
     },
     {
       "id": "1776329106522",
       "name": "JYOTI Credit Card",
       "type": "Credit Card",
-      "balance": 450000,
+      "balance": 600000,
       "createdAt": "2026-04-16T08:45:06.522Z"
     },
     {
@@ -1189,13 +1261,6 @@
       "type": "Home Loan",
       "balance": 250000,
       "createdAt": "2026-05-28T17:22:34.985Z"
-    },
-    {
-      "id": "1779989166715",
-      "name": "PAPA CARD",
-      "type": "Home Loan",
-      "balance": 100000,
-      "createdAt": "2026-05-28T17:26:06.715Z"
     }
   ],
   "loan_transactions": [
@@ -1242,23 +1307,15 @@
     {
       "id": "1776329043041",
       "loanId": "1776328777707",
-      "amount": 300000,
+      "amount": 150000,
       "type": "borrow",
       "note": "KOTAK ",
       "date": "2026-04-16T14:14"
     },
     {
-      "id": "1776329128842",
-      "loanId": "1776328777707",
-      "amount": 100000,
-      "type": "borrow",
-      "note": "DEEPAK ICICI",
-      "date": "2026-04-16T08:45:28.842Z"
-    },
-    {
       "id": "1776329195456",
       "loanId": "1776329106522",
-      "amount": 200000,
+      "amount": 350000,
       "type": "borrow",
       "note": "ICICI AMZAON",
       "date": "2026-04-16T14:16"
@@ -1318,14 +1375,6 @@
       "type": "borrow",
       "note": "KOTAK",
       "date": "2026-05-28T17:23:07.500Z"
-    },
-    {
-      "id": "1779989173457",
-      "loanId": "1779989166715",
-      "amount": 100000,
-      "type": "borrow",
-      "note": "",
-      "date": "2026-05-28T17:26:13.457Z"
     }
   ],
   "rds": [
@@ -1372,6 +1421,17 @@
       "maturityDate": "2028-01-14",
       "balance": 72000,
       "createdAt": "2026-04-16T09:41:56.671Z"
+    },
+    {
+      "id": "1782669066424",
+      "name": "JYOTI SAMRIDH 106",
+      "bank": "SAMRIDH BHARAT",
+      "monthlyAmount": 25000,
+      "interestRate": 11.25,
+      "tenureMonths": 24,
+      "maturityDate": "2028-06-24",
+      "balance": 25000,
+      "createdAt": "2026-06-28T17:51:06.424Z"
     }
   ],
   "rd_transactions": [
@@ -1638,6 +1698,14 @@
       "type": "deposit",
       "note": "MAY 2026",
       "date": "2026-06-01T10:49:38.174Z"
+    },
+    {
+      "id": "1782669072555",
+      "rdId": "1782669066424",
+      "amount": 25000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-06-28T17:51:12.555Z"
     }
   ],
   "fds": [
@@ -1803,7 +1871,7 @@
       "platform": "Zerodha",
       "sipAmount": 55000,
       "startDate": "2026-05-01",
-      "balance": 464000,
+      "balance": 485125,
       "createdAt": "2026-05-07T14:52:23.961Z"
     },
     {
@@ -1821,7 +1889,7 @@
       "platform": "Zerodha COIN",
       "sipAmount": 12000,
       "startDate": "2026-05-01",
-      "balance": 207288,
+      "balance": 219413,
       "createdAt": "2026-05-07T14:53:54.878Z"
     }
   ],
@@ -1857,6 +1925,22 @@
       "type": "invest",
       "note": "May",
       "date": "2026-05-24T06:57:28.323Z"
+    },
+    {
+      "id": "1782020964856",
+      "mfId": "1778165543961",
+      "amount": 21125,
+      "type": "invest",
+      "note": "",
+      "date": "2026-06-21T05:49:24.856Z"
+    },
+    {
+      "id": "1782021084683",
+      "mfId": "1778165634878",
+      "amount": 12125,
+      "type": "invest",
+      "note": "",
+      "date": "2026-06-21T05:51:24.683Z"
     }
   ]
 }
