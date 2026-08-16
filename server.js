@@ -52,7 +52,7 @@ app.get('/api/contacts', (req, res) => {
 app.post('/api/contacts', (req, res) => {
     const data = readData();
     const { name, phone } = req.body;
-    
+
     if (!name) return res.status(400).json({ error: 'Name is required' });
 
     const newContact = {
@@ -62,7 +62,7 @@ app.post('/api/contacts', (req, res) => {
         balance: 0, // positive means they owe me (Credit), negative means I owe them (Debit)
         createdAt: new Date().toISOString()
     };
-    
+
     data.contacts.push(newContact);
     writeData(data);
     res.status(201).json(newContact);
@@ -73,10 +73,10 @@ app.get('/api/transactions/:contactId', (req, res) => {
     const data = readData();
     const { contactId } = req.params;
     const contactTransactions = data.transactions.filter(t => t.contactId === contactId);
-    
+
     // sort by date descending
     contactTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
-    
+
     res.json(contactTransactions);
 });
 
@@ -84,7 +84,7 @@ app.get('/api/transactions/:contactId', (req, res) => {
 app.post('/api/transactions', (req, res) => {
     const data = readData();
     const { contactId, amount, type, note } = req.body;
-    
+
     if (!contactId || !amount || !type) {
         return res.status(400).json({ error: 'contactId, amount, and type are required' });
     }
@@ -133,15 +133,15 @@ app.post('/api/transactions', (req, res) => {
 app.delete('/api/contacts/:contactId', (req, res) => {
     const data = readData();
     const { contactId } = req.params;
-    
+
     const initialLen = data.contacts.length;
     data.contacts = data.contacts.filter(c => c.id !== contactId);
     data.transactions = data.transactions.filter(t => t.contactId !== contactId);
-    
+
     if (data.contacts.length === initialLen) {
         return res.status(404).json({ error: 'Contact not found' });
     }
-    
+
     writeData(data);
     res.json({ success: true });
 });
@@ -150,14 +150,14 @@ app.delete('/api/contacts/:contactId', (req, res) => {
 app.delete('/api/transactions/:transactionId', (req, res) => {
     const data = readData();
     const { transactionId } = req.params;
-    
+
     const transactionIndex = data.transactions.findIndex(t => t.id === transactionId);
     if (transactionIndex === -1) {
         return res.status(404).json({ error: 'Transaction not found' });
     }
-    
+
     const transaction = data.transactions[transactionIndex];
-    
+
     // Reverse the balance effect
     const contact = data.contacts.find(c => c.id === transaction.contactId);
     if (contact) {
@@ -167,7 +167,7 @@ app.delete('/api/transactions/:transactionId', (req, res) => {
             contact.balance += transaction.amount;
         }
     }
-    
+
     data.transactions.splice(transactionIndex, 1);
     writeData(data);
     res.json({ success: true });
@@ -185,7 +185,7 @@ app.get('/api/investments', (req, res) => {
 app.post('/api/investments', (req, res) => {
     const data = readData();
     const { name, type } = req.body;
-    
+
     if (!name || !type) return res.status(400).json({ error: 'Name and type are required' });
 
     const newInvestment = {
@@ -195,7 +195,7 @@ app.post('/api/investments', (req, res) => {
         balance: 0,
         createdAt: new Date().toISOString()
     };
-    
+
     data.investments.push(newInvestment);
     writeData(data);
     res.status(201).json(newInvestment);
@@ -204,15 +204,15 @@ app.post('/api/investments', (req, res) => {
 app.delete('/api/investments/:id', (req, res) => {
     const data = readData();
     const { id } = req.params;
-    
+
     const initialLen = data.investments.length;
     data.investments = data.investments.filter(i => i.id !== id);
     data.investment_transactions = data.investment_transactions.filter(t => t.investmentId !== id);
-    
+
     if (data.investments.length === initialLen) {
         return res.status(404).json({ error: 'Investment not found' });
     }
-    
+
     writeData(data);
     res.json({ success: true });
 });
@@ -221,21 +221,21 @@ app.put('/api/investments/:id', (req, res) => {
     const data = readData();
     const { id } = req.params;
     const { esopsVested, esopSharePrice, esopExchangeRate } = req.body;
-    
+
     const index = data.investments.findIndex(i => i.id === id);
     if (index === -1) return res.status(404).json({ error: 'Investment not found' });
-    
+
     if (esopsVested !== undefined) data.investments[index].esopsVested = parseFloat(esopsVested);
     if (esopSharePrice !== undefined) data.investments[index].esopSharePrice = parseFloat(esopSharePrice);
     if (esopExchangeRate !== undefined) data.investments[index].esopExchangeRate = parseFloat(esopExchangeRate);
-    
+
     if (data.investments[index].type === 'ESOPs') {
         const vested = data.investments[index].esopsVested || 0;
         const price = data.investments[index].esopSharePrice || 0;
         const rate = data.investments[index].esopExchangeRate || 83; // default rate
         data.investments[index].balance = vested * price * rate;
     }
-    
+
     writeData(data);
     res.json(data.investments[index]);
 });
@@ -251,7 +251,7 @@ app.get('/api/investment-transactions/:investmentId', (req, res) => {
 app.post('/api/investment-transactions', (req, res) => {
     const data = readData();
     const { investmentId, amount, type, note } = req.body;
-    
+
     if (!investmentId || !amount || !type) {
         return res.status(400).json({ error: 'investmentId, amount, and type are required' });
     }
@@ -293,13 +293,13 @@ app.post('/api/investment-transactions', (req, res) => {
 app.delete('/api/investment-transactions/:id', (req, res) => {
     const data = readData();
     const { id } = req.params;
-    
+
     const index = data.investment_transactions.findIndex(t => t.id === id);
     if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
-    
+
     const trans = data.investment_transactions[index];
     const inv = data.investments.find(i => i.id === trans.investmentId);
-    
+
     if (inv) {
         if (trans.type === 'invest' || trans.type === 'return') {
             inv.balance -= trans.amount;
@@ -307,7 +307,7 @@ app.delete('/api/investment-transactions/:id', (req, res) => {
             inv.balance += trans.amount;
         }
     }
-    
+
     data.investment_transactions.splice(index, 1);
     writeData(data);
     res.json({ success: true });
@@ -325,7 +325,7 @@ app.get('/api/properties', (req, res) => {
 app.post('/api/properties', (req, res) => {
     const data = readData();
     const { name, type } = req.body;
-    
+
     if (!name || !type) return res.status(400).json({ error: 'Name and type are required' });
 
     const newProperty = {
@@ -335,7 +335,7 @@ app.post('/api/properties', (req, res) => {
         balance: 0,
         createdAt: new Date().toISOString()
     };
-    
+
     data.properties.push(newProperty);
     writeData(data);
     res.status(201).json(newProperty);
@@ -344,15 +344,15 @@ app.post('/api/properties', (req, res) => {
 app.delete('/api/properties/:id', (req, res) => {
     const data = readData();
     const { id } = req.params;
-    
+
     const initialLen = data.properties.length;
     data.properties = data.properties.filter(p => p.id !== id);
     data.property_transactions = data.property_transactions.filter(t => t.propertyId !== id);
-    
+
     if (data.properties.length === initialLen) {
         return res.status(404).json({ error: 'Property not found' });
     }
-    
+
     writeData(data);
     res.json({ success: true });
 });
@@ -368,7 +368,7 @@ app.get('/api/property-transactions/:propertyId', (req, res) => {
 app.post('/api/property-transactions', (req, res) => {
     const data = readData();
     const { propertyId, amount, type, note } = req.body;
-    
+
     if (!propertyId || !amount || !type) {
         return res.status(400).json({ error: 'propertyId, amount, and type are required' });
     }
@@ -410,13 +410,13 @@ app.post('/api/property-transactions', (req, res) => {
 app.delete('/api/property-transactions/:id', (req, res) => {
     const data = readData();
     const { id } = req.params;
-    
+
     const index = data.property_transactions.findIndex(t => t.id === id);
     if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
-    
+
     const trans = data.property_transactions[index];
     const prop = data.properties.find(p => p.id === trans.propertyId);
-    
+
     if (prop) {
         if (trans.type === 'buy' || trans.type === 'appreciation') {
             prop.balance -= trans.amount;
@@ -424,7 +424,7 @@ app.delete('/api/property-transactions/:id', (req, res) => {
             prop.balance += trans.amount;
         }
     }
-    
+
     data.property_transactions.splice(index, 1);
     writeData(data);
     res.json({ success: true });
@@ -442,7 +442,7 @@ app.get('/api/loans', (req, res) => {
 app.post('/api/loans', (req, res) => {
     const data = readData();
     const { name, type } = req.body;
-    
+
     if (!name || !type) return res.status(400).json({ error: 'Name and type are required' });
 
     const newLoan = {
@@ -452,7 +452,7 @@ app.post('/api/loans', (req, res) => {
         balance: 0,
         createdAt: new Date().toISOString()
     };
-    
+
     data.loans.push(newLoan);
     writeData(data);
     res.status(201).json(newLoan);
@@ -461,15 +461,15 @@ app.post('/api/loans', (req, res) => {
 app.delete('/api/loans/:id', (req, res) => {
     const data = readData();
     const { id } = req.params;
-    
+
     const initialLen = data.loans.length;
     data.loans = data.loans.filter(l => l.id !== id);
     data.loan_transactions = data.loan_transactions.filter(t => t.loanId !== id);
-    
+
     if (data.loans.length === initialLen) {
         return res.status(404).json({ error: 'Loan not found' });
     }
-    
+
     writeData(data);
     res.json({ success: true });
 });
@@ -485,7 +485,7 @@ app.get('/api/loan-transactions/:loanId', (req, res) => {
 app.post('/api/loan-transactions', (req, res) => {
     const data = readData();
     const { loanId, amount, type, note } = req.body;
-    
+
     if (!loanId || !amount || !type) {
         return res.status(400).json({ error: 'loanId, amount, and type are required' });
     }
@@ -527,13 +527,13 @@ app.post('/api/loan-transactions', (req, res) => {
 app.delete('/api/loan-transactions/:id', (req, res) => {
     const data = readData();
     const { id } = req.params;
-    
+
     const index = data.loan_transactions.findIndex(t => t.id === id);
     if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
-    
+
     const trans = data.loan_transactions[index];
     const loan = data.loans.find(l => l.id === trans.loanId);
-    
+
     if (loan) {
         if (trans.type === 'borrow' || trans.type === 'interest') {
             loan.balance -= trans.amount;
@@ -541,7 +541,7 @@ app.delete('/api/loan-transactions/:id', (req, res) => {
             loan.balance += trans.amount;
         }
     }
-    
+
     data.loan_transactions.splice(index, 1);
     writeData(data);
     res.json({ success: true });
@@ -551,13 +551,13 @@ app.put('/api/loan-transactions/:id', (req, res) => {
     const data = readData();
     const { id } = req.params;
     const { amount, note, date } = req.body;
-    
+
     const index = data.loan_transactions.findIndex(t => t.id === id);
     if (index === -1) return res.status(404).json({ error: 'Transaction not found' });
-    
+
     const trans = data.loan_transactions[index];
     const loan = data.loans.find(l => l.id === trans.loanId);
-    
+
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount <= 0) {
         return res.status(400).json({ error: 'Valid amount is required' });
@@ -598,7 +598,7 @@ app.put('/api/loan-transactions/:id', (req, res) => {
 
 app.get('/api/reports/monthly', (req, res) => {
     const data = readData();
-    
+
     // Structure: { 'YYYY-MM': { debit: 0, credit: 0, loanGiven: 0, interestAdded: 0, amountReceived: 0, transactions: [] } }
     const monthlyData = {};
 
@@ -614,14 +614,14 @@ app.get('/api/reports/monthly', (req, res) => {
         const monthKey = `${year}-${month}`;
 
         if (!monthlyData[monthKey]) {
-            monthlyData[monthKey] = { 
-                debit: 0, 
-                credit: 0, 
+            monthlyData[monthKey] = {
+                debit: 0,
+                credit: 0,
                 loanGiven: 0,
                 interestAdded: 0,
                 amountReceived: 0,
-                transactions: [], 
-                sortKey: monthKey 
+                transactions: [],
+                sortKey: monthKey
             };
         }
 
@@ -996,9 +996,9 @@ app.delete('/api/mfs/:id', (req, res) => {
 app.get('/api/mf-transactions/:mfId', (req, res) => {
     const data = readData();
     const { mfId } = req.params;
-    
+
     if (!data.mf_transactions) data.mf_transactions = [];
-    
+
     const mfTransactions = data.mf_transactions.filter(t => t.mfId === mfId);
     mfTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
     res.json(mfTransactions);

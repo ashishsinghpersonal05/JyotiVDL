@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const elNetWorthExcl = document.getElementById('dash-net-worth-excl');
         if (elNetWorthExcl) elNetWorthExcl.textContent = formatCurrencyShort(totalNetWorthExcl);
-        
+
         const elNetWorthIncl = document.getElementById('dash-net-worth-incl');
         if (elNetWorthIncl) elNetWorthIncl.textContent = formatCurrencyShort(totalNetWorthIncl);
         document.getElementById('dash-investments').textContent = formatCurrencyShort(totalInv + totalRdDeposited + totalFdDeposited + totalMfDeposited);
@@ -370,25 +370,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const breakdownContainer = document.getElementById('dash-inv-breakdown');
         if (breakdownContainer) {
             breakdownContainer.innerHTML = '';
-            
+
             // Sort categories by amount descending
             const sortedTypes = Object.keys(breakdown).sort((a, b) => breakdown[b] - breakdown[a]);
-            
+
             sortedTypes.forEach(type => {
                 const amount = breakdown[type];
                 let iconName = 'pie-chart';
-                
-                if(type === 'EPF' || type === 'NPS' || type === 'FD' || type === 'RD') iconName = 'piggy-bank';
-                else if(type === 'Mutual Fund' || type === 'Stocks') iconName = 'trending-up';
-                else if(type === 'ESOPs') iconName = 'briefcase';
-                else if(type === 'Sukanya Samriddhi') iconName = 'heart';
-                else if(type === 'Society' || type === 'Commercial') iconName = 'building';
-                else if(type === 'Apartment' || type === 'House') iconName = 'home';
-                else if(type === 'Agricultural' || type === 'Plot') iconName = 'map';
-                else if(type === 'Recurring Deposit') iconName = 'calendar-check';
-                else if(type === 'Fixed Deposit') iconName = 'calendar-clock';
-                else if(type === 'Mutual Fund SIP') iconName = 'trending-up';
-                
+
+                if (type === 'EPF' || type === 'NPS' || type === 'FD' || type === 'RD') iconName = 'piggy-bank';
+                else if (type === 'Mutual Fund' || type === 'Stocks') iconName = 'trending-up';
+                else if (type === 'ESOPs') iconName = 'briefcase';
+                else if (type === 'Sukanya Samriddhi') iconName = 'heart';
+                else if (type === 'Society' || type === 'Commercial') iconName = 'building';
+                else if (type === 'Apartment' || type === 'House') iconName = 'home';
+                else if (type === 'Agricultural' || type === 'Plot') iconName = 'map';
+                else if (type === 'Recurring Deposit') iconName = 'calendar-check';
+                else if (type === 'Fixed Deposit') iconName = 'calendar-clock';
+                else if (type === 'Mutual Fund SIP') iconName = 'trending-up';
+
                 breakdownContainer.innerHTML += `
                     <div class="kpi-card" style="padding: 24px; min-height: 120px; justify-content: center;">
                         <div class="kpi-header">
@@ -426,8 +426,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const query = customerSearchInput ? customerSearchInput.value.toLowerCase().trim() : '';
-        const filtered = state.contacts.filter(contact => 
-            contact.name.toLowerCase().includes(query) || 
+        const filtered = state.contacts.filter(contact =>
+            contact.name.toLowerCase().includes(query) ||
             (contact.phone && contact.phone.toLowerCase().includes(query))
         );
 
@@ -835,7 +835,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const esopsVested = document.getElementById('esop-vested').value;
             const esopSharePrice = document.getElementById('esop-share-price').value;
             const esopExchangeRate = document.getElementById('esop-exchange-rate').value;
-            
+
             const res = await fetch(`/api/investments/${state.currentInvId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -1241,12 +1241,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const note = document.getElementById('edit-loan-trans-note').value;
         const date = document.getElementById('edit-loan-trans-date').value;
 
-        const res = await fetch(`/api/loan-transactions/${id}`, { 
-            method: 'PUT', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ amount, note, date }) 
+        const res = await fetch(`/api/loan-transactions/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount, note, date })
         });
-        
+
         if (res.ok) {
             document.getElementById('form-edit-loan-trans').reset();
             modalEditLoanTrans.classList.add('hidden');
@@ -1287,16 +1287,16 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('edit-loan-trans-id').value = editBtn.dataset.id;
             document.getElementById('edit-loan-trans-amount').value = editBtn.dataset.amount;
             document.getElementById('edit-loan-trans-note').value = editBtn.dataset.note !== 'undefined' ? editBtn.dataset.note : '';
-            
+
             // Format datetime for local datetime input
             const dateStr = editBtn.dataset.date;
             if (dateStr) {
                 const dateObj = new Date(dateStr);
                 const tzoffset = (new Date()).getTimezoneOffset() * 60000;
-                const localISOTime = (new Date(dateObj - tzoffset)).toISOString().slice(0,16);
+                const localISOTime = (new Date(dateObj - tzoffset)).toISOString().slice(0, 16);
                 document.getElementById('edit-loan-trans-date').value = localISOTime;
             }
-            
+
             modalEditLoanTrans.classList.remove('hidden');
             return;
         }
@@ -1815,7 +1815,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const res = await fetch('/api/reports/monthly');
             const data = await res.json();
-            
+
             reportList.innerHTML = '';
             if (data.length === 0) {
                 reportList.innerHTML = '<div style="text-align:center;color:var(--text-secondary);padding:20px;">No transactions yet.</div>';
@@ -1824,7 +1824,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             data.forEach(item => {
                 const el = document.createElement('div');
-                el.className = 'contact-item'; 
+                el.className = 'contact-item';
                 el.style.flexDirection = 'column';
                 el.style.alignItems = 'stretch';
                 el.style.cursor = 'pointer';
@@ -1833,7 +1833,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const [year, month] = item.sortKey.split('-');
                 const dateObj = new Date(year, parseInt(month) - 1);
                 const monthName = dateObj.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-                
+
                 const netFlow = item.credit - item.debit;
                 let netFlowClass = 'text-neutral';
                 if (netFlow > 0) netFlowClass = 'text-success';
@@ -1846,9 +1846,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         let sign = '';
                         if (t.type === 'credit' || t.type === 'invest' || t.type === 'interest') { tClass = 'text-danger'; sign = '-'; }
                         else if (t.type === 'payment' || t.type === 'withdraw' || t.type === 'return') { tClass = 'text-success'; sign = '+'; }
-                        
+
                         if (t.type === 'interest') { tClass = 'text-warning'; sign = '+'; }
-                        
+
                         let noteLabel = t.note || t.type;
                         transHtml += `
                             <div style="display:flex; justify-content:space-between; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem;">
@@ -1890,7 +1890,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
 
                 el.innerHTML = headerHtml + detailsHtml;
-                
+
                 el.addEventListener('click', (e) => {
                     const details = el.querySelector('.month-details');
                     const icon = el.querySelector('.expand-icon');
@@ -1972,7 +1972,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mf-detail-avatar').textContent = mf.name.charAt(0).toUpperCase();
         document.getElementById('mf-detail-name').textContent = mf.name;
         document.getElementById('mf-detail-meta').textContent = `${mf.platform || 'MF SIP'} • ₹${mf.sipAmount}/mo`;
-        
+
         let startText = mf.startDate ? `Started: ${formatDate(mf.startDate).split(',')[0]}` : '';
         document.getElementById('mf-detail-start').textContent = startText;
 
@@ -2040,13 +2040,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const platform = document.getElementById('mf-platform').value;
         const sipAmount = document.getElementById('mf-sip-amount').value;
         const startDate = document.getElementById('mf-start-date').value;
-        
-        const res = await fetch('/api/mfs', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ name, platform, sipAmount, startDate }) 
+
+        const res = await fetch('/api/mfs', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, platform, sipAmount, startDate })
         });
-        
+
         if (res.ok) {
             document.getElementById('form-add-mf').reset();
             modalAddMf.classList.add('hidden');
@@ -2079,10 +2079,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const note = document.getElementById('mf-trans-note').value;
         const type = document.getElementById('mf-trans-type').value;
 
-        const res = await fetch('/api/mf-transactions', { 
-            method: 'POST', 
-            headers: { 'Content-Type': 'application/json' }, 
-            body: JSON.stringify({ mfId: state.currentMfId, amount, type, note }) 
+        const res = await fetch('/api/mf-transactions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ mfId: state.currentMfId, amount, type, note })
         });
         if (res.ok) {
             document.getElementById('form-add-mf-trans').reset();

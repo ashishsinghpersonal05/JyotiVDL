@@ -4,14 +4,14 @@
       "id": "1774109056300",
       "name": "Kirti Singh",
       "phone": "",
-      "balance": 189794.6,
+      "balance": 172166.6,
       "createdAt": "2026-03-21T16:04:16.300Z"
     },
     {
       "id": "1774109163711",
       "name": "Anuj",
       "phone": "",
-      "balance": 300000,
+      "balance": 280000,
       "createdAt": "2026-03-21T16:06:03.711Z"
     },
     {
@@ -25,70 +25,63 @@
       "id": "1774109314676",
       "name": "DK SINGH 3.9L",
       "phone": "",
-      "balance": 375000,
+      "balance": 0,
       "createdAt": "2026-03-21T16:08:34.676Z"
     },
     {
       "id": "1774109387289",
       "name": "Anand",
       "phone": "",
-      "balance": 299832,
+      "balance": 283964,
       "createdAt": "2026-03-21T16:09:47.289Z"
-    },
-    {
-      "id": "1774109462344",
-      "name": "AMIT",
-      "phone": "Loan : 2.5 L ",
-      "balance": 100405,
-      "createdAt": "2026-03-21T16:11:02.344Z"
     },
     {
       "id": "1774109628099",
       "name": "DK SINGH 7 L",
       "phone": "Balanced 10 EMI :  239240",
-      "balance": 239240,
+      "balance": 0,
       "createdAt": "2026-03-21T16:13:48.099Z"
     },
     {
       "id": "1774110392099",
       "name": "DK SINGH 5L",
       "phone": "",
-      "balance": 365000,
+      "balance": 0,
       "createdAt": "2026-03-21T16:26:32.099Z"
     },
     {
       "id": "1774110427703",
       "name": "DK SINGH 4L",
       "phone": "",
-      "balance": 290000,
+      "balance": 0,
       "createdAt": "2026-03-21T16:27:07.703Z"
     },
     {
       "id": "1774110608288",
       "name": "Ashish Mausa",
       "phone": "",
-      "balance": 474451,
+      "balance": 464753,
       "createdAt": "2026-03-21T16:30:08.288Z"
     },
     {
       "id": "1774111180336",
       "name": "DK SINGH 6L",
       "phone": "6L Loan",
-      "balance": 371121,
+      "balance": 0,
       "createdAt": "2026-03-21T16:39:40.336Z"
     },
     {
       "id": "1774112747248",
       "name": "KIRTI House 20L",
       "phone": "",
-      "balance": 2324231,
+      "balance": 2266843,
       "createdAt": "2026-03-21T17:05:47.248Z"
     },
     {
       "id": "1777904832297",
       "name": "ANURAG",
       "phone": "LOAN",
-      "balance": 402000,
+      "balance": 406000,
       "createdAt": "2026-05-04T14:27:12.298Z"
     }
   ],
@@ -132,14 +125,6 @@
       "type": "payment",
       "note": "",
       "date": "2026-03-21T16:10:39.656Z"
-    },
-    {
-      "id": "1774109575324",
-      "contactId": "1774109462344",
-      "amount": 297931,
-      "type": "credit",
-      "note": "",
-      "date": "2026-03-21T16:12:55.324Z"
     },
     {
       "id": "1774109637023",
@@ -374,22 +359,6 @@
       "date": "2026-04-02T05:26:17.080Z"
     },
     {
-      "id": "1775107598741",
-      "contactId": "1774109462344",
-      "amount": 100000,
-      "type": "payment",
-      "note": "",
-      "date": "2026-04-02T05:26:38.741Z"
-    },
-    {
-      "id": "1775107620318",
-      "contactId": "1774109462344",
-      "amount": 2474,
-      "type": "interest",
-      "note": "INT MARCH",
-      "date": "2026-04-02T05:27:00.318Z"
-    },
-    {
       "id": "1775107759657",
       "contactId": "1774110392099",
       "amount": 4750,
@@ -572,14 +541,6 @@
       "type": "payment",
       "note": "",
       "date": "2026-05-02T06:54:14.002Z"
-    },
-    {
-      "id": "1777704888590",
-      "contactId": "1774109462344",
-      "amount": 100000,
-      "type": "payment",
-      "note": "",
-      "date": "2026-05-02T06:54:48.590Z"
     },
     {
       "id": "1777904702112",
@@ -900,6 +861,190 @@
       "type": "payment",
       "note": "THIS IS FROM SOCIETY",
       "date": "2026-06-21T06:02:12.989Z"
+    },
+    {
+      "id": "1782920608151",
+      "contactId": "1774109056300",
+      "amount": 2372,
+      "type": "interest",
+      "note": "",
+      "date": "2026-07-01T15:43:28.151Z"
+    },
+    {
+      "id": "1782920622843",
+      "contactId": "1774109056300",
+      "amount": 10000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-01T15:43:42.843Z"
+    },
+    {
+      "id": "1782920639057",
+      "contactId": "1774109163711",
+      "amount": 3000,
+      "type": "interest",
+      "note": "",
+      "date": "2026-07-01T15:43:59.057Z"
+    },
+    {
+      "id": "1782920645789",
+      "contactId": "1774109261699",
+      "amount": 2500,
+      "type": "interest",
+      "note": "",
+      "date": "2026-07-01T15:44:05.789Z"
+    },
+    {
+      "id": "1782920661019",
+      "contactId": "1774109314676",
+      "amount": 4687,
+      "type": "interest",
+      "note": "",
+      "date": "2026-07-01T15:44:21.019Z"
+    },
+    {
+      "id": "1782920682105",
+      "contactId": "1774110392099",
+      "amount": 4562,
+      "type": "interest",
+      "note": "",
+      "date": "2026-07-01T15:44:42.105Z"
+    },
+    {
+      "id": "1782920695591",
+      "contactId": "1774110427703",
+      "amount": 3625,
+      "type": "interest",
+      "note": "",
+      "date": "2026-07-01T15:44:55.591Z"
+    },
+    {
+      "id": "1782920724419",
+      "contactId": "1777904832297",
+      "amount": 4000,
+      "type": "interest",
+      "note": "",
+      "date": "2026-07-01T15:45:24.419Z"
+    },
+    {
+      "id": "1782920754191",
+      "contactId": "1774112747248",
+      "amount": 28694,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-01T15:45:54.191Z"
+    },
+    {
+      "id": "1783079858008",
+      "contactId": "1774109314676",
+      "amount": 379687,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-03T11:57:38.008Z"
+    },
+    {
+      "id": "1783079865321",
+      "contactId": "1774109628099",
+      "amount": 239240,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-03T11:57:45.321Z"
+    },
+    {
+      "id": "1783079871693",
+      "contactId": "1774110392099",
+      "amount": 369562,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-03T11:57:51.693Z"
+    },
+    {
+      "id": "1783079879515",
+      "contactId": "1774110427703",
+      "amount": 293625,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-03T11:57:59.515Z"
+    },
+    {
+      "id": "1783079900794",
+      "contactId": "1774111180336",
+      "amount": 319127,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-03T11:58:20.794Z"
+    },
+    {
+      "id": "1783227294719",
+      "contactId": "1774111180336",
+      "amount": 51994,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-05T04:54:54.719Z"
+    },
+    {
+      "id": "1784220463697",
+      "contactId": "1774109163711",
+      "amount": 3000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-16T16:47:43.697Z"
+    },
+    {
+      "id": "1784220487951",
+      "contactId": "1774109163711",
+      "amount": 20000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-16T16:48:07.951Z"
+    },
+    {
+      "id": "1784220499680",
+      "contactId": "1774109261699",
+      "amount": 2500,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-16T16:48:19.681Z"
+    },
+    {
+      "id": "1784454040260",
+      "contactId": "1774109387289",
+      "amount": 7934,
+      "type": "payment",
+      "note": "",
+      "date": "2026-07-19T09:40:40.260Z"
+    },
+    {
+      "id": "1786900940147",
+      "contactId": "1774109056300",
+      "amount": 10000,
+      "type": "payment",
+      "note": "",
+      "date": "2026-08-16T17:22:20.147Z"
+    },
+    {
+      "id": "1786900956354",
+      "contactId": "1774109387289",
+      "amount": 7934,
+      "type": "payment",
+      "note": "",
+      "date": "2026-08-16T17:22:36.354Z"
+    },
+    {
+      "id": "1786900963587",
+      "contactId": "1774110608288",
+      "amount": 9698,
+      "type": "payment",
+      "note": "",
+      "date": "2026-08-16T17:22:43.587Z"
+    },
+    {
+      "id": "1786900970220",
+      "contactId": "1774112747248",
+      "amount": 28694,
+      "type": "payment",
+      "note": "",
+      "date": "2026-08-16T17:22:50.220Z"
     }
   ],
   "investments": [
@@ -1188,7 +1333,7 @@
       "id": "1776327941324",
       "name": "Prestige  Marie Gold Phase 2",
       "type": "Plot",
-      "balance": 1260000,
+      "balance": 1890000,
       "createdAt": "2026-04-16T08:25:41.324Z"
     },
     {
@@ -1231,6 +1376,14 @@
       "type": "appreciation",
       "note": "",
       "date": "2026-05-31T05:35:24.238Z"
+    },
+    {
+      "id": "1783748770063",
+      "propertyId": "1776327941324",
+      "amount": 630000,
+      "type": "buy",
+      "note": "Installment 3",
+      "date": "2026-07-11T05:46:10.063Z"
     }
   ],
   "loans": [
@@ -1245,14 +1398,14 @@
       "id": "1776328777707",
       "name": "Credit Card Loan",
       "type": "Credit Card",
-      "balance": 815649,
+      "balance": 214399,
       "createdAt": "2026-04-16T08:39:37.707Z"
     },
     {
       "id": "1776329106522",
       "name": "JYOTI Credit Card",
       "type": "Credit Card",
-      "balance": 600000,
+      "balance": 100000,
       "createdAt": "2026-04-16T08:45:06.522Z"
     },
     {
@@ -1273,22 +1426,6 @@
       "date": "2026-04-16T08:38:54.520Z"
     },
     {
-      "id": "1776328798646",
-      "loanId": "1776328777707",
-      "amount": 100000,
-      "type": "borrow",
-      "note": "MOM Credit Card KOTAK",
-      "date": "2026-04-16T14:09"
-    },
-    {
-      "id": "1776328858076",
-      "loanId": "1776328777707",
-      "amount": 50000,
-      "type": "borrow",
-      "note": "IDFC First Bank",
-      "date": "2026-04-16T14:10"
-    },
-    {
       "id": "1776328918798",
       "loanId": "1776328777707",
       "amount": 114399,
@@ -1297,60 +1434,12 @@
       "date": "2026-04-16T14:11"
     },
     {
-      "id": "1776328962741",
-      "loanId": "1776328777707",
-      "amount": 101250,
-      "type": "borrow",
-      "note": "ICICI AMAZON",
-      "date": "2026-04-16T08:42:42.741Z"
-    },
-    {
-      "id": "1776329043041",
-      "loanId": "1776328777707",
-      "amount": 150000,
-      "type": "borrow",
-      "note": "KOTAK ",
-      "date": "2026-04-16T14:14"
-    },
-    {
-      "id": "1776329195456",
-      "loanId": "1776329106522",
-      "amount": 350000,
-      "type": "borrow",
-      "note": "ICICI AMZAON",
-      "date": "2026-04-16T14:16"
-    },
-    {
-      "id": "1776329207965",
-      "loanId": "1776329106522",
-      "amount": 100000,
-      "type": "borrow",
-      "note": "ONE CARD",
-      "date": "2026-04-16T14:16"
-    },
-    {
-      "id": "1776329341082",
-      "loanId": "1776329106522",
-      "amount": 50000,
-      "type": "borrow",
-      "note": "HDFC MILENIA",
-      "date": "2026-04-16T14:19"
-    },
-    {
       "id": "1779988711707",
       "loanId": "1776328777707",
       "amount": 100000,
       "type": "borrow",
       "note": "HSBC LIVE",
-      "date": "2026-05-28T17:18:31.707Z"
-    },
-    {
-      "id": "1779988807133",
-      "loanId": "1776328777707",
-      "amount": 200000,
-      "type": "borrow",
-      "note": "ONE CARD",
-      "date": "2026-05-28T17:20:07.133Z"
+      "date": "2026-05-28T22:48"
     },
     {
       "id": "1779988928405",
@@ -1386,7 +1475,7 @@
       "interestRate": 12.25,
       "tenureMonths": 36,
       "maturityDate": "2028-02-01",
-      "balance": 37500,
+      "balance": 43750,
       "createdAt": "2026-04-16T09:25:57.260Z"
     },
     {
@@ -1397,7 +1486,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2027-10-03",
-      "balance": 56250,
+      "balance": 62500,
       "createdAt": "2026-04-16T09:35:10.263Z"
     },
     {
@@ -1408,7 +1497,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2027-07-02",
-      "balance": 156000,
+      "balance": 169000,
       "createdAt": "2026-04-16T09:39:42.734Z"
     },
     {
@@ -1419,7 +1508,7 @@
       "interestRate": 12,
       "tenureMonths": 24,
       "maturityDate": "2028-01-14",
-      "balance": 72000,
+      "balance": 84000,
       "createdAt": "2026-04-16T09:41:56.671Z"
     },
     {
@@ -1430,8 +1519,19 @@
       "interestRate": 11.25,
       "tenureMonths": 24,
       "maturityDate": "2028-06-24",
-      "balance": 25000,
+      "balance": 50000,
       "createdAt": "2026-06-28T17:51:06.424Z"
+    },
+    {
+      "id": "1786901303324",
+      "name": "ASHU SAMRIDH 3808",
+      "bank": "SAMRIDH BHARAT",
+      "monthlyAmount": 20000,
+      "interestRate": 11.5,
+      "tenureMonths": 24,
+      "maturityDate": "2028-08-16",
+      "balance": 20000,
+      "createdAt": "2026-08-16T17:28:23.324Z"
     }
   ],
   "rd_transactions": [
@@ -1706,6 +1806,54 @@
       "type": "deposit",
       "note": "",
       "date": "2026-06-28T17:51:12.555Z"
+    },
+    {
+      "id": "1782920778061",
+      "rdId": "1776332382734",
+      "amount": 13000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-07-01T15:46:18.061Z"
+    },
+    {
+      "id": "1782920781996",
+      "rdId": "1776332110263",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-07-01T15:46:21.996Z"
+    },
+    {
+      "id": "1782920786557",
+      "rdId": "1776332516671",
+      "amount": 12000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-07-01T15:46:26.557Z"
+    },
+    {
+      "id": "1782920790518",
+      "rdId": "1776331557260",
+      "amount": 6250,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-07-01T15:46:30.518Z"
+    },
+    {
+      "id": "1782920796424",
+      "rdId": "1782669066424",
+      "amount": 25000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-07-01T15:46:36.424Z"
+    },
+    {
+      "id": "1786901308531",
+      "rdId": "1786901303324",
+      "amount": 20000,
+      "type": "deposit",
+      "note": "",
+      "date": "2026-08-16T17:28:28.531Z"
     }
   ],
   "fds": [
@@ -1796,6 +1944,28 @@
       "maturityDate": "2028-05-25",
       "balance": 16000,
       "createdAt": "2026-04-16T10:14:21.496Z"
+    },
+    {
+      "id": "1784220673577",
+      "name": "MIS SIYA SAMRIDH 3327",
+      "bank": "SAMRIDH BHARAT",
+      "principalAmount": 200000,
+      "interestRate": 12.5,
+      "tenureMonths": 60,
+      "maturityDate": "2031-07-15",
+      "balance": 200000,
+      "createdAt": "2026-07-16T16:51:13.577Z"
+    },
+    {
+      "id": "1786901089053",
+      "name": "MIS MOM 2133",
+      "bank": "SAMRIDH BHARAT",
+      "principalAmount": 300000,
+      "interestRate": 10.5,
+      "tenureMonths": 12,
+      "maturityDate": "2027-08-10",
+      "balance": 300000,
+      "createdAt": "2026-08-16T17:24:49.053Z"
     }
   ],
   "fd_transactions": [
@@ -1862,6 +2032,22 @@
       "type": "deposit",
       "note": "Initial Principal Deposit",
       "date": "2026-04-16T10:14:21.502Z"
+    },
+    {
+      "id": "1784220673596",
+      "fdId": "1784220673577",
+      "amount": 200000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-07-16T16:51:13.596Z"
+    },
+    {
+      "id": "1786901089058",
+      "fdId": "1786901089053",
+      "amount": 300000,
+      "type": "deposit",
+      "note": "Initial Principal Deposit",
+      "date": "2026-08-16T17:24:49.058Z"
     }
   ],
   "mfs": [

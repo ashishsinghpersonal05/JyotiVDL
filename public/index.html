@@ -39,7 +39,8 @@
                 <button id="nav-mega-investments" class="nav-btn">
                     <i data-lucide="trending-up" class="nav-icon"></i>
                     <span class="nav-label">Investments</span>
-                    <i data-lucide="chevron-down" class="nav-icon chevron" style="margin-left: auto; width: 18px; height: 18px; transition: transform 0.2s;"></i>
+                    <i data-lucide="chevron-down" class="nav-icon chevron"
+                        style="margin-left: auto; width: 18px; height: 18px; transition: transform 0.2s;"></i>
                 </button>
                 <div id="investments-submenu" class="nav-submenu hidden">
                     <button id="nav-inv-epf" class="nav-btn" data-mode="epf">
@@ -118,7 +119,8 @@
                             <div class="kpi-decor kpi-decor-1"></div>
                             <div class="kpi-decor kpi-decor-2"></div>
                         </div>
-                        <div class="kpi-card primary-kpi" style="background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);">
+                        <div class="kpi-card primary-kpi"
+                            style="background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);">
                             <div class="kpi-header">
                                 <span class="kpi-label">Net Worth (w/ Prop)</span>
                                 <div class="kpi-icon"><i data-lucide="building"></i></div>
@@ -157,7 +159,9 @@
                     </div>
 
                     <div class="investment-breakdown-section" style="margin-top: 48px;">
-                        <h2 style="font-size: 1.8rem; font-weight: 700; margin-bottom: 24px; color: var(--text-primary); letter-spacing: -0.5px;">Investment Breakdown</h2>
+                        <h2
+                            style="font-size: 1.8rem; font-weight: 700; margin-bottom: 24px; color: var(--text-primary); letter-spacing: -0.5px;">
+                            Investment Breakdown</h2>
                         <div class="dashboard-grid" id="dash-inv-breakdown"
                             style="grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));">
                             <!-- Dynamically injected via JS -->
@@ -179,8 +183,10 @@
                         <button id="add-contact-btn" class="btn primary-btn"
                             style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Customer</button>
                         <div class="search-container">
-                            <input type="text" id="customer-search-input" class="search-input" placeholder="Search by name or phone...">
-                            <i data-lucide="search" class="search-container-icon" style="width: 18px; height: 18px;"></i>
+                            <input type="text" id="customer-search-input" class="search-input"
+                                placeholder="Search by name or phone...">
+                            <i data-lucide="search" class="search-container-icon"
+                                style="width: 18px; height: 18px;"></i>
                         </div>
                         <div class="summary-card">
                             <h2>Total You'll Get</h2>
@@ -283,7 +289,8 @@
                             <div class="contact-balance-card">
                                 <span>Current Value</span>
                                 <div id="inv-detail-balance" class="balance-amount text-success">₹0.00</div>
-                                <div id="inv-detail-esops-info" style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
+                                <div id="inv-detail-esops-info"
+                                    style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
                                 <button id="btn-delete-inv" class="btn"
                                     style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
                                     Investment</button>
@@ -309,391 +316,397 @@
                 </main>
             </div>
 
-            </div>
+        </div>
 
-            <!-- 3.5. PROPERTIES WORKSPACE -->
-            <div id="properties-workspace" class="workspace-view split-layout hidden">
-                <!-- Sidebar: Property List -->
-                <aside class="sidebar inner-sidebar">
-                    <div class="sidebar-header">
-                        <h1>Properties</h1>
-                        <p class="subtitle">Track real estate and physical assets</p>
+        <!-- 3.5. PROPERTIES WORKSPACE -->
+        <div id="properties-workspace" class="workspace-view split-layout hidden">
+            <!-- Sidebar: Property List -->
+            <aside class="sidebar inner-sidebar">
+                <div class="sidebar-header">
+                    <h1>Properties</h1>
+                    <p class="subtitle">Track real estate and physical assets</p>
+                </div>
+
+                <div class="view-section" style="flex:1; overflow:hidden;">
+                    <button id="add-prop-btn" class="btn primary-btn"
+                        style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Property</button>
+                    <div class="summary-card">
+                        <h2>Total Value</h2>
+                        <div id="total-prop-balance" class="balance-amount">₹0.00</div>
                     </div>
-
-                    <div class="view-section" style="flex:1; overflow:hidden;">
-                        <button id="add-prop-btn" class="btn primary-btn"
-                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Property</button>
-                        <div class="summary-card">
-                            <h2>Total Value</h2>
-                            <div id="total-prop-balance" class="balance-amount">₹0.00</div>
-                        </div>
-                        <div class="contacts-list" id="properties-list">
-                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
-                                properties...</div>
-                        </div>
+                    <div class="contacts-list" id="properties-list">
+                        <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                            properties...</div>
                     </div>
-                </aside>
+                </div>
+            </aside>
 
-                <!-- Main Content: Property Detail -->
-                <main class="main-content">
-                    <div id="prop-empty-state" class="empty-state active">
-                        <div class="empty-icon"><i data-lucide="home"
-                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
-                        <h2>Select a Property</h2>
-                        <p>Choose a property from the sidebar to view detail and update valuation.</p>
-                    </div>
+            <!-- Main Content: Property Detail -->
+            <main class="main-content">
+                <div id="prop-empty-state" class="empty-state active">
+                    <div class="empty-icon"><i data-lucide="home"
+                            style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                    <h2>Select a Property</h2>
+                    <p>Choose a property from the sidebar to view detail and update valuation.</p>
+                </div>
 
-                    <div id="prop-detail" class="contact-detail hidden">
-                        <header class="detail-header">
-                            <div class="contact-info">
-                                <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #7e22ce);"
-                                    id="prop-detail-avatar">P</div>
-                                <div>
-                                    <h2 id="prop-detail-name">Property Name</h2>
-                                    <p id="prop-detail-type">Type</p>
-                                </div>
+                <div id="prop-detail" class="contact-detail hidden">
+                    <header class="detail-header">
+                        <div class="contact-info">
+                            <div class="avatar" style="background: linear-gradient(135deg, #a855f7, #7e22ce);"
+                                id="prop-detail-avatar">P</div>
+                            <div>
+                                <h2 id="prop-detail-name">Property Name</h2>
+                                <p id="prop-detail-type">Type</p>
                             </div>
-                            <div class="contact-balance-card">
-                                <span>Current Value</span>
-                                <div id="prop-detail-balance" class="balance-amount text-success">₹0.00</div>
-                                <button id="btn-delete-prop" class="btn"
-                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
-                                    Property</button>
-                            </div>
-                        </header>
-
-                        <div class="action-buttons">
-                            <button id="btn-prop-buy" class="btn action-btn success-btn"><i
-                                    data-lucide="plus-circle"></i> Initial Value / Buy</button>
-                            <button id="btn-prop-appreciation" class="btn action-btn warning-btn"><i
-                                    data-lucide="trending-up"></i> Appreciation</button>
-                            <button id="btn-prop-depreciation" class="btn action-btn danger-btn"><i
-                                    data-lucide="trending-down"></i> Depreciation</button>
                         </div>
-
-                        <div class="transactions-section">
-                            <h3>Valuation History</h3>
-                            <div class="transactions-list" id="prop-transactions-list"></div>
+                        <div class="contact-balance-card">
+                            <span>Current Value</span>
+                            <div id="prop-detail-balance" class="balance-amount text-success">₹0.00</div>
+                            <button id="btn-delete-prop" class="btn"
+                                style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                Property</button>
                         </div>
-                    </div>
-                </main>
-            </div>
-
-            <!-- 3.8. LOANS WORKSPACE -->
-            <div id="loans-workspace" class="workspace-view split-layout hidden">
-                <!-- Sidebar: Loan List -->
-                <aside class="sidebar inner-sidebar">
-                    <div class="sidebar-header">
-                        <h1>Loans</h1>
-                        <p class="subtitle">Track liabilities & borrowed funds</p>
-                    </div>
-
-                    <div class="view-section" style="flex:1; overflow:hidden;">
-                        <button id="add-loan-btn" class="btn primary-btn"
-                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Loan</button>
-                        <div class="summary-card">
-                            <h2>Total Borrowed</h2>
-                            <div id="total-loan-balance" class="balance-amount">₹0.00</div>
-                        </div>
-                        <div class="contacts-list" id="loans-list">
-                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
-                                loans...</div>
-                        </div>
-                    </div>
-                </aside>
-
-                <!-- Main Content: Loan Detail -->
-                <main class="main-content">
-                    <div id="loan-empty-state" class="empty-state active">
-                        <div class="empty-icon"><i data-lucide="credit-card"
-                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
-                        <h2>Select a Loan</h2>
-                        <p>Choose a loan from the sidebar to view detail, add EMI payments, or borrow more.</p>
-                    </div>
-
-                    <div id="loan-detail" class="contact-detail hidden">
-                        <header class="detail-header">
-                            <div class="contact-info">
-                                <div class="avatar" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"
-                                    id="loan-detail-avatar">L</div>
-                                <div>
-                                    <h2 id="loan-detail-name">Loan Name</h2>
-                                    <p id="loan-detail-type">Type</p>
-                                </div>
-                            </div>
-                            <div class="contact-balance-card">
-                                <span>Outstanding Balance</span>
-                                <div id="loan-detail-balance" class="balance-amount text-danger">₹0.00</div>
-                                <button id="btn-delete-loan" class="btn"
-                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
-                                    Loan</button>
-                            </div>
-                        </header>
-
-                        <div class="action-buttons">
-                            <button id="btn-loan-repay" class="btn action-btn success-btn"><i
-                                    data-lucide="download"></i> Pay EMI</button>
-                            <button id="btn-loan-borrow" class="btn action-btn danger-btn"><i
-                                    data-lucide="upload"></i> Borrow More</button>
-                            <button id="btn-loan-interest" class="btn action-btn warning-btn"><i
-                                    data-lucide="percent"></i> Add Interest</button>
-                        </div>
-
-                        <div class="transactions-section">
-                            <h3>Transaction History</h3>
-                            <div class="transactions-list" id="loan-transactions-list"></div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-
-            <!-- 4. REPORT WORKSPACE -->
-            <div id="report-workspace" class="workspace-view hidden">
-                <div class="dashboard-container">
-                    <header class="dashboard-header">
-                        <h1>Monthly Report</h1>
-                        <p class="subtitle">Overview of monthly debits and credits</p>
                     </header>
 
-                    <div class="report-section" style="margin-top: 20px;">
-                        <div class="contacts-list" id="monthly-report-list">
-                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading report...</div>
+                    <div class="action-buttons">
+                        <button id="btn-prop-buy" class="btn action-btn success-btn"><i data-lucide="plus-circle"></i>
+                            Initial Value / Buy</button>
+                        <button id="btn-prop-appreciation" class="btn action-btn warning-btn"><i
+                                data-lucide="trending-up"></i> Appreciation</button>
+                        <button id="btn-prop-depreciation" class="btn action-btn danger-btn"><i
+                                data-lucide="trending-down"></i> Depreciation</button>
+                    </div>
+
+                    <div class="transactions-section">
+                        <h3>Valuation History</h3>
+                        <div class="transactions-list" id="prop-transactions-list"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 3.8. LOANS WORKSPACE -->
+        <div id="loans-workspace" class="workspace-view split-layout hidden">
+            <!-- Sidebar: Loan List -->
+            <aside class="sidebar inner-sidebar">
+                <div class="sidebar-header">
+                    <h1>Loans</h1>
+                    <p class="subtitle">Track liabilities & borrowed funds</p>
+                </div>
+
+                <div class="view-section" style="flex:1; overflow:hidden;">
+                    <button id="add-loan-btn" class="btn primary-btn"
+                        style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add Loan</button>
+                    <div class="summary-card">
+                        <h2>Total Borrowed</h2>
+                        <div id="total-loan-balance" class="balance-amount">₹0.00</div>
+                    </div>
+                    <div class="contacts-list" id="loans-list">
+                        <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                            loans...</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content: Loan Detail -->
+            <main class="main-content">
+                <div id="loan-empty-state" class="empty-state active">
+                    <div class="empty-icon"><i data-lucide="credit-card"
+                            style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                    <h2>Select a Loan</h2>
+                    <p>Choose a loan from the sidebar to view detail, add EMI payments, or borrow more.</p>
+                </div>
+
+                <div id="loan-detail" class="contact-detail hidden">
+                    <header class="detail-header">
+                        <div class="contact-info">
+                            <div class="avatar" style="background: linear-gradient(135deg, #ef4444, #b91c1c);"
+                                id="loan-detail-avatar">L</div>
+                            <div>
+                                <h2 id="loan-detail-name">Loan Name</h2>
+                                <p id="loan-detail-type">Type</p>
+                            </div>
+                        </div>
+                        <div class="contact-balance-card">
+                            <span>Outstanding Balance</span>
+                            <div id="loan-detail-balance" class="balance-amount text-danger">₹0.00</div>
+                            <button id="btn-delete-loan" class="btn"
+                                style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                Loan</button>
+                        </div>
+                    </header>
+
+                    <div class="action-buttons">
+                        <button id="btn-loan-repay" class="btn action-btn success-btn"><i data-lucide="download"></i>
+                            Pay EMI</button>
+                        <button id="btn-loan-borrow" class="btn action-btn danger-btn"><i data-lucide="upload"></i>
+                            Borrow More</button>
+                        <button id="btn-loan-interest" class="btn action-btn warning-btn"><i data-lucide="percent"></i>
+                            Add Interest</button>
+                    </div>
+
+                    <div class="transactions-section">
+                        <h3>Transaction History</h3>
+                        <div class="transactions-list" id="loan-transactions-list"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 4. REPORT WORKSPACE -->
+        <div id="report-workspace" class="workspace-view hidden">
+            <div class="dashboard-container">
+                <header class="dashboard-header">
+                    <h1>Monthly Report</h1>
+                    <p class="subtitle">Overview of monthly debits and credits</p>
+                </header>
+
+                <div class="report-section" style="margin-top: 20px;">
+                    <div class="contacts-list" id="monthly-report-list">
+                        <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading report...
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- 5. RD WORKSPACE -->
-            <div id="rd-workspace" class="workspace-view split-layout hidden">
-                <!-- Sidebar: RD List -->
-                <aside class="sidebar inner-sidebar">
-                    <div class="sidebar-header">
-                        <h1>Recurring Deposits</h1>
-                        <p class="subtitle">Track your RD savings &amp; maturity</p>
-                    </div>
-
-                    <div class="view-section" style="flex:1; overflow:hidden;">
-                        <button id="add-rd-btn" class="btn primary-btn"
-                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add RD</button>
-                        <div class="summary-card">
-                            <h2>Total Deposited</h2>
-                            <div id="total-rd-balance" class="balance-amount">₹0.00</div>
-                        </div>
-                        <div class="contacts-list" id="rd-list">
-                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
-                                RDs...</div>
-                        </div>
-                    </div>
-                </aside>
-
-                <!-- Main Content: RD Detail -->
-                <main class="main-content">
-                    <div id="rd-empty-state" class="empty-state active">
-                        <div class="empty-icon"><i data-lucide="calendar-check"
-                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
-                        <h2>Select an RD</h2>
-                        <p>Choose a Recurring Deposit from the sidebar to view its status, add monthly installments, or record maturity.</p>
-                        <div style="display: flex; gap: 24px; justify-content: center; margin-top: 32px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto;">
-                            <div class="kpi-card" style="min-width: 200px; flex: 1;">
-                                <div class="kpi-header">
-                                    <span class="kpi-label">Total RD Running</span>
-                                    <div class="kpi-icon"><i data-lucide="activity"></i></div>
-                                </div>
-                                <div id="total-rd-running" class="kpi-amount text-success">0</div>
-                            </div>
-                            <div class="kpi-card" style="min-width: 200px; flex: 1;">
-                                <div class="kpi-header">
-                                    <span class="kpi-label">Total Target Amount</span>
-                                    <div class="kpi-icon"><i data-lucide="target"></i></div>
-                                </div>
-                                <div id="total-rd-target" class="kpi-amount text-primary">₹0.00</div>
-                            </div>
-                            <div class="kpi-card" style="min-width: 200px; flex: 1;">
-                                <div class="kpi-header">
-                                    <span class="kpi-label">Total Monthly Installment</span>
-                                    <div class="kpi-icon"><i data-lucide="calendar"></i></div>
-                                </div>
-                                <div id="total-rd-monthly" class="kpi-amount text-warning">₹0.00</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="rd-detail" class="contact-detail hidden">
-                        <header class="detail-header">
-                            <div class="contact-info">
-                                <div class="avatar" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"
-                                    id="rd-detail-avatar">R</div>
-                                <div>
-                                    <h2 id="rd-detail-name">RD Name</h2>
-                                    <p id="rd-detail-meta">Bank &bull; Rate &bull; Tenure</p>
-                                </div>
-                            </div>
-                            <div class="contact-balance-card">
-                                <span>Total Deposited</span>
-                                <div id="rd-detail-balance" class="balance-amount text-success">₹0.00</div>
-                                <div id="rd-detail-maturity" style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
-                                <button id="btn-delete-rd" class="btn"
-                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
-                                    RD</button>
-                            </div>
-                        </header>
-
-                        <div class="action-buttons">
-                            <button id="btn-rd-deposit" class="btn action-btn success-btn"><i
-                                    data-lucide="plus-circle"></i> Add Installment</button>
-                            <button id="btn-rd-maturity" class="btn action-btn warning-btn"><i
-                                    data-lucide="award"></i> Record Maturity</button>
-                            <button id="btn-rd-premature" class="btn action-btn danger-btn"><i
-                                    data-lucide="alert-triangle"></i> Premature Withdrawal</button>
-                        </div>
-
-                        <div class="transactions-section">
-                            <h3>Transaction History</h3>
-                            <div class="transactions-list" id="rd-transactions-list"></div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-
-            <!-- 6. FD WORKSPACE -->
-            <div id="fd-workspace" class="workspace-view split-layout hidden">
-                <!-- Sidebar: FD List -->
-                <aside class="sidebar inner-sidebar">
-                    <div class="sidebar-header">
-                        <h1>Fixed Deposits</h1>
-                        <p class="subtitle">Track your FD investments &amp; maturity</p>
-                    </div>
-
-                    <div class="view-section" style="flex:1; overflow:hidden;">
-                        <button id="add-fd-btn" class="btn primary-btn"
-                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add FD</button>
-                        <div class="summary-card">
-                            <h2>Total Deposited</h2>
-                            <div id="total-fd-balance" class="balance-amount">₹0.00</div>
-                        </div>
-                        <div class="contacts-list" id="fd-list">
-                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
-                                FDs...</div>
-                        </div>
-                    </div>
-                </aside>
-
-                <!-- Main Content: FD Detail -->
-                <main class="main-content">
-                    <div id="fd-empty-state" class="empty-state active">
-                        <div class="empty-icon"><i data-lucide="calendar-clock"
-                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
-                        <h2>Select an FD</h2>
-                        <p>Choose a Fixed Deposit from the sidebar to view its status, add interest, or record maturity.</p>
-                    </div>
-
-                    <div id="fd-detail" class="contact-detail hidden">
-                        <header class="detail-header">
-                            <div class="contact-info">
-                                <div class="avatar" style="background: linear-gradient(135deg, #10b981, #059669);"
-                                    id="fd-detail-avatar">F</div>
-                                <div>
-                                    <h2 id="fd-detail-name">FD Name</h2>
-                                    <p id="fd-detail-meta">Bank &bull; Rate &bull; Tenure</p>
-                                </div>
-                            </div>
-                            <div class="contact-balance-card">
-                                <span>Total Value</span>
-                                <div id="fd-detail-balance" class="balance-amount text-success">₹0.00</div>
-                                <div id="fd-detail-maturity" style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
-                                <button id="btn-delete-fd" class="btn"
-                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
-                                    FD</button>
-                            </div>
-                        </header>
-
-                        <div class="action-buttons">
-                            <button id="btn-fd-deposit" class="btn action-btn success-btn"><i
-                                    data-lucide="plus-circle"></i> Add Principal / Interest</button>
-                            <button id="btn-fd-maturity" class="btn action-btn warning-btn"><i
-                                    data-lucide="award"></i> Record Maturity</button>
-                            <button id="btn-fd-premature" class="btn action-btn danger-btn"><i
-                                    data-lucide="alert-triangle"></i> Premature Withdrawal</button>
-                        </div>
-
-                        <div class="transactions-section">
-                            <h3>Transaction History</h3>
-                            <div class="transactions-list" id="fd-transactions-list"></div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-
-            <!-- 7. MF WORKSPACE -->
-            <div id="mf-workspace" class="workspace-view split-layout hidden">
-                <!-- Sidebar: MF List -->
-                <aside class="sidebar inner-sidebar">
-                    <div class="sidebar-header">
-                        <h1>Mutual Funds</h1>
-                        <p class="subtitle">Track your SIPs & investments</p>
-                    </div>
-
-                    <div class="view-section" style="flex:1; overflow:hidden;">
-                        <button id="add-mf-btn" class="btn primary-btn"
-                            style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add MF</button>
-                        <div class="summary-card">
-                            <h2>Total Invested</h2>
-                            <div id="total-mf-balance" class="balance-amount">₹0.00</div>
-                        </div>
-                        <div class="contacts-list" id="mf-list">
-                            <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
-                                MFs...</div>
-                        </div>
-                    </div>
-                </aside>
-
-                <!-- Main Content: MF Detail -->
-                <main class="main-content">
-                    <div id="mf-empty-state" class="empty-state active">
-                        <div class="empty-icon"><i data-lucide="trending-up"
-                                style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
-                        <h2>Select a Mutual Fund</h2>
-                        <p>Choose a Mutual Fund from the sidebar to view its status, add SIPs, or record withdrawals.</p>
-                    </div>
-
-                    <div id="mf-detail" class="contact-detail hidden">
-                        <header class="detail-header">
-                            <div class="contact-info">
-                                <div class="avatar" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);"
-                                    id="mf-detail-avatar">M</div>
-                                <div>
-                                    <h2 id="mf-detail-name">MF Name</h2>
-                                    <p id="mf-detail-meta">Platform &bull; SIP Amount</p>
-                                </div>
-                            </div>
-                            <div class="contact-balance-card">
-                                <span>Total Invested</span>
-                                <div id="mf-detail-balance" class="balance-amount text-success">₹0.00</div>
-                                <div id="mf-detail-start" style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
-                                <button id="btn-delete-mf" class="btn"
-                                    style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
-                                    MF</button>
-                            </div>
-                        </header>
-
-                        <div class="action-buttons">
-                            <button id="btn-mf-invest" class="btn action-btn success-btn"><i
-                                    data-lucide="plus-circle"></i> Add Investment</button>
-                            <button id="btn-mf-return" class="btn action-btn warning-btn"><i
-                                    data-lucide="trending-up"></i> Add Return / Interest</button>
-                            <button id="btn-mf-withdraw" class="btn action-btn danger-btn"><i
-                                    data-lucide="alert-triangle"></i> Withdraw</button>
-                        </div>
-
-                        <div class="transactions-section">
-                            <h3>Transaction History</h3>
-                            <div class="transactions-list" id="mf-transactions-list"></div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-
         </div>
+
+        <!-- 5. RD WORKSPACE -->
+        <div id="rd-workspace" class="workspace-view split-layout hidden">
+            <!-- Sidebar: RD List -->
+            <aside class="sidebar inner-sidebar">
+                <div class="sidebar-header">
+                    <h1>Recurring Deposits</h1>
+                    <p class="subtitle">Track your RD savings &amp; maturity</p>
+                </div>
+
+                <div class="view-section" style="flex:1; overflow:hidden;">
+                    <button id="add-rd-btn" class="btn primary-btn"
+                        style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add RD</button>
+                    <div class="summary-card">
+                        <h2>Total Deposited</h2>
+                        <div id="total-rd-balance" class="balance-amount">₹0.00</div>
+                    </div>
+                    <div class="contacts-list" id="rd-list">
+                        <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                            RDs...</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content: RD Detail -->
+            <main class="main-content">
+                <div id="rd-empty-state" class="empty-state active">
+                    <div class="empty-icon"><i data-lucide="calendar-check"
+                            style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                    <h2>Select an RD</h2>
+                    <p>Choose a Recurring Deposit from the sidebar to view its status, add monthly installments, or
+                        record maturity.</p>
+                    <div
+                        style="display: flex; gap: 24px; justify-content: center; margin-top: 32px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto;">
+                        <div class="kpi-card" style="min-width: 200px; flex: 1;">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Total RD Running</span>
+                                <div class="kpi-icon"><i data-lucide="activity"></i></div>
+                            </div>
+                            <div id="total-rd-running" class="kpi-amount text-success">0</div>
+                        </div>
+                        <div class="kpi-card" style="min-width: 200px; flex: 1;">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Total Target Amount</span>
+                                <div class="kpi-icon"><i data-lucide="target"></i></div>
+                            </div>
+                            <div id="total-rd-target" class="kpi-amount text-primary">₹0.00</div>
+                        </div>
+                        <div class="kpi-card" style="min-width: 200px; flex: 1;">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Total Monthly Installment</span>
+                                <div class="kpi-icon"><i data-lucide="calendar"></i></div>
+                            </div>
+                            <div id="total-rd-monthly" class="kpi-amount text-warning">₹0.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="rd-detail" class="contact-detail hidden">
+                    <header class="detail-header">
+                        <div class="contact-info">
+                            <div class="avatar" style="background: linear-gradient(135deg, #06b6d4, #0891b2);"
+                                id="rd-detail-avatar">R</div>
+                            <div>
+                                <h2 id="rd-detail-name">RD Name</h2>
+                                <p id="rd-detail-meta">Bank &bull; Rate &bull; Tenure</p>
+                            </div>
+                        </div>
+                        <div class="contact-balance-card">
+                            <span>Total Deposited</span>
+                            <div id="rd-detail-balance" class="balance-amount text-success">₹0.00</div>
+                            <div id="rd-detail-maturity"
+                                style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
+                            <button id="btn-delete-rd" class="btn"
+                                style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                RD</button>
+                        </div>
+                    </header>
+
+                    <div class="action-buttons">
+                        <button id="btn-rd-deposit" class="btn action-btn success-btn"><i data-lucide="plus-circle"></i>
+                            Add Installment</button>
+                        <button id="btn-rd-maturity" class="btn action-btn warning-btn"><i data-lucide="award"></i>
+                            Record Maturity</button>
+                        <button id="btn-rd-premature" class="btn action-btn danger-btn"><i
+                                data-lucide="alert-triangle"></i> Premature Withdrawal</button>
+                    </div>
+
+                    <div class="transactions-section">
+                        <h3>Transaction History</h3>
+                        <div class="transactions-list" id="rd-transactions-list"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 6. FD WORKSPACE -->
+        <div id="fd-workspace" class="workspace-view split-layout hidden">
+            <!-- Sidebar: FD List -->
+            <aside class="sidebar inner-sidebar">
+                <div class="sidebar-header">
+                    <h1>Fixed Deposits</h1>
+                    <p class="subtitle">Track your FD investments &amp; maturity</p>
+                </div>
+
+                <div class="view-section" style="flex:1; overflow:hidden;">
+                    <button id="add-fd-btn" class="btn primary-btn"
+                        style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add FD</button>
+                    <div class="summary-card">
+                        <h2>Total Deposited</h2>
+                        <div id="total-fd-balance" class="balance-amount">₹0.00</div>
+                    </div>
+                    <div class="contacts-list" id="fd-list">
+                        <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                            FDs...</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content: FD Detail -->
+            <main class="main-content">
+                <div id="fd-empty-state" class="empty-state active">
+                    <div class="empty-icon"><i data-lucide="calendar-clock"
+                            style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                    <h2>Select an FD</h2>
+                    <p>Choose a Fixed Deposit from the sidebar to view its status, add interest, or record maturity.</p>
+                </div>
+
+                <div id="fd-detail" class="contact-detail hidden">
+                    <header class="detail-header">
+                        <div class="contact-info">
+                            <div class="avatar" style="background: linear-gradient(135deg, #10b981, #059669);"
+                                id="fd-detail-avatar">F</div>
+                            <div>
+                                <h2 id="fd-detail-name">FD Name</h2>
+                                <p id="fd-detail-meta">Bank &bull; Rate &bull; Tenure</p>
+                            </div>
+                        </div>
+                        <div class="contact-balance-card">
+                            <span>Total Value</span>
+                            <div id="fd-detail-balance" class="balance-amount text-success">₹0.00</div>
+                            <div id="fd-detail-maturity"
+                                style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
+                            <button id="btn-delete-fd" class="btn"
+                                style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                FD</button>
+                        </div>
+                    </header>
+
+                    <div class="action-buttons">
+                        <button id="btn-fd-deposit" class="btn action-btn success-btn"><i data-lucide="plus-circle"></i>
+                            Add Principal / Interest</button>
+                        <button id="btn-fd-maturity" class="btn action-btn warning-btn"><i data-lucide="award"></i>
+                            Record Maturity</button>
+                        <button id="btn-fd-premature" class="btn action-btn danger-btn"><i
+                                data-lucide="alert-triangle"></i> Premature Withdrawal</button>
+                    </div>
+
+                    <div class="transactions-section">
+                        <h3>Transaction History</h3>
+                        <div class="transactions-list" id="fd-transactions-list"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- 7. MF WORKSPACE -->
+        <div id="mf-workspace" class="workspace-view split-layout hidden">
+            <!-- Sidebar: MF List -->
+            <aside class="sidebar inner-sidebar">
+                <div class="sidebar-header">
+                    <h1>Mutual Funds</h1>
+                    <p class="subtitle">Track your SIPs & investments</p>
+                </div>
+
+                <div class="view-section" style="flex:1; overflow:hidden;">
+                    <button id="add-mf-btn" class="btn primary-btn"
+                        style="margin: 16px 16px 0; width: calc(100% - 32px);">+ Add MF</button>
+                    <div class="summary-card">
+                        <h2>Total Invested</h2>
+                        <div id="total-mf-balance" class="balance-amount">₹0.00</div>
+                    </div>
+                    <div class="contacts-list" id="mf-list">
+                        <div class="loading" style="text-align:center; padding: 20px; color: #94a3b8;">Loading
+                            MFs...</div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content: MF Detail -->
+            <main class="main-content">
+                <div id="mf-empty-state" class="empty-state active">
+                    <div class="empty-icon"><i data-lucide="trending-up"
+                            style="width: 80px; height: 80px; stroke-width: 1.5;"></i></div>
+                    <h2>Select a Mutual Fund</h2>
+                    <p>Choose a Mutual Fund from the sidebar to view its status, add SIPs, or record withdrawals.</p>
+                </div>
+
+                <div id="mf-detail" class="contact-detail hidden">
+                    <header class="detail-header">
+                        <div class="contact-info">
+                            <div class="avatar" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);"
+                                id="mf-detail-avatar">M</div>
+                            <div>
+                                <h2 id="mf-detail-name">MF Name</h2>
+                                <p id="mf-detail-meta">Platform &bull; SIP Amount</p>
+                            </div>
+                        </div>
+                        <div class="contact-balance-card">
+                            <span>Total Invested</span>
+                            <div id="mf-detail-balance" class="balance-amount text-success">₹0.00</div>
+                            <div id="mf-detail-start"
+                                style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;"></div>
+                            <button id="btn-delete-mf" class="btn"
+                                style="margin-top: 8px; background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 4px 8px; font-size: 0.8rem;">Delete
+                                MF</button>
+                        </div>
+                    </header>
+
+                    <div class="action-buttons">
+                        <button id="btn-mf-invest" class="btn action-btn success-btn"><i data-lucide="plus-circle"></i>
+                            Add Investment</button>
+                        <button id="btn-mf-return" class="btn action-btn warning-btn"><i data-lucide="trending-up"></i>
+                            Add Return / Interest</button>
+                        <button id="btn-mf-withdraw" class="btn action-btn danger-btn"><i
+                                data-lucide="alert-triangle"></i> Withdraw</button>
+                    </div>
+
+                    <div class="transactions-section">
+                        <h3>Transaction History</h3>
+                        <div class="transactions-list" id="mf-transactions-list"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    </div>
     </div>
 
     <!-- Modals -->
@@ -1004,7 +1017,8 @@
                 </div>
                 <div class="form-group">
                     <label for="fd-principal-amount">Principal Amount (₹)</label>
-                    <input type="number" id="fd-principal-amount" required placeholder="E.g., 50000" min="1" step="0.01">
+                    <input type="number" id="fd-principal-amount" required placeholder="E.g., 50000" min="1"
+                        step="0.01">
                 </div>
                 <div class="form-group">
                     <label for="fd-interest-rate">Interest Rate (% p.a.) (Optional)</label>
